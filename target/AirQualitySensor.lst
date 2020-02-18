@@ -1,0 +1,4958 @@
+
+/home/jay/dev/particle/AirQualitySensor/target/AirQualitySensor.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .module_info  00000018  000d4000  000d4000  00004000  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .text         00001968  000d4018  000d4018  00004018  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .backup       00000000  2003f400  2003f400  00015a14  2**0
+                  CONTENTS
+  3 .data         00000068  2003e454  000d5980  0000e454  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  4 .bss          00000334  2003e4bc  2003e4bc  0001e4bc  2**2
+                  ALLOC
+  5 .module_info_suffix 00000028  000d59e8  000d59e8  000159e8  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  6 .module_info_crc 00000004  000d5a10  000d5a10  00015a10  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  7 .debug_info   000b7da5  00000000  00000000  00015a14  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_abbrev 0001089a  00000000  00000000  000cd7b9  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_aranges 00001c40  00000000  00000000  000de053  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_macro  00035720  00000000  00000000  000dfc93  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_line   00028b83  00000000  00000000  001153b3  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_str    000db9ba  00000000  00000000  0013df36  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 13 .debug_loc    0001233b  00000000  00000000  002198f0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 14 .debug_ranges 00002da8  00000000  00000000  0022bc2b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 15 .debug_frame  0000adfc  00000000  00000000  0022e9d4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+000d4018 <user_part_module>:
+   d4018:	dc 55 0d 00                                         .U..
+
+000d401c <module_user_pre_init>:
+/**
+ * Initializes this user module. Returns the start of the heap.
+ */
+void* module_user_pre_init() {
+
+    if ( (&link_global_data_start!=&link_global_data_initial_values) && (link_global_data_size != 0))
+   d401c:	4809      	ldr	r0, [pc, #36]	; (d4044 <module_user_pre_init+0x28>)
+   d401e:	490a      	ldr	r1, [pc, #40]	; (d4048 <module_user_pre_init+0x2c>)
+   d4020:	4288      	cmp	r0, r1
+extern constructor_ptr_t link_constructors_end;
+
+/**
+ * Initializes this user module. Returns the start of the heap.
+ */
+void* module_user_pre_init() {
+   d4022:	b508      	push	{r3, lr}
+
+    if ( (&link_global_data_start!=&link_global_data_initial_values) && (link_global_data_size != 0))
+   d4024:	d005      	beq.n	d4032 <module_user_pre_init+0x16>
+   d4026:	4a09      	ldr	r2, [pc, #36]	; (d404c <module_user_pre_init+0x30>)
+   d4028:	4282      	cmp	r2, r0
+   d402a:	d002      	beq.n	d4032 <module_user_pre_init+0x16>
+    {
+        memcpy(&link_global_data_start, &link_global_data_initial_values, link_global_data_size);
+   d402c:	1a12      	subs	r2, r2, r0
+   d402e:	f001 fa91 	bl	d5554 <memcpy>
+    }
+
+    memset(&link_bss_location, 0, link_bss_size );
+   d4032:	4807      	ldr	r0, [pc, #28]	; (d4050 <module_user_pre_init+0x34>)
+   d4034:	4a07      	ldr	r2, [pc, #28]	; (d4054 <module_user_pre_init+0x38>)
+   d4036:	2100      	movs	r1, #0
+   d4038:	1a12      	subs	r2, r2, r0
+   d403a:	f001 fa96 	bl	d556a <memset>
+    return &link_global_data_start;
+}
+   d403e:	4801      	ldr	r0, [pc, #4]	; (d4044 <module_user_pre_init+0x28>)
+   d4040:	bd08      	pop	{r3, pc}
+   d4042:	bf00      	nop
+   d4044:	2003e454 	.word	0x2003e454
+   d4048:	000d5980 	.word	0x000d5980
+   d404c:	2003e4bc 	.word	0x2003e4bc
+   d4050:	2003e4bc 	.word	0x2003e4bc
+   d4054:	2003e7f0 	.word	0x2003e7f0
+
+000d4058 <module_user_init>:
+extern constructor_ptr_t link_constructors_location[];
+extern constructor_ptr_t link_constructors_end;
+#define link_constructors_size   ((unsigned long)&link_constructors_end  -  (unsigned long)&link_constructors_location )
+
+void module_user_init()
+{
+   d4058:	b570      	push	{r4, r5, r6, lr}
+    module_user_init_hook();
+   d405a:	f000 ff0d 	bl	d4e78 <module_user_init_hook>
+   d405e:	4c07      	ldr	r4, [pc, #28]	; (d407c <module_user_init+0x24>)
+   d4060:	4b07      	ldr	r3, [pc, #28]	; (d4080 <module_user_init+0x28>)
+   d4062:	1ae4      	subs	r4, r4, r3
+   d4064:	08a4      	lsrs	r4, r4, #2
+
+    // invoke constructors
+    int ctor_num;
+    for (ctor_num=0; ctor_num < link_constructors_size/sizeof(constructor_ptr_t); ctor_num++ )
+   d4066:	2500      	movs	r5, #0
+   d4068:	461e      	mov	r6, r3
+   d406a:	42a5      	cmp	r5, r4
+   d406c:	d004      	beq.n	d4078 <module_user_init+0x20>
+    {
+        link_constructors_location[ctor_num]();
+   d406e:	f856 3025 	ldr.w	r3, [r6, r5, lsl #2]
+   d4072:	4798      	blx	r3
+{
+    module_user_init_hook();
+
+    // invoke constructors
+    int ctor_num;
+    for (ctor_num=0; ctor_num < link_constructors_size/sizeof(constructor_ptr_t); ctor_num++ )
+   d4074:	3501      	adds	r5, #1
+   d4076:	e7f8      	b.n	d406a <module_user_init+0x12>
+    {
+        link_constructors_location[ctor_num]();
+    }
+}
+   d4078:	bd70      	pop	{r4, r5, r6, pc}
+   d407a:	bf00      	nop
+   d407c:	000d5978 	.word	0x000d5978
+   d4080:	000d5930 	.word	0x000d5930
+
+000d4084 <module_user_setup>:
+
+/**
+ * Export these functions with a fuller name so they don't clash with the setup/loop wrappers in the system module.
+ */
+void module_user_setup() {
+    setup();
+   d4084:	f000 b816 	b.w	d40b4 <setup>
+
+000d4088 <module_user_loop>:
+}
+
+void module_user_loop() {
+   d4088:	b508      	push	{r3, lr}
+    loop();
+   d408a:	f000 f82b 	bl	d40e4 <loop>
+    _post_loop();
+}
+   d408e:	e8bd 4008 	ldmia.w	sp!, {r3, lr}
+    setup();
+}
+
+void module_user_loop() {
+    loop();
+    _post_loop();
+   d4092:	f000 bebf 	b.w	d4e14 <_post_loop>
+
+000d4096 <_Znwj>:
+   d4096:	f000 bbaf 	b.w	d47f8 <malloc>
+
+000d409a <_ZdlPv>:
+   d409a:	f000 bbb5 	b.w	d4808 <free>
+
+000d409e <_ZdaPv>:
+	free(p);
+}
+
+void operator delete[](void *p)
+{
+	free(p);
+   d409e:	f000 bbb3 	b.w	d4808 <free>
+
+000d40a2 <__cxa_guard_acquire>:
+
+/* Provide default implemenation for __cxa_guard_acquire() and
+ * __cxa_guard_release(). Note: these must be revisited if a multitasking
+ * OS is ported to this platform. */
+__extension__ typedef int __guard __attribute__((mode (__DI__)));
+int __cxa_guard_acquire(__guard *g) {return !*(char *)(g);};
+   d40a2:	7800      	ldrb	r0, [r0, #0]
+   d40a4:	fab0 f080 	clz	r0, r0
+   d40a8:	0940      	lsrs	r0, r0, #5
+   d40aa:	4770      	bx	lr
+
+000d40ac <__cxa_guard_release>:
+void __cxa_guard_release (__guard *g) {*(char *)g = 1;};
+   d40ac:	2301      	movs	r3, #1
+   d40ae:	7003      	strb	r3, [r0, #0]
+   d40b0:	4770      	bx	lr
+
+000d40b2 <_ZN15Adafruit_CCS811D1Ev>:
+/**************************************************************************/
+class Adafruit_CCS811 {
+	public:
+		//constructors
+		Adafruit_CCS811(void) {};
+		~Adafruit_CCS811(void) {};
+   d40b2:	4770      	bx	lr
+
+000d40b4 <setup>:
+static Adafruit_CCS811 ccs811 = Adafruit_CCS811();
+
+bool dataAvailable;
+char dataBuf[32];
+
+void setup() {
+   d40b4:	b508      	push	{r3, lr}
+  Serial.begin(9600);
+   d40b6:	f000 fdeb 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d40ba:	f44f 5116 	mov.w	r1, #9600	; 0x2580
+   d40be:	f000 fddb 	bl	d4c78 <_ZN9USBSerial5beginEl>
+
+  // Setup CCS811
+  if(!ccs811.begin((uint8_t)CCS811_ADDRESS, (uint8_t)CCS811_DRIVE_MODE_1SEC)){
+   d40c2:	2201      	movs	r2, #1
+   d40c4:	215a      	movs	r1, #90	; 0x5a
+   d40c6:	4805      	ldr	r0, [pc, #20]	; (d40dc <setup+0x28>)
+   d40c8:	f000 f9c6 	bl	d4458 <_ZN15Adafruit_CCS8115beginEhh>
+   d40cc:	b928      	cbnz	r0, d40da <setup+0x26>
+    Serial.println("Error setting up CCS811;");
+   d40ce:	f000 fddf 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d40d2:	4903      	ldr	r1, [pc, #12]	; (d40e0 <setup+0x2c>)
+   d40d4:	f000 ff49 	bl	d4f6a <_ZN5Print7printlnEPKc>
+   d40d8:	e7fe      	b.n	d40d8 <setup+0x24>
+   d40da:	bd08      	pop	{r3, pc}
+   d40dc:	2003e4c0 	.word	0x2003e4c0
+   d40e0:	000d55f0 	.word	0x000d55f0
+
+000d40e4 <loop>:
+    while(1);
+  }
+}
+
+void loop()
+{
+   d40e4:	b5f7      	push	{r0, r1, r2, r4, r5, r6, r7, lr}
+  if(ccs811.available()){
+   d40e6:	485e      	ldr	r0, [pc, #376]	; (d4260 <loop+0x17c>)
+   d40e8:	f000 f932 	bl	d4350 <_ZN15Adafruit_CCS8119availableEv>
+   d40ec:	2800      	cmp	r0, #0
+   d40ee:	f000 80b5 	beq.w	d425c <loop+0x178>
+
+    Serial.println("---");
+   d40f2:	f000 fdcd 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d40f6:	495b      	ldr	r1, [pc, #364]	; (d4264 <loop+0x180>)
+   d40f8:	f000 ff37 	bl	d4f6a <_ZN5Print7printlnEPKc>
+    Serial.println("Data from CCS811:");
+   d40fc:	f000 fdc8 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d4100:	4959      	ldr	r1, [pc, #356]	; (d4268 <loop+0x184>)
+   d4102:	f000 ff32 	bl	d4f6a <_ZN5Print7printlnEPKc>
+
+		uint8_t buf[8];
+
+		//ccs811.read(CCS811_ALG_RESULT_DATA, buf, 8);
+    uint8_t num = 8;
+    uint8_t pos = 0;
+   d4106:	2400      	movs	r4, #0
+
+    while(pos < num){
+
+      uint8_t read_now = min((uint8_t)32, (uint8_t)(num - pos));
+      Wire.beginTransmission(CCS811_ADDRESS);
+   d4108:	f001 f886 	bl	d5218 <_Z19__fetch_global_Wirev>
+   d410c:	215a      	movs	r1, #90	; 0x5a
+   d410e:	f000 fd6a 	bl	d4be6 <_ZN7TwoWire17beginTransmissionEi>
+      Wire.write(CCS811_ALG_RESULT_DATA + pos);
+   d4112:	f001 f881 	bl	d5218 <_Z19__fetch_global_Wirev>
+  bool unlock();
+
+  inline size_t write(unsigned long n) { return write((uint8_t)n); }
+  inline size_t write(long n) { return write((uint8_t)n); }
+  inline size_t write(unsigned int n) { return write((uint8_t)n); }
+  inline size_t write(int n) { return write((uint8_t)n); }
+   d4116:	6803      	ldr	r3, [r0, #0]
+   d4118:	1ca1      	adds	r1, r4, #2
+   d411a:	689b      	ldr	r3, [r3, #8]
+   d411c:	b2c9      	uxtb	r1, r1
+      Wire.endTransmission();
+      Wire.requestFrom(CCS811_ADDRESS, read_now);
+   d411e:	f1c4 0608 	rsb	r6, r4, #8
+   d4122:	4798      	blx	r3
+   d4124:	b2f6      	uxtb	r6, r6
+    while(pos < num){
+
+      uint8_t read_now = min((uint8_t)32, (uint8_t)(num - pos));
+      Wire.beginTransmission(CCS811_ADDRESS);
+      Wire.write(CCS811_ALG_RESULT_DATA + pos);
+      Wire.endTransmission();
+   d4126:	f001 f877 	bl	d5218 <_Z19__fetch_global_Wirev>
+   d412a:	f000 fd63 	bl	d4bf4 <_ZN7TwoWire15endTransmissionEv>
+      Wire.requestFrom(CCS811_ADDRESS, read_now);
+   d412e:	f001 f873 	bl	d5218 <_Z19__fetch_global_Wirev>
+   d4132:	4632      	mov	r2, r6
+   d4134:	215a      	movs	r1, #90	; 0x5a
+   d4136:	f000 fd4d 	bl	d4bd4 <_ZN7TwoWire11requestFromEii>
+
+      for(int i=0; i<read_now; i++){
+   d413a:	2500      	movs	r5, #0
+        uint8_t val = Wire.read();
+   d413c:	f001 f86c 	bl	d5218 <_Z19__fetch_global_Wirev>
+   d4140:	6803      	ldr	r3, [r0, #0]
+   d4142:	695b      	ldr	r3, [r3, #20]
+   d4144:	4798      	blx	r3
+   d4146:	b2c7      	uxtb	r7, r0
+        Serial.print(i); Serial.print(": "); Serial.println(val); // Print the buffer integer
+   d4148:	f000 fda2 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d414c:	220a      	movs	r2, #10
+   d414e:	4629      	mov	r1, r5
+   d4150:	f000 ff70 	bl	d5034 <_ZN5Print5printEii>
+   d4154:	f000 fd9c 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d4158:	4944      	ldr	r1, [pc, #272]	; (d426c <loop+0x188>)
+   d415a:	f000 fef3 	bl	d4f44 <_ZN5Print5printEPKc>
+   d415e:	f000 fd97 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d4162:	220a      	movs	r2, #10
+   d4164:	4639      	mov	r1, r7
+   d4166:	f000 ff39 	bl	d4fdc <_ZN5Print7printlnEhi>
+        buf[pos] = val;
+   d416a:	ab02      	add	r3, sp, #8
+   d416c:	4423      	add	r3, r4
+      Wire.beginTransmission(CCS811_ADDRESS);
+      Wire.write(CCS811_ALG_RESULT_DATA + pos);
+      Wire.endTransmission();
+      Wire.requestFrom(CCS811_ADDRESS, read_now);
+
+      for(int i=0; i<read_now; i++){
+   d416e:	3501      	adds	r5, #1
+        uint8_t val = Wire.read();
+        Serial.print(i); Serial.print(": "); Serial.println(val); // Print the buffer integer
+        buf[pos] = val;
+        pos++;
+   d4170:	3401      	adds	r4, #1
+      Wire.beginTransmission(CCS811_ADDRESS);
+      Wire.write(CCS811_ALG_RESULT_DATA + pos);
+      Wire.endTransmission();
+      Wire.requestFrom(CCS811_ADDRESS, read_now);
+
+      for(int i=0; i<read_now; i++){
+   d4172:	42ae      	cmp	r6, r5
+        uint8_t val = Wire.read();
+        Serial.print(i); Serial.print(": "); Serial.println(val); // Print the buffer integer
+        buf[pos] = val;
+   d4174:	f803 7c08 	strb.w	r7, [r3, #-8]
+        pos++;
+   d4178:	b2e4      	uxtb	r4, r4
+      Wire.beginTransmission(CCS811_ADDRESS);
+      Wire.write(CCS811_ALG_RESULT_DATA + pos);
+      Wire.endTransmission();
+      Wire.requestFrom(CCS811_ADDRESS, read_now);
+
+      for(int i=0; i<read_now; i++){
+   d417a:	dcdf      	bgt.n	d413c <loop+0x58>
+
+		//ccs811.read(CCS811_ALG_RESULT_DATA, buf, 8);
+    uint8_t num = 8;
+    uint8_t pos = 0;
+
+    while(pos < num){
+   d417c:	2c07      	cmp	r4, #7
+   d417e:	d9c3      	bls.n	d4108 <loop+0x24>
+        buf[pos] = val;
+        pos++;
+      }
+    }
+
+    Serial.println("Interpreted:");
+   d4180:	f000 fd86 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d4184:	493a      	ldr	r1, [pc, #232]	; (d4270 <loop+0x18c>)
+   d4186:	f000 fef0 	bl	d4f6a <_ZN5Print7printlnEPKc>
+    uint16_t eCO2 = ((uint16_t)buf[0] << 8) | ((uint16_t)buf[1]);
+   d418a:	f89d 3001 	ldrb.w	r3, [sp, #1]
+   d418e:	f89d 4000 	ldrb.w	r4, [sp]
+   d4192:	ea43 2404 	orr.w	r4, r3, r4, lsl #8
+    Serial.print("eCO2"); Serial.print(": "); Serial.println(eCO2);
+   d4196:	f000 fd7b 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d419a:	4936      	ldr	r1, [pc, #216]	; (d4274 <loop+0x190>)
+   d419c:	f000 fed2 	bl	d4f44 <_ZN5Print5printEPKc>
+   d41a0:	f000 fd76 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d41a4:	4931      	ldr	r1, [pc, #196]	; (d426c <loop+0x188>)
+   d41a6:	f000 fecd 	bl	d4f44 <_ZN5Print5printEPKc>
+   d41aa:	f000 fd71 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d41ae:	220a      	movs	r2, #10
+   d41b0:	4621      	mov	r1, r4
+   d41b2:	f000 ff41 	bl	d5038 <_ZN5Print7printlnEii>
+
+		uint16_t TVOC = ((uint16_t)buf[2] << 8) | ((uint16_t)buf[3]);
+   d41b6:	f89d 3003 	ldrb.w	r3, [sp, #3]
+   d41ba:	f89d 4002 	ldrb.w	r4, [sp, #2]
+   d41be:	ea43 2404 	orr.w	r4, r3, r4, lsl #8
+    Serial.print("TVOC"); Serial.print(": "); Serial.println(TVOC);
+   d41c2:	f000 fd65 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d41c6:	492c      	ldr	r1, [pc, #176]	; (d4278 <loop+0x194>)
+   d41c8:	f000 febc 	bl	d4f44 <_ZN5Print5printEPKc>
+   d41cc:	f000 fd60 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d41d0:	4926      	ldr	r1, [pc, #152]	; (d426c <loop+0x188>)
+   d41d2:	f000 feb7 	bl	d4f44 <_ZN5Print5printEPKc>
+   d41d6:	f000 fd5b 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d41da:	220a      	movs	r2, #10
+   d41dc:	4621      	mov	r1, r4
+   d41de:	f000 ff2b 	bl	d5038 <_ZN5Print7printlnEii>
+
+    uint8_t error = buf[5];
+   d41e2:	f89d 4005 	ldrb.w	r4, [sp, #5]
+    Serial.print("error"); Serial.print(": "); Serial.println(error);
+   d41e6:	f000 fd53 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d41ea:	4924      	ldr	r1, [pc, #144]	; (d427c <loop+0x198>)
+   d41ec:	f000 feaa 	bl	d4f44 <_ZN5Print5printEPKc>
+   d41f0:	f000 fd4e 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d41f4:	491d      	ldr	r1, [pc, #116]	; (d426c <loop+0x188>)
+   d41f6:	f000 fea5 	bl	d4f44 <_ZN5Print5printEPKc>
+   d41fa:	f000 fd49 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d41fe:	220a      	movs	r2, #10
+   d4200:	4621      	mov	r1, r4
+   d4202:	f000 feeb 	bl	d4fdc <_ZN5Print7printlnEhi>
+
+    uint8_t current = (uint8_t)buf[6] >> 2;
+   d4206:	f89d 4006 	ldrb.w	r4, [sp, #6]
+    Serial.print("current"); Serial.print(": "); Serial.println(current);
+   d420a:	f000 fd41 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d420e:	491c      	ldr	r1, [pc, #112]	; (d4280 <loop+0x19c>)
+   d4210:	f000 fe98 	bl	d4f44 <_ZN5Print5printEPKc>
+   d4214:	f000 fd3c 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d4218:	4914      	ldr	r1, [pc, #80]	; (d426c <loop+0x188>)
+   d421a:	f000 fe93 	bl	d4f44 <_ZN5Print5printEPKc>
+   d421e:	f000 fd37 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d4222:	220a      	movs	r2, #10
+   d4224:	08a1      	lsrs	r1, r4, #2
+   d4226:	f000 fed9 	bl	d4fdc <_ZN5Print7printlnEhi>
+
+    uint16_t voltage = (((uint16_t)buf[6] & 3) << 8) | ((uint16_t)buf[7]); //(((uint16_t)buf[6] << 8) | ((uint16_t)buf[7])) & 1023
+   d422a:	0224      	lsls	r4, r4, #8
+   d422c:	f89d 3007 	ldrb.w	r3, [sp, #7]
+   d4230:	f404 7440 	and.w	r4, r4, #768	; 0x300
+   d4234:	431c      	orrs	r4, r3
+    Serial.print("voltage"); Serial.print(": "); Serial.println(voltage);
+   d4236:	f000 fd2b 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d423a:	4912      	ldr	r1, [pc, #72]	; (d4284 <loop+0x1a0>)
+   d423c:	f000 fe82 	bl	d4f44 <_ZN5Print5printEPKc>
+   d4240:	f000 fd26 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d4244:	4909      	ldr	r1, [pc, #36]	; (d426c <loop+0x188>)
+   d4246:	f000 fe7d 	bl	d4f44 <_ZN5Print5printEPKc>
+   d424a:	f000 fd21 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d424e:	220a      	movs	r2, #10
+   d4250:	4621      	mov	r1, r4
+	}
+}
+   d4252:	b003      	add	sp, #12
+   d4254:	e8bd 40f0 	ldmia.w	sp!, {r4, r5, r6, r7, lr}
+
+    uint8_t current = (uint8_t)buf[6] >> 2;
+    Serial.print("current"); Serial.print(": "); Serial.println(current);
+
+    uint16_t voltage = (((uint16_t)buf[6] & 3) << 8) | ((uint16_t)buf[7]); //(((uint16_t)buf[6] << 8) | ((uint16_t)buf[7])) & 1023
+    Serial.print("voltage"); Serial.print(": "); Serial.println(voltage);
+   d4258:	f000 beee 	b.w	d5038 <_ZN5Print7printlnEii>
+	}
+}
+   d425c:	b003      	add	sp, #12
+   d425e:	bdf0      	pop	{r4, r5, r6, r7, pc}
+   d4260:	2003e4c0 	.word	0x2003e4c0
+   d4264:	000d5609 	.word	0x000d5609
+   d4268:	000d560d 	.word	0x000d560d
+   d426c:	000d57aa 	.word	0x000d57aa
+   d4270:	000d561f 	.word	0x000d561f
+   d4274:	000d562c 	.word	0x000d562c
+   d4278:	000d5631 	.word	0x000d5631
+   d427c:	000d5636 	.word	0x000d5636
+   d4280:	000d563c 	.word	0x000d563c
+   d4284:	000d5644 	.word	0x000d5644
+
+000d4288 <_GLOBAL__sub_I_dataAvailable>:
+   d4288:	b508      	push	{r3, lr}
+
+inline void pinSetFast(pin_t _pin) __attribute__((always_inline));
+inline void pinResetFast(pin_t _pin) __attribute__((always_inline));
+inline int32_t pinReadFast(pin_t _pin) __attribute__((always_inline));
+
+static NRF5x_Pin_Info* PIN_MAP = HAL_Pin_Map();
+   d428a:	f000 fa21 	bl	d46d0 <HAL_Pin_Map>
+
+
+#include "Adafruit_CCS811.h"
+
+
+static Adafruit_CCS811 ccs811 = Adafruit_CCS811();
+   d428e:	4a03      	ldr	r2, [pc, #12]	; (d429c <_GLOBAL__sub_I_dataAvailable+0x14>)
+   d4290:	4903      	ldr	r1, [pc, #12]	; (d42a0 <_GLOBAL__sub_I_dataAvailable+0x18>)
+   d4292:	4804      	ldr	r0, [pc, #16]	; (d42a4 <_GLOBAL__sub_I_dataAvailable+0x1c>)
+    Serial.print("current"); Serial.print(": "); Serial.println(current);
+
+    uint16_t voltage = (((uint16_t)buf[6] & 3) << 8) | ((uint16_t)buf[7]); //(((uint16_t)buf[6] << 8) | ((uint16_t)buf[7])) & 1023
+    Serial.print("voltage"); Serial.print(": "); Serial.println(voltage);
+	}
+}
+   d4294:	e8bd 4008 	ldmia.w	sp!, {r3, lr}
+
+
+#include "Adafruit_CCS811.h"
+
+
+static Adafruit_CCS811 ccs811 = Adafruit_CCS811();
+   d4298:	f001 b800 	b.w	d529c <__aeabi_atexit>
+   d429c:	2003e4bc 	.word	0x2003e4bc
+   d42a0:	000d40b3 	.word	0x000d40b3
+   d42a4:	2003e4c0 	.word	0x2003e4c0
+
+000d42a8 <_GLOBAL__sub_I__ZN7HPMA115C2Ev>:
+   d42a8:	f000 ba12 	b.w	d46d0 <HAL_Pin_Map>
+
+000d42ac <_ZN15Adafruit_CCS8119meas_mode3getEv>:
+        	uint8_t INT_DATARDY: 1;
+
+        	uint8_t DRIVE_MODE: 3;
+
+        	uint8_t get(){
+        		return (INT_THRESH << 2) | (INT_DATARDY << 3) | (DRIVE_MODE << 4);
+   d42ac:	7800      	ldrb	r0, [r0, #0]
+   d42ae:	0080      	lsls	r0, r0, #2
+        	}
+   d42b0:	f000 007c 	and.w	r0, r0, #124	; 0x7c
+   d42b4:	4770      	bx	lr
+
+000d42b6 <_ZN15Adafruit_CCS8119_i2c_initEv>:
+
+	return ret;
+}
+
+void Adafruit_CCS811::_i2c_init()
+{
+   d42b6:	b508      	push	{r3, lr}
+	Wire.begin();
+   d42b8:	f000 ffae 	bl	d5218 <_Z19__fetch_global_Wirev>
+	#ifdef ESP8266
+	Wire.setClockStretchLimit(500);
+	#endif
+}
+   d42bc:	e8bd 4008 	ldmia.w	sp!, {r3, lr}
+	return ret;
+}
+
+void Adafruit_CCS811::_i2c_init()
+{
+	Wire.begin();
+   d42c0:	f000 bc76 	b.w	d4bb0 <_ZN7TwoWire5beginEv>
+
+000d42c4 <_ZN15Adafruit_CCS8114readEhPhh>:
+	Wire.setClockStretchLimit(500);
+	#endif
+}
+
+void Adafruit_CCS811::read(uint8_t reg, uint8_t *buf, uint8_t num)
+{
+   d42c4:	e92d 4ff8 	stmdb	sp!, {r3, r4, r5, r6, r7, r8, r9, sl, fp, lr}
+   d42c8:	4607      	mov	r7, r0
+   d42ca:	468a      	mov	sl, r1
+   d42cc:	4691      	mov	r9, r2
+   d42ce:	4698      	mov	r8, r3
+	uint8_t value;
+	uint8_t pos = 0;
+   d42d0:	2400      	movs	r4, #0
+
+	//on arduino we need to read in 32 byte chunks
+	while(pos < num){
+   d42d2:	4544      	cmp	r4, r8
+   d42d4:	d22f      	bcs.n	d4336 <_ZN15Adafruit_CCS8114readEhPhh+0x72>
+
+		uint8_t read_now = min((uint8_t)32, (uint8_t)(num - pos));
+   d42d6:	ebc4 0508 	rsb	r5, r4, r8
+   d42da:	b2ed      	uxtb	r5, r5
+   d42dc:	2d20      	cmp	r5, #32
+   d42de:	bf28      	it	cs
+   d42e0:	2520      	movcs	r5, #32
+		Wire.beginTransmission((uint8_t)_i2caddr);
+   d42e2:	f000 ff99 	bl	d5218 <_Z19__fetch_global_Wirev>
+   d42e6:	7839      	ldrb	r1, [r7, #0]
+   d42e8:	f000 fc79 	bl	d4bde <_ZN7TwoWire17beginTransmissionEh>
+		Wire.write((uint8_t)reg + pos);
+   d42ec:	f000 ff94 	bl	d5218 <_Z19__fetch_global_Wirev>
+   d42f0:	6803      	ldr	r3, [r0, #0]
+   d42f2:	eb04 010a 	add.w	r1, r4, sl
+   d42f6:	689b      	ldr	r3, [r3, #8]
+   d42f8:	b2c9      	uxtb	r1, r1
+   d42fa:	4798      	blx	r3
+		Wire.endTransmission();
+   d42fc:	f000 ff8c 	bl	d5218 <_Z19__fetch_global_Wirev>
+   d4300:	f000 fc78 	bl	d4bf4 <_ZN7TwoWire15endTransmissionEv>
+		Wire.requestFrom((uint8_t)_i2caddr, read_now);
+   d4304:	f000 ff88 	bl	d5218 <_Z19__fetch_global_Wirev>
+   d4308:	462a      	mov	r2, r5
+   d430a:	7839      	ldrb	r1, [r7, #0]
+   d430c:	f000 fc5f 	bl	d4bce <_ZN7TwoWire11requestFromEhh>
+
+		for(int i=0; i<read_now; i++){
+   d4310:	2600      	movs	r6, #0
+   d4312:	eb04 0b06 	add.w	fp, r4, r6
+   d4316:	42ae      	cmp	r6, r5
+   d4318:	fa5f fb8b 	uxtb.w	fp, fp
+   d431c:	db02      	blt.n	d4324 <_ZN15Adafruit_CCS8114readEhPhh+0x60>
+   d431e:	442c      	add	r4, r5
+   d4320:	b2e4      	uxtb	r4, r4
+   d4322:	e7d6      	b.n	d42d2 <_ZN15Adafruit_CCS8114readEhPhh+0xe>
+			buf[pos] = Wire.read();
+   d4324:	f000 ff78 	bl	d5218 <_Z19__fetch_global_Wirev>
+   d4328:	6803      	ldr	r3, [r0, #0]
+   d432a:	695b      	ldr	r3, [r3, #20]
+   d432c:	4798      	blx	r3
+		Wire.beginTransmission((uint8_t)_i2caddr);
+		Wire.write((uint8_t)reg + pos);
+		Wire.endTransmission();
+		Wire.requestFrom((uint8_t)_i2caddr, read_now);
+
+		for(int i=0; i<read_now; i++){
+   d432e:	3601      	adds	r6, #1
+			buf[pos] = Wire.read();
+   d4330:	f809 000b 	strb.w	r0, [r9, fp]
+		Wire.beginTransmission((uint8_t)_i2caddr);
+		Wire.write((uint8_t)reg + pos);
+		Wire.endTransmission();
+		Wire.requestFrom((uint8_t)_i2caddr, read_now);
+
+		for(int i=0; i<read_now; i++){
+   d4334:	e7ed      	b.n	d4312 <_ZN15Adafruit_CCS8114readEhPhh+0x4e>
+   d4336:	e8bd 8ff8 	ldmia.w	sp!, {r3, r4, r5, r6, r7, r8, r9, sl, fp, pc}
+
+000d433a <_ZN15Adafruit_CCS8115read8Eh>:
+    @param  reg the register to read
+    @returns one byte of register data
+*/
+/**************************************************************************/
+uint8_t Adafruit_CCS811::read8(byte reg)
+{
+   d433a:	b507      	push	{r0, r1, r2, lr}
+	uint8_t ret;
+	this->read(reg, &ret, 1);
+   d433c:	2301      	movs	r3, #1
+   d433e:	f10d 0207 	add.w	r2, sp, #7
+   d4342:	f7ff ffbf 	bl	d42c4 <_ZN15Adafruit_CCS8114readEhPhh>
+
+	return ret;
+}
+   d4346:	f89d 0007 	ldrb.w	r0, [sp, #7]
+   d434a:	b003      	add	sp, #12
+   d434c:	f85d fb04 	ldr.w	pc, [sp], #4
+
+000d4350 <_ZN15Adafruit_CCS8119availableEv>:
+    @brief  checks if data is available to be read.
+    @returns True if data is ready, false otherwise.
+*/
+/**************************************************************************/
+bool Adafruit_CCS811::available()
+{
+   d4350:	b510      	push	{r4, lr}
+	_status.set(read8(CCS811_STATUS));
+   d4352:	2100      	movs	r1, #0
+    @brief  checks if data is available to be read.
+    @returns True if data is ready, false otherwise.
+*/
+/**************************************************************************/
+bool Adafruit_CCS811::available()
+{
+   d4354:	4604      	mov	r4, r0
+	_status.set(read8(CCS811_STATUS));
+   d4356:	f7ff fff0 	bl	d433a <_ZN15Adafruit_CCS8115read8Eh>
+            *  1: application mode, can take measurements
+            */
+            uint8_t FW_MODE: 1;
+
+            void set(uint8_t data){
+            	ERROR = data & 0x01;
+   d435a:	7b23      	ldrb	r3, [r4, #12]
+            	DATA_READY = (data >> 3) & 0x01;
+   d435c:	10c2      	asrs	r2, r0, #3
+            *  1: application mode, can take measurements
+            */
+            uint8_t FW_MODE: 1;
+
+            void set(uint8_t data){
+            	ERROR = data & 0x01;
+   d435e:	f360 0300 	bfi	r3, r0, #0, #1
+            	DATA_READY = (data >> 3) & 0x01;
+   d4362:	f362 0341 	bfi	r3, r2, #1, #1
+            	APP_VALID = (data >> 4) & 0x01;
+   d4366:	1102      	asrs	r2, r0, #4
+   d4368:	f362 0382 	bfi	r3, r2, #2, #1
+            	FW_MODE = (data >> 7) & 0x01;
+   d436c:	09c2      	lsrs	r2, r0, #7
+   d436e:	4618      	mov	r0, r3
+   d4370:	f362 00c3 	bfi	r0, r2, #3, #1
+   d4374:	7320      	strb	r0, [r4, #12]
+	if(!_status.DATA_READY)
+		return false;
+	else return true;
+}
+   d4376:	f3c0 0040 	ubfx	r0, r0, #1, #1
+   d437a:	bd10      	pop	{r4, pc}
+
+000d437c <_ZN15Adafruit_CCS81110checkErrorEv>:
+    @brief   read the status register and store any errors.
+    @returns the error bits from the status register of the device.
+*/
+/**************************************************************************/
+bool Adafruit_CCS811::checkError()
+{
+   d437c:	b510      	push	{r4, lr}
+	_status.set(read8(CCS811_STATUS));
+   d437e:	2100      	movs	r1, #0
+    @brief   read the status register and store any errors.
+    @returns the error bits from the status register of the device.
+*/
+/**************************************************************************/
+bool Adafruit_CCS811::checkError()
+{
+   d4380:	4604      	mov	r4, r0
+	_status.set(read8(CCS811_STATUS));
+   d4382:	f7ff ffda 	bl	d433a <_ZN15Adafruit_CCS8115read8Eh>
+            *  1: application mode, can take measurements
+            */
+            uint8_t FW_MODE: 1;
+
+            void set(uint8_t data){
+            	ERROR = data & 0x01;
+   d4386:	7b23      	ldrb	r3, [r4, #12]
+            	DATA_READY = (data >> 3) & 0x01;
+   d4388:	10c2      	asrs	r2, r0, #3
+            *  1: application mode, can take measurements
+            */
+            uint8_t FW_MODE: 1;
+
+            void set(uint8_t data){
+            	ERROR = data & 0x01;
+   d438a:	f360 0300 	bfi	r3, r0, #0, #1
+            	DATA_READY = (data >> 3) & 0x01;
+   d438e:	f362 0341 	bfi	r3, r2, #1, #1
+            	APP_VALID = (data >> 4) & 0x01;
+   d4392:	1102      	asrs	r2, r0, #4
+   d4394:	f362 0382 	bfi	r3, r2, #2, #1
+            	FW_MODE = (data >> 7) & 0x01;
+   d4398:	09c2      	lsrs	r2, r0, #7
+   d439a:	4618      	mov	r0, r3
+   d439c:	f362 00c3 	bfi	r0, r2, #3, #1
+   d43a0:	7320      	strb	r0, [r4, #12]
+	return _status.ERROR;
+}
+   d43a2:	f000 0001 	and.w	r0, r0, #1
+   d43a6:	bd10      	pop	{r4, pc}
+
+000d43a8 <_ZN15Adafruit_CCS8115writeEhPhh>:
+		}
+	}
+}
+
+void Adafruit_CCS811::write(uint8_t reg, uint8_t *buf, uint8_t num)
+{
+   d43a8:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+   d43aa:	4607      	mov	r7, r0
+   d43ac:	4615      	mov	r5, r2
+   d43ae:	461e      	mov	r6, r3
+   d43b0:	460c      	mov	r4, r1
+	Wire.beginTransmission((uint8_t)_i2caddr);
+   d43b2:	f000 ff31 	bl	d5218 <_Z19__fetch_global_Wirev>
+   d43b6:	7839      	ldrb	r1, [r7, #0]
+   d43b8:	f000 fc11 	bl	d4bde <_ZN7TwoWire17beginTransmissionEh>
+	Wire.write((uint8_t)reg);
+   d43bc:	f000 ff2c 	bl	d5218 <_Z19__fetch_global_Wirev>
+   d43c0:	6803      	ldr	r3, [r0, #0]
+   d43c2:	4621      	mov	r1, r4
+   d43c4:	689b      	ldr	r3, [r3, #8]
+   d43c6:	4798      	blx	r3
+	Wire.write((uint8_t *)buf, num);
+   d43c8:	f000 ff26 	bl	d5218 <_Z19__fetch_global_Wirev>
+   d43cc:	6803      	ldr	r3, [r0, #0]
+   d43ce:	4632      	mov	r2, r6
+   d43d0:	68dc      	ldr	r4, [r3, #12]
+   d43d2:	4629      	mov	r1, r5
+   d43d4:	47a0      	blx	r4
+	Wire.endTransmission();
+   d43d6:	f000 ff1f 	bl	d5218 <_Z19__fetch_global_Wirev>
+}
+   d43da:	e8bd 40f8 	ldmia.w	sp!, {r3, r4, r5, r6, r7, lr}
+void Adafruit_CCS811::write(uint8_t reg, uint8_t *buf, uint8_t num)
+{
+	Wire.beginTransmission((uint8_t)_i2caddr);
+	Wire.write((uint8_t)reg);
+	Wire.write((uint8_t *)buf, num);
+	Wire.endTransmission();
+   d43de:	f000 bc09 	b.w	d4bf4 <_ZN7TwoWire15endTransmissionEv>
+	...
+
+000d43e4 <_ZN15Adafruit_CCS8117SWResetEv>:
+/*!
+    @brief  trigger a software reset of the device
+*/
+/**************************************************************************/
+void Adafruit_CCS811::SWReset()
+{
+   d43e4:	b513      	push	{r0, r1, r4, lr}
+	//reset sequence from the datasheet
+	uint8_t seq[] = {0x11, 0xE5, 0x72, 0x8A};
+   d43e6:	4b06      	ldr	r3, [pc, #24]	; (d4400 <_ZN15Adafruit_CCS8117SWResetEv+0x1c>)
+/*!
+    @brief  trigger a software reset of the device
+*/
+/**************************************************************************/
+void Adafruit_CCS811::SWReset()
+{
+   d43e8:	4604      	mov	r4, r0
+	//reset sequence from the datasheet
+	uint8_t seq[] = {0x11, 0xE5, 0x72, 0x8A};
+   d43ea:	6818      	ldr	r0, [r3, #0]
+   d43ec:	9001      	str	r0, [sp, #4]
+	this->write(CCS811_SW_RESET, seq, 4);
+   d43ee:	2304      	movs	r3, #4
+   d43f0:	eb0d 0203 	add.w	r2, sp, r3
+   d43f4:	21ff      	movs	r1, #255	; 0xff
+   d43f6:	4620      	mov	r0, r4
+   d43f8:	f7ff ffd6 	bl	d43a8 <_ZN15Adafruit_CCS8115writeEhPhh>
+}
+   d43fc:	b002      	add	sp, #8
+   d43fe:	bd10      	pop	{r4, pc}
+   d4400:	000d564c 	.word	0x000d564c
+
+000d4404 <_ZN15Adafruit_CCS8116write8Ehh>:
+    @param  reg the register to write to
+    @param  value the value to write
+*/
+/**************************************************************************/
+void Adafruit_CCS811::write8(byte reg, byte value)
+{
+   d4404:	b513      	push	{r0, r1, r4, lr}
+   d4406:	ac02      	add	r4, sp, #8
+	this->write(reg, &value, 1);
+   d4408:	2301      	movs	r3, #1
+    @param  reg the register to write to
+    @param  value the value to write
+*/
+/**************************************************************************/
+void Adafruit_CCS811::write8(byte reg, byte value)
+{
+   d440a:	f804 2d01 	strb.w	r2, [r4, #-1]!
+	this->write(reg, &value, 1);
+   d440e:	4622      	mov	r2, r4
+   d4410:	f7ff ffca 	bl	d43a8 <_ZN15Adafruit_CCS8115writeEhPhh>
+}
+   d4414:	b002      	add	sp, #8
+   d4416:	bd10      	pop	{r4, pc}
+
+000d4418 <_ZN15Adafruit_CCS81112setDriveModeEh>:
+/*!
+    @brief  sample rate of the sensor.
+    @param  mode one of CCS811_DRIVE_MODE_IDLE, CCS811_DRIVE_MODE_1SEC, CCS811_DRIVE_MODE_10SEC, CCS811_DRIVE_MODE_60SEC, CCS811_DRIVE_MODE_250MS.
+*/
+void Adafruit_CCS811::setDriveMode(uint8_t mode)
+{
+   d4418:	b510      	push	{r4, lr}
+	_meas_mode.DRIVE_MODE = mode;
+   d441a:	7b43      	ldrb	r3, [r0, #13]
+   d441c:	f361 0384 	bfi	r3, r1, #2, #3
+/*!
+    @brief  sample rate of the sensor.
+    @param  mode one of CCS811_DRIVE_MODE_IDLE, CCS811_DRIVE_MODE_1SEC, CCS811_DRIVE_MODE_10SEC, CCS811_DRIVE_MODE_60SEC, CCS811_DRIVE_MODE_250MS.
+*/
+void Adafruit_CCS811::setDriveMode(uint8_t mode)
+{
+   d4420:	4604      	mov	r4, r0
+	_meas_mode.DRIVE_MODE = mode;
+   d4422:	f800 3f0d 	strb.w	r3, [r0, #13]!
+	this->write8(CCS811_MEAS_MODE, _meas_mode.get());
+   d4426:	f7ff ff41 	bl	d42ac <_ZN15Adafruit_CCS8119meas_mode3getEv>
+   d442a:	2101      	movs	r1, #1
+   d442c:	4602      	mov	r2, r0
+   d442e:	4620      	mov	r0, r4
+}
+   d4430:	e8bd 4010 	ldmia.w	sp!, {r4, lr}
+    @param  mode one of CCS811_DRIVE_MODE_IDLE, CCS811_DRIVE_MODE_1SEC, CCS811_DRIVE_MODE_10SEC, CCS811_DRIVE_MODE_60SEC, CCS811_DRIVE_MODE_250MS.
+*/
+void Adafruit_CCS811::setDriveMode(uint8_t mode)
+{
+	_meas_mode.DRIVE_MODE = mode;
+	this->write8(CCS811_MEAS_MODE, _meas_mode.get());
+   d4434:	f7ff bfe6 	b.w	d4404 <_ZN15Adafruit_CCS8116write8Ehh>
+
+000d4438 <_ZN15Adafruit_CCS81116disableInterruptEv>:
+/*!
+    @brief  disable the data ready interrupt pin on the device
+*/
+/**************************************************************************/
+void Adafruit_CCS811::disableInterrupt()
+{
+   d4438:	b510      	push	{r4, lr}
+	_meas_mode.INT_DATARDY = 0;
+   d443a:	7b43      	ldrb	r3, [r0, #13]
+   d443c:	f36f 0341 	bfc	r3, #1, #1
+/*!
+    @brief  disable the data ready interrupt pin on the device
+*/
+/**************************************************************************/
+void Adafruit_CCS811::disableInterrupt()
+{
+   d4440:	4604      	mov	r4, r0
+	_meas_mode.INT_DATARDY = 0;
+   d4442:	f800 3f0d 	strb.w	r3, [r0, #13]!
+	this->write8(CCS811_MEAS_MODE, _meas_mode.get());
+   d4446:	f7ff ff31 	bl	d42ac <_ZN15Adafruit_CCS8119meas_mode3getEv>
+   d444a:	2101      	movs	r1, #1
+   d444c:	4602      	mov	r2, r0
+   d444e:	4620      	mov	r0, r4
+}
+   d4450:	e8bd 4010 	ldmia.w	sp!, {r4, lr}
+*/
+/**************************************************************************/
+void Adafruit_CCS811::disableInterrupt()
+{
+	_meas_mode.INT_DATARDY = 0;
+	this->write8(CCS811_MEAS_MODE, _meas_mode.get());
+   d4454:	f7ff bfd6 	b.w	d4404 <_ZN15Adafruit_CCS8116write8Ehh>
+
+000d4458 <_ZN15Adafruit_CCS8115beginEhh>:
+    @param  driveMode Optional sensor mode. Default is 1sec data, or 0x01
+    @returns True if device is set up, false on any failure
+*/
+/**************************************************************************/
+bool Adafruit_CCS811::begin(uint8_t addr, uint8_t driveMode)
+{
+   d4458:	b538      	push	{r3, r4, r5, lr}
+	_i2caddr = addr;
+   d445a:	7001      	strb	r1, [r0, #0]
+    @param  driveMode Optional sensor mode. Default is 1sec data, or 0x01
+    @returns True if device is set up, false on any failure
+*/
+/**************************************************************************/
+bool Adafruit_CCS811::begin(uint8_t addr, uint8_t driveMode)
+{
+   d445c:	4604      	mov	r4, r0
+   d445e:	4615      	mov	r5, r2
+	_i2caddr = addr;
+
+	_i2c_init();
+   d4460:	f7ff ff29 	bl	d42b6 <_ZN15Adafruit_CCS8119_i2c_initEv>
+
+	SWReset();
+   d4464:	4620      	mov	r0, r4
+   d4466:	f7ff ffbd 	bl	d43e4 <_ZN15Adafruit_CCS8117SWResetEv>
+	delay(100);
+   d446a:	2064      	movs	r0, #100	; 0x64
+   d446c:	f000 fcb1 	bl	d4dd2 <delay>
+
+	//check that the HW id is correct
+	if(this->read8(CCS811_HW_ID) != CCS811_HW_ID_CODE)
+   d4470:	2120      	movs	r1, #32
+   d4472:	4620      	mov	r0, r4
+   d4474:	f7ff ff61 	bl	d433a <_ZN15Adafruit_CCS8115read8Eh>
+   d4478:	2881      	cmp	r0, #129	; 0x81
+   d447a:	d001      	beq.n	d4480 <_ZN15Adafruit_CCS8115beginEhh+0x28>
+		return false;
+   d447c:	2000      	movs	r0, #0
+   d447e:	bd38      	pop	{r3, r4, r5, pc}
+
+	//try to start the app
+	this->write(CCS811_BOOTLOADER_APP_START, NULL, 0);
+   d4480:	2300      	movs	r3, #0
+   d4482:	461a      	mov	r2, r3
+   d4484:	21f4      	movs	r1, #244	; 0xf4
+   d4486:	4620      	mov	r0, r4
+   d4488:	f7ff ff8e 	bl	d43a8 <_ZN15Adafruit_CCS8115writeEhPhh>
+	delay(100);
+   d448c:	2064      	movs	r0, #100	; 0x64
+   d448e:	f000 fca0 	bl	d4dd2 <delay>
+
+	//make sure there are no errors and we have entered application mode
+	if(checkError()) return false;
+   d4492:	4620      	mov	r0, r4
+   d4494:	f7ff ff72 	bl	d437c <_ZN15Adafruit_CCS81110checkErrorEv>
+   d4498:	2800      	cmp	r0, #0
+   d449a:	d1ef      	bne.n	d447c <_ZN15Adafruit_CCS8115beginEhh+0x24>
+	if(!_status.FW_MODE) return false;
+   d449c:	7b23      	ldrb	r3, [r4, #12]
+   d449e:	071b      	lsls	r3, r3, #28
+   d44a0:	d5ec      	bpl.n	d447c <_ZN15Adafruit_CCS8115beginEhh+0x24>
+
+	disableInterrupt();
+   d44a2:	4620      	mov	r0, r4
+   d44a4:	f7ff ffc8 	bl	d4438 <_ZN15Adafruit_CCS81116disableInterruptEv>
+
+	//default to read every second
+	setDriveMode(driveMode);
+   d44a8:	4620      	mov	r0, r4
+   d44aa:	4629      	mov	r1, r5
+   d44ac:	f7ff ffb4 	bl	d4418 <_ZN15Adafruit_CCS81112setDriveModeEh>
+
+	return true;
+   d44b0:	2001      	movs	r0, #1
+}
+   d44b2:	bd38      	pop	{r3, r4, r5, pc}
+
+000d44b4 <_GLOBAL__sub_I__ZN15Adafruit_CCS8115beginEhh>:
+   d44b4:	f000 b90c 	b.w	d46d0 <HAL_Pin_Map>
+
+000d44b8 <_GLOBAL__sub_I__ZN16Adafruit_TSL2591C2El>:
+   d44b8:	f000 b90a 	b.w	d46d0 <HAL_Pin_Map>
+
+000d44bc <_GLOBAL__sub_I__ZN15Adafruit_Si7021C2Ev>:
+   d44bc:	f000 b908 	b.w	d46d0 <HAL_Pin_Map>
+
+000d44c0 <HAL_USB_USART_Init>:
+#endif
+
+DYNALIB_BEGIN(hal_usb)
+
+#ifdef USB_CDC_ENABLE
+DYNALIB_FN(0, hal_usb, HAL_USB_USART_Init, void(HAL_USB_USART_Serial, const HAL_USB_USART_Config*))
+   d44c0:	b508      	push	{r3, lr}
+   d44c2:	4b02      	ldr	r3, [pc, #8]	; (d44cc <HAL_USB_USART_Init+0xc>)
+   d44c4:	681b      	ldr	r3, [r3, #0]
+   d44c6:	681b      	ldr	r3, [r3, #0]
+   d44c8:	9301      	str	r3, [sp, #4]
+   d44ca:	bd08      	pop	{r3, pc}
+   d44cc:	0003024c 	.word	0x0003024c
+
+000d44d0 <HAL_USB_USART_Begin>:
+DYNALIB_FN(1, hal_usb, HAL_USB_USART_Begin, void(HAL_USB_USART_Serial, uint32_t, void *))
+   d44d0:	b508      	push	{r3, lr}
+   d44d2:	4b02      	ldr	r3, [pc, #8]	; (d44dc <HAL_USB_USART_Begin+0xc>)
+   d44d4:	681b      	ldr	r3, [r3, #0]
+   d44d6:	685b      	ldr	r3, [r3, #4]
+   d44d8:	9301      	str	r3, [sp, #4]
+   d44da:	bd08      	pop	{r3, pc}
+   d44dc:	0003024c 	.word	0x0003024c
+
+000d44e0 <HAL_USB_USART_Available_Data>:
+DYNALIB_FN(2, hal_usb, HAL_USB_USART_End, void(HAL_USB_USART_Serial))
+DYNALIB_FN(3, hal_usb, HAL_USB_USART_Baud_Rate, unsigned int(HAL_USB_USART_Serial))
+DYNALIB_FN(4, hal_usb, HAL_USB_USART_Available_Data, int32_t(HAL_USB_USART_Serial))
+   d44e0:	b508      	push	{r3, lr}
+   d44e2:	4b02      	ldr	r3, [pc, #8]	; (d44ec <HAL_USB_USART_Available_Data+0xc>)
+   d44e4:	681b      	ldr	r3, [r3, #0]
+   d44e6:	691b      	ldr	r3, [r3, #16]
+   d44e8:	9301      	str	r3, [sp, #4]
+   d44ea:	bd08      	pop	{r3, pc}
+   d44ec:	0003024c 	.word	0x0003024c
+
+000d44f0 <HAL_USB_USART_Available_Data_For_Write>:
+DYNALIB_FN(5, hal_usb, HAL_USB_USART_Available_Data_For_Write, int32_t(HAL_USB_USART_Serial))
+   d44f0:	b508      	push	{r3, lr}
+   d44f2:	4b02      	ldr	r3, [pc, #8]	; (d44fc <HAL_USB_USART_Available_Data_For_Write+0xc>)
+   d44f4:	681b      	ldr	r3, [r3, #0]
+   d44f6:	695b      	ldr	r3, [r3, #20]
+   d44f8:	9301      	str	r3, [sp, #4]
+   d44fa:	bd08      	pop	{r3, pc}
+   d44fc:	0003024c 	.word	0x0003024c
+
+000d4500 <HAL_USB_USART_Receive_Data>:
+DYNALIB_FN(6, hal_usb, HAL_USB_USART_Receive_Data, int32_t(HAL_USB_USART_Serial, uint8_t))
+   d4500:	b508      	push	{r3, lr}
+   d4502:	4b02      	ldr	r3, [pc, #8]	; (d450c <HAL_USB_USART_Receive_Data+0xc>)
+   d4504:	681b      	ldr	r3, [r3, #0]
+   d4506:	699b      	ldr	r3, [r3, #24]
+   d4508:	9301      	str	r3, [sp, #4]
+   d450a:	bd08      	pop	{r3, pc}
+   d450c:	0003024c 	.word	0x0003024c
+
+000d4510 <HAL_USB_USART_Send_Data>:
+DYNALIB_FN(7, hal_usb, HAL_USB_USART_Send_Data, int32_t(HAL_USB_USART_Serial, uint8_t))
+   d4510:	b508      	push	{r3, lr}
+   d4512:	4b02      	ldr	r3, [pc, #8]	; (d451c <HAL_USB_USART_Send_Data+0xc>)
+   d4514:	681b      	ldr	r3, [r3, #0]
+   d4516:	69db      	ldr	r3, [r3, #28]
+   d4518:	9301      	str	r3, [sp, #4]
+   d451a:	bd08      	pop	{r3, pc}
+   d451c:	0003024c 	.word	0x0003024c
+
+000d4520 <HAL_USB_USART_Flush_Data>:
+DYNALIB_FN(8, hal_usb, HAL_USB_USART_Flush_Data, void(HAL_USB_USART_Serial))
+   d4520:	b508      	push	{r3, lr}
+   d4522:	4b02      	ldr	r3, [pc, #8]	; (d452c <HAL_USB_USART_Flush_Data+0xc>)
+   d4524:	681b      	ldr	r3, [r3, #0]
+   d4526:	6a1b      	ldr	r3, [r3, #32]
+   d4528:	9301      	str	r3, [sp, #4]
+   d452a:	bd08      	pop	{r3, pc}
+   d452c:	0003024c 	.word	0x0003024c
+
+000d4530 <HAL_I2C_Begin>:
+#endif
+
+DYNALIB_FN(BASE_IDX + 0, hal_i2c, HAL_I2C_Set_Speed, void(HAL_I2C_Interface, uint32_t, void*))
+DYNALIB_FN(BASE_IDX + 1, hal_i2c, HAL_I2C_Enable_DMA_Mode, void(HAL_I2C_Interface, bool, void*))
+DYNALIB_FN(BASE_IDX + 2, hal_i2c, HAL_I2C_Stretch_Clock, void(HAL_I2C_Interface, bool, void*))
+DYNALIB_FN(BASE_IDX + 3, hal_i2c, HAL_I2C_Begin, void(HAL_I2C_Interface, I2C_Mode, uint8_t, void*))
+   d4530:	b508      	push	{r3, lr}
+   d4532:	4b02      	ldr	r3, [pc, #8]	; (d453c <HAL_I2C_Begin+0xc>)
+   d4534:	681b      	ldr	r3, [r3, #0]
+   d4536:	68db      	ldr	r3, [r3, #12]
+   d4538:	9301      	str	r3, [sp, #4]
+   d453a:	bd08      	pop	{r3, pc}
+   d453c:	00030228 	.word	0x00030228
+
+000d4540 <HAL_I2C_Request_Data>:
+DYNALIB_FN(BASE_IDX + 4, hal_i2c, HAL_I2C_End, void(HAL_I2C_Interface, void*))
+DYNALIB_FN(BASE_IDX + 5, hal_i2c, HAL_I2C_Request_Data, uint32_t(HAL_I2C_Interface, uint8_t, uint8_t, uint8_t, void*))
+   d4540:	b508      	push	{r3, lr}
+   d4542:	4b02      	ldr	r3, [pc, #8]	; (d454c <HAL_I2C_Request_Data+0xc>)
+   d4544:	681b      	ldr	r3, [r3, #0]
+   d4546:	695b      	ldr	r3, [r3, #20]
+   d4548:	9301      	str	r3, [sp, #4]
+   d454a:	bd08      	pop	{r3, pc}
+   d454c:	00030228 	.word	0x00030228
+
+000d4550 <HAL_I2C_Begin_Transmission>:
+DYNALIB_FN(BASE_IDX + 6, hal_i2c, HAL_I2C_Begin_Transmission, void(HAL_I2C_Interface, uint8_t, void*))
+   d4550:	b508      	push	{r3, lr}
+   d4552:	4b02      	ldr	r3, [pc, #8]	; (d455c <HAL_I2C_Begin_Transmission+0xc>)
+   d4554:	681b      	ldr	r3, [r3, #0]
+   d4556:	699b      	ldr	r3, [r3, #24]
+   d4558:	9301      	str	r3, [sp, #4]
+   d455a:	bd08      	pop	{r3, pc}
+   d455c:	00030228 	.word	0x00030228
+
+000d4560 <HAL_I2C_End_Transmission>:
+DYNALIB_FN(BASE_IDX + 7, hal_i2c, HAL_I2C_End_Transmission, uint8_t(HAL_I2C_Interface, uint8_t, void*))
+   d4560:	b508      	push	{r3, lr}
+   d4562:	4b02      	ldr	r3, [pc, #8]	; (d456c <HAL_I2C_End_Transmission+0xc>)
+   d4564:	681b      	ldr	r3, [r3, #0]
+   d4566:	69db      	ldr	r3, [r3, #28]
+   d4568:	9301      	str	r3, [sp, #4]
+   d456a:	bd08      	pop	{r3, pc}
+   d456c:	00030228 	.word	0x00030228
+
+000d4570 <HAL_I2C_Write_Data>:
+DYNALIB_FN(BASE_IDX + 8, hal_i2c, HAL_I2C_Write_Data, uint32_t(HAL_I2C_Interface, uint8_t, void*))
+   d4570:	b508      	push	{r3, lr}
+   d4572:	4b02      	ldr	r3, [pc, #8]	; (d457c <HAL_I2C_Write_Data+0xc>)
+   d4574:	681b      	ldr	r3, [r3, #0]
+   d4576:	6a1b      	ldr	r3, [r3, #32]
+   d4578:	9301      	str	r3, [sp, #4]
+   d457a:	bd08      	pop	{r3, pc}
+   d457c:	00030228 	.word	0x00030228
+
+000d4580 <HAL_I2C_Available_Data>:
+DYNALIB_FN(BASE_IDX + 9, hal_i2c, HAL_I2C_Available_Data, int32_t(HAL_I2C_Interface, void*))
+   d4580:	b508      	push	{r3, lr}
+   d4582:	4b02      	ldr	r3, [pc, #8]	; (d458c <HAL_I2C_Available_Data+0xc>)
+   d4584:	681b      	ldr	r3, [r3, #0]
+   d4586:	6a5b      	ldr	r3, [r3, #36]	; 0x24
+   d4588:	9301      	str	r3, [sp, #4]
+   d458a:	bd08      	pop	{r3, pc}
+   d458c:	00030228 	.word	0x00030228
+
+000d4590 <HAL_I2C_Read_Data>:
+DYNALIB_FN(BASE_IDX + 10, hal_i2c, HAL_I2C_Read_Data, int32_t(HAL_I2C_Interface, void*))
+   d4590:	b508      	push	{r3, lr}
+   d4592:	4b02      	ldr	r3, [pc, #8]	; (d459c <HAL_I2C_Read_Data+0xc>)
+   d4594:	681b      	ldr	r3, [r3, #0]
+   d4596:	6a9b      	ldr	r3, [r3, #40]	; 0x28
+   d4598:	9301      	str	r3, [sp, #4]
+   d459a:	bd08      	pop	{r3, pc}
+   d459c:	00030228 	.word	0x00030228
+
+000d45a0 <HAL_I2C_Peek_Data>:
+DYNALIB_FN(BASE_IDX + 11, hal_i2c, HAL_I2C_Peek_Data, int32_t(HAL_I2C_Interface, void*))
+   d45a0:	b508      	push	{r3, lr}
+   d45a2:	4b02      	ldr	r3, [pc, #8]	; (d45ac <HAL_I2C_Peek_Data+0xc>)
+   d45a4:	681b      	ldr	r3, [r3, #0]
+   d45a6:	6adb      	ldr	r3, [r3, #44]	; 0x2c
+   d45a8:	9301      	str	r3, [sp, #4]
+   d45aa:	bd08      	pop	{r3, pc}
+   d45ac:	00030228 	.word	0x00030228
+
+000d45b0 <HAL_I2C_Flush_Data>:
+DYNALIB_FN(BASE_IDX + 12, hal_i2c, HAL_I2C_Flush_Data, void(HAL_I2C_Interface, void*))
+   d45b0:	b508      	push	{r3, lr}
+   d45b2:	4b02      	ldr	r3, [pc, #8]	; (d45bc <HAL_I2C_Flush_Data+0xc>)
+   d45b4:	681b      	ldr	r3, [r3, #0]
+   d45b6:	6b1b      	ldr	r3, [r3, #48]	; 0x30
+   d45b8:	9301      	str	r3, [sp, #4]
+   d45ba:	bd08      	pop	{r3, pc}
+   d45bc:	00030228 	.word	0x00030228
+
+000d45c0 <HAL_I2C_Init>:
+DYNALIB_FN(BASE_IDX + 13, hal_i2c, HAL_I2C_Is_Enabled, bool(HAL_I2C_Interface, void*))
+DYNALIB_FN(BASE_IDX + 14, hal_i2c, HAL_I2C_Set_Callback_On_Receive, void(HAL_I2C_Interface, void(*)(int), void*))
+DYNALIB_FN(BASE_IDX + 15, hal_i2c, HAL_I2C_Set_Callback_On_Request, void(HAL_I2C_Interface, void(*)(void), void*))
+DYNALIB_FN(BASE_IDX + 16, hal_i2c, HAL_I2C_Init, void(HAL_I2C_Interface, void*))
+   d45c0:	b508      	push	{r3, lr}
+   d45c2:	4b02      	ldr	r3, [pc, #8]	; (d45cc <HAL_I2C_Init+0xc>)
+   d45c4:	681b      	ldr	r3, [r3, #0]
+   d45c6:	6c1b      	ldr	r3, [r3, #64]	; 0x40
+   d45c8:	9301      	str	r3, [sp, #4]
+   d45ca:	bd08      	pop	{r3, pc}
+   d45cc:	00030228 	.word	0x00030228
+
+000d45d0 <HAL_USART_Init>:
+#define BASE_IDX 6 // Base index for all subsequent functions
+#else
+#define BASE_IDX 0
+#endif
+
+DYNALIB_FN(BASE_IDX + 0, hal_usart, HAL_USART_Init, void(HAL_USART_Serial, Ring_Buffer*, Ring_Buffer*))
+   d45d0:	b508      	push	{r3, lr}
+   d45d2:	4b02      	ldr	r3, [pc, #8]	; (d45dc <HAL_USART_Init+0xc>)
+   d45d4:	681b      	ldr	r3, [r3, #0]
+   d45d6:	681b      	ldr	r3, [r3, #0]
+   d45d8:	9301      	str	r3, [sp, #4]
+   d45da:	bd08      	pop	{r3, pc}
+   d45dc:	0003023c 	.word	0x0003023c
+
+000d45e0 <HAL_USART_Write_Data>:
+DYNALIB_FN(BASE_IDX + 1, hal_usart, HAL_USART_Begin, void(HAL_USART_Serial, uint32_t))
+DYNALIB_FN(BASE_IDX + 2, hal_usart, HAL_USART_End, void(HAL_USART_Serial))
+DYNALIB_FN(BASE_IDX + 3, hal_usart, HAL_USART_Write_Data, uint32_t(HAL_USART_Serial, uint8_t))
+   d45e0:	b508      	push	{r3, lr}
+   d45e2:	4b02      	ldr	r3, [pc, #8]	; (d45ec <HAL_USART_Write_Data+0xc>)
+   d45e4:	681b      	ldr	r3, [r3, #0]
+   d45e6:	68db      	ldr	r3, [r3, #12]
+   d45e8:	9301      	str	r3, [sp, #4]
+   d45ea:	bd08      	pop	{r3, pc}
+   d45ec:	0003023c 	.word	0x0003023c
+
+000d45f0 <HAL_USART_Available_Data>:
+DYNALIB_FN(BASE_IDX + 4, hal_usart, HAL_USART_Available_Data, int32_t(HAL_USART_Serial))
+   d45f0:	b508      	push	{r3, lr}
+   d45f2:	4b02      	ldr	r3, [pc, #8]	; (d45fc <HAL_USART_Available_Data+0xc>)
+   d45f4:	681b      	ldr	r3, [r3, #0]
+   d45f6:	691b      	ldr	r3, [r3, #16]
+   d45f8:	9301      	str	r3, [sp, #4]
+   d45fa:	bd08      	pop	{r3, pc}
+   d45fc:	0003023c 	.word	0x0003023c
+
+000d4600 <HAL_USART_Read_Data>:
+DYNALIB_FN(BASE_IDX + 5, hal_usart, HAL_USART_Read_Data, int32_t(HAL_USART_Serial))
+   d4600:	b508      	push	{r3, lr}
+   d4602:	4b02      	ldr	r3, [pc, #8]	; (d460c <HAL_USART_Read_Data+0xc>)
+   d4604:	681b      	ldr	r3, [r3, #0]
+   d4606:	695b      	ldr	r3, [r3, #20]
+   d4608:	9301      	str	r3, [sp, #4]
+   d460a:	bd08      	pop	{r3, pc}
+   d460c:	0003023c 	.word	0x0003023c
+
+000d4610 <HAL_USART_Peek_Data>:
+DYNALIB_FN(BASE_IDX + 6, hal_usart, HAL_USART_Peek_Data, int32_t(HAL_USART_Serial))
+   d4610:	b508      	push	{r3, lr}
+   d4612:	4b02      	ldr	r3, [pc, #8]	; (d461c <HAL_USART_Peek_Data+0xc>)
+   d4614:	681b      	ldr	r3, [r3, #0]
+   d4616:	699b      	ldr	r3, [r3, #24]
+   d4618:	9301      	str	r3, [sp, #4]
+   d461a:	bd08      	pop	{r3, pc}
+   d461c:	0003023c 	.word	0x0003023c
+
+000d4620 <HAL_USART_Flush_Data>:
+DYNALIB_FN(BASE_IDX + 7, hal_usart, HAL_USART_Flush_Data, void(HAL_USART_Serial))
+   d4620:	b508      	push	{r3, lr}
+   d4622:	4b02      	ldr	r3, [pc, #8]	; (d462c <HAL_USART_Flush_Data+0xc>)
+   d4624:	681b      	ldr	r3, [r3, #0]
+   d4626:	69db      	ldr	r3, [r3, #28]
+   d4628:	9301      	str	r3, [sp, #4]
+   d462a:	bd08      	pop	{r3, pc}
+   d462c:	0003023c 	.word	0x0003023c
+
+000d4630 <HAL_USART_Available_Data_For_Write>:
+DYNALIB_FN(BASE_IDX + 8, hal_usart, HAL_USART_Is_Enabled, bool(HAL_USART_Serial))
+DYNALIB_FN(BASE_IDX + 9, hal_usart, HAL_USART_Half_Duplex, void(HAL_USART_Serial, bool))
+DYNALIB_FN(BASE_IDX + 10, hal_usart, HAL_USART_Available_Data_For_Write, int32_t(HAL_USART_Serial))
+   d4630:	b508      	push	{r3, lr}
+   d4632:	4b02      	ldr	r3, [pc, #8]	; (d463c <HAL_USART_Available_Data_For_Write+0xc>)
+   d4634:	681b      	ldr	r3, [r3, #0]
+   d4636:	6a9b      	ldr	r3, [r3, #40]	; 0x28
+   d4638:	9301      	str	r3, [sp, #4]
+   d463a:	bd08      	pop	{r3, pc}
+   d463c:	0003023c 	.word	0x0003023c
+
+000d4640 <inet_inet_ntop>:
+DYNALIB_FN(0, hal_inet, inet_inet_addr, in_addr_t(const char*))
+DYNALIB_FN(1, hal_inet, inet_inet_aton, int(const char*, struct in_addr*))
+DYNALIB_FN(2, hal_inet, inet_inet_network, in_addr_t(const char*))
+DYNALIB_FN(3, hal_inet, inet_inet_ntoa, char*(struct in_addr))
+DYNALIB_FN(4, hal_inet, inet_inet_ntoa_r, char*(struct in_addr, char*, socklen_t))
+DYNALIB_FN(5, hal_inet, inet_inet_ntop, const char*(int, const void*, char*, socklen_t))
+   d4640:	b508      	push	{r3, lr}
+   d4642:	4b02      	ldr	r3, [pc, #8]	; (d464c <inet_inet_ntop+0xc>)
+   d4644:	681b      	ldr	r3, [r3, #0]
+   d4646:	695b      	ldr	r3, [r3, #20]
+   d4648:	9301      	str	r3, [sp, #4]
+   d464a:	bd08      	pop	{r3, pc}
+   d464c:	00030264 	.word	0x00030264
+
+000d4650 <os_thread_is_current>:
+DYNALIB_BEGIN(hal_concurrent)
+
+#if PLATFORM_THREADING
+DYNALIB_FN(0, hal_concurrent, __gthread_equal, bool(__gthread_t, __gthread_t))
+DYNALIB_FN(1, hal_concurrent, os_thread_create, os_result_t(os_thread_t*, const char*, os_thread_prio_t, os_thread_fn_t, void*, size_t))
+DYNALIB_FN(2, hal_concurrent, os_thread_is_current, bool(os_thread_t))
+   d4650:	b508      	push	{r3, lr}
+   d4652:	4b02      	ldr	r3, [pc, #8]	; (d465c <os_thread_is_current+0xc>)
+   d4654:	681b      	ldr	r3, [r3, #0]
+   d4656:	689b      	ldr	r3, [r3, #8]
+   d4658:	9301      	str	r3, [sp, #4]
+   d465a:	bd08      	pop	{r3, pc}
+   d465c:	00030248 	.word	0x00030248
+
+000d4660 <os_thread_join>:
+DYNALIB_FN(3, hal_concurrent, os_thread_yield, os_result_t(void))
+DYNALIB_FN(4, hal_concurrent, os_thread_join, os_result_t(os_thread_t))
+   d4660:	b508      	push	{r3, lr}
+   d4662:	4b02      	ldr	r3, [pc, #8]	; (d466c <os_thread_join+0xc>)
+   d4664:	681b      	ldr	r3, [r3, #0]
+   d4666:	691b      	ldr	r3, [r3, #16]
+   d4668:	9301      	str	r3, [sp, #4]
+   d466a:	bd08      	pop	{r3, pc}
+   d466c:	00030248 	.word	0x00030248
+
+000d4670 <os_thread_cleanup>:
+DYNALIB_FN(5, hal_concurrent, os_thread_cleanup, os_result_t(os_thread_t))
+   d4670:	b508      	push	{r3, lr}
+   d4672:	4b02      	ldr	r3, [pc, #8]	; (d467c <os_thread_cleanup+0xc>)
+   d4674:	681b      	ldr	r3, [r3, #0]
+   d4676:	695b      	ldr	r3, [r3, #20]
+   d4678:	9301      	str	r3, [sp, #4]
+   d467a:	bd08      	pop	{r3, pc}
+   d467c:	00030248 	.word	0x00030248
+
+000d4680 <os_mutex_create>:
+DYNALIB_FN(8, hal_concurrent, os_timer_create, int(os_timer_t*, unsigned, void(*)(os_timer_t), void*, bool, void*))
+DYNALIB_FN(9, hal_concurrent, os_timer_destroy, int(os_timer_t, void*))
+DYNALIB_FN(10, hal_concurrent, os_timer_get_id, int(os_timer_t, void**))
+DYNALIB_FN(11, hal_concurrent, os_timer_change, int(os_timer_t, os_timer_change_t, bool, unsigned, unsigned, void*))
+
+DYNALIB_FN(12, hal_concurrent, os_mutex_create, int(os_mutex_t*))
+   d4680:	b508      	push	{r3, lr}
+   d4682:	4b02      	ldr	r3, [pc, #8]	; (d468c <os_mutex_create+0xc>)
+   d4684:	681b      	ldr	r3, [r3, #0]
+   d4686:	6b1b      	ldr	r3, [r3, #48]	; 0x30
+   d4688:	9301      	str	r3, [sp, #4]
+   d468a:	bd08      	pop	{r3, pc}
+   d468c:	00030248 	.word	0x00030248
+
+000d4690 <os_mutex_recursive_create>:
+DYNALIB_FN(13, hal_concurrent, os_mutex_destroy, int(os_mutex_t))
+DYNALIB_FN(14, hal_concurrent, os_mutex_lock, int(os_mutex_t))
+DYNALIB_FN(15, hal_concurrent, os_mutex_trylock, int(os_mutex_t))
+DYNALIB_FN(16, hal_concurrent, os_mutex_unlock, int(os_mutex_t))
+
+DYNALIB_FN(17, hal_concurrent, os_mutex_recursive_create, int(os_mutex_recursive_t*))
+   d4690:	b508      	push	{r3, lr}
+   d4692:	4b02      	ldr	r3, [pc, #8]	; (d469c <os_mutex_recursive_create+0xc>)
+   d4694:	681b      	ldr	r3, [r3, #0]
+   d4696:	6c5b      	ldr	r3, [r3, #68]	; 0x44
+   d4698:	9301      	str	r3, [sp, #4]
+   d469a:	bd08      	pop	{r3, pc}
+   d469c:	00030248 	.word	0x00030248
+
+000d46a0 <HAL_RNG_GetRandomNumber>:
+
+DYNALIB_BEGIN(hal)
+
+#if PLATFORM_ID > 3
+DYNALIB_FN(0, hal, HAL_RNG_Configuration, void(void))
+DYNALIB_FN(1, hal, HAL_RNG_GetRandomNumber, uint32_t(void))
+   d46a0:	b508      	push	{r3, lr}
+   d46a2:	4b02      	ldr	r3, [pc, #8]	; (d46ac <HAL_RNG_GetRandomNumber+0xc>)
+   d46a4:	681b      	ldr	r3, [r3, #0]
+   d46a6:	685b      	ldr	r3, [r3, #4]
+   d46a8:	9301      	str	r3, [sp, #4]
+   d46aa:	bd08      	pop	{r3, pc}
+   d46ac:	00030218 	.word	0x00030218
+
+000d46b0 <HAL_Timer_Get_Milli_Seconds>:
+#endif
+
+DYNALIB_FN(BASE_IDX + 0, hal, HAL_Delay_Milliseconds, void(uint32_t))
+DYNALIB_FN(BASE_IDX + 1, hal, HAL_Delay_Microseconds, void(uint32_t))
+DYNALIB_FN(BASE_IDX + 2, hal, HAL_Timer_Get_Micro_Seconds, system_tick_t(void))
+DYNALIB_FN(BASE_IDX + 3, hal, HAL_Timer_Get_Milli_Seconds, system_tick_t(void))
+   d46b0:	b508      	push	{r3, lr}
+   d46b2:	4b02      	ldr	r3, [pc, #8]	; (d46bc <HAL_Timer_Get_Milli_Seconds+0xc>)
+   d46b4:	681b      	ldr	r3, [r3, #0]
+   d46b6:	695b      	ldr	r3, [r3, #20]
+   d46b8:	9301      	str	r3, [sp, #4]
+   d46ba:	bd08      	pop	{r3, pc}
+   d46bc:	00030218 	.word	0x00030218
+
+000d46c0 <HAL_SPI_Init>:
+DYNALIB_FN(2, hal_spi, HAL_SPI_Set_Bit_Order, void(HAL_SPI_Interface, uint8_t))
+DYNALIB_FN(3, hal_spi, HAL_SPI_Set_Data_Mode, void(HAL_SPI_Interface, uint8_t))
+DYNALIB_FN(4, hal_spi, HAL_SPI_Set_Clock_Divider, void(HAL_SPI_Interface, uint8_t))
+DYNALIB_FN(5, hal_spi, HAL_SPI_Send_Receive_Data, uint16_t(HAL_SPI_Interface, uint16_t))
+DYNALIB_FN(6, hal_spi, HAL_SPI_Is_Enabled_Old, bool(void))
+DYNALIB_FN(7, hal_spi, HAL_SPI_Init, void(HAL_SPI_Interface))
+   d46c0:	b508      	push	{r3, lr}
+   d46c2:	4b02      	ldr	r3, [pc, #8]	; (d46cc <HAL_SPI_Init+0xc>)
+   d46c4:	681b      	ldr	r3, [r3, #0]
+   d46c6:	69db      	ldr	r3, [r3, #28]
+   d46c8:	9301      	str	r3, [sp, #4]
+   d46ca:	bd08      	pop	{r3, pc}
+   d46cc:	00030230 	.word	0x00030230
+
+000d46d0 <HAL_Pin_Map>:
+// New HAL functions must be added to the end of this list.
+// GNINRAW
+
+DYNALIB_BEGIN(hal_gpio)
+
+DYNALIB_FN(0, hal_gpio, HAL_Pin_Map, STM32_Pin_Info*(void))
+   d46d0:	b508      	push	{r3, lr}
+   d46d2:	4b02      	ldr	r3, [pc, #8]	; (d46dc <HAL_Pin_Map+0xc>)
+   d46d4:	681b      	ldr	r3, [r3, #0]
+   d46d6:	681b      	ldr	r3, [r3, #0]
+   d46d8:	9301      	str	r3, [sp, #4]
+   d46da:	bd08      	pop	{r3, pc}
+   d46dc:	0003022c 	.word	0x0003022c
+
+000d46e0 <netdb_freeaddrinfo>:
+
+DYNALIB_BEGIN(hal_netdb)
+
+DYNALIB_FN(0, hal_netdb, netdb_gethostbyname, struct hostent*(const char*))
+DYNALIB_FN(1, hal_netdb, netdb_gethostbyname_r, int(const char*, struct hostent*, char*, size_t, struct hostent**, int*))
+DYNALIB_FN(2, hal_netdb, netdb_freeaddrinfo, void(struct addrinfo*))
+   d46e0:	b508      	push	{r3, lr}
+   d46e2:	4b02      	ldr	r3, [pc, #8]	; (d46ec <netdb_freeaddrinfo+0xc>)
+   d46e4:	681b      	ldr	r3, [r3, #0]
+   d46e6:	689b      	ldr	r3, [r3, #8]
+   d46e8:	9301      	str	r3, [sp, #4]
+   d46ea:	bd08      	pop	{r3, pc}
+   d46ec:	00030268 	.word	0x00030268
+
+000d46f0 <netdb_getaddrinfo>:
+DYNALIB_FN(3, hal_netdb, netdb_getaddrinfo, int(const char*, const char*, const struct addrinfo*, struct addrinfo**))
+   d46f0:	b508      	push	{r3, lr}
+   d46f2:	4b02      	ldr	r3, [pc, #8]	; (d46fc <netdb_getaddrinfo+0xc>)
+   d46f4:	681b      	ldr	r3, [r3, #0]
+   d46f6:	68db      	ldr	r3, [r3, #12]
+   d46f8:	9301      	str	r3, [sp, #4]
+   d46fa:	bd08      	pop	{r3, pc}
+   d46fc:	00030268 	.word	0x00030268
+
+000d4700 <spark_set_random_seed_from_cloud_handler>:
+DYNALIB_FN(10, system_cloud, spark_unsubscribe, void(void*))
+DYNALIB_FN(11, system_cloud, spark_sync_time, bool(void*))
+DYNALIB_FN(12, system_cloud, spark_sync_time_pending, bool(void*))
+DYNALIB_FN(13, system_cloud, spark_sync_time_last, system_tick_t(time_t*, void*))
+DYNALIB_FN(14, system_cloud, spark_set_connection_property, int(unsigned, unsigned, particle::protocol::connection_properties_t*, void*))
+DYNALIB_FN(15, system_cloud, spark_set_random_seed_from_cloud_handler, int(void (*handler)(unsigned int), void*))
+   d4700:	b508      	push	{r3, lr}
+   d4702:	4b02      	ldr	r3, [pc, #8]	; (d470c <spark_set_random_seed_from_cloud_handler+0xc>)
+   d4704:	681b      	ldr	r3, [r3, #0]
+   d4706:	6bdb      	ldr	r3, [r3, #60]	; 0x3c
+   d4708:	9301      	str	r3, [sp, #4]
+   d470a:	bd08      	pop	{r3, pc}
+   d470c:	00030244 	.word	0x00030244
+
+000d4710 <network_connect>:
+#endif
+
+DYNALIB_BEGIN(system_net)
+
+DYNALIB_FN(0, system_net, network_config, const void*(network_handle_t, uint32_t, void*))
+DYNALIB_FN(1, system_net, network_connect, void(network_handle_t, uint32_t, uint32_t, void*))
+   d4710:	b508      	push	{r3, lr}
+   d4712:	4b02      	ldr	r3, [pc, #8]	; (d471c <network_connect+0xc>)
+   d4714:	681b      	ldr	r3, [r3, #0]
+   d4716:	685b      	ldr	r3, [r3, #4]
+   d4718:	9301      	str	r3, [sp, #4]
+   d471a:	bd08      	pop	{r3, pc}
+   d471c:	00030240 	.word	0x00030240
+
+000d4720 <network_connecting>:
+DYNALIB_FN(2, system_net, network_connecting, bool(network_handle_t, uint32_t, void*))
+   d4720:	b508      	push	{r3, lr}
+   d4722:	4b02      	ldr	r3, [pc, #8]	; (d472c <network_connecting+0xc>)
+   d4724:	681b      	ldr	r3, [r3, #0]
+   d4726:	689b      	ldr	r3, [r3, #8]
+   d4728:	9301      	str	r3, [sp, #4]
+   d472a:	bd08      	pop	{r3, pc}
+   d472c:	00030240 	.word	0x00030240
+
+000d4730 <network_disconnect>:
+DYNALIB_FN(3, system_net, network_disconnect, void(network_handle_t, uint32_t, void*))
+   d4730:	b508      	push	{r3, lr}
+   d4732:	4b02      	ldr	r3, [pc, #8]	; (d473c <network_disconnect+0xc>)
+   d4734:	681b      	ldr	r3, [r3, #0]
+   d4736:	68db      	ldr	r3, [r3, #12]
+   d4738:	9301      	str	r3, [sp, #4]
+   d473a:	bd08      	pop	{r3, pc}
+   d473c:	00030240 	.word	0x00030240
+
+000d4740 <network_ready>:
+DYNALIB_FN(4, system_net, network_ready, bool(network_handle_t, uint32_t, void*))
+   d4740:	b508      	push	{r3, lr}
+   d4742:	4b02      	ldr	r3, [pc, #8]	; (d474c <network_ready+0xc>)
+   d4744:	681b      	ldr	r3, [r3, #0]
+   d4746:	691b      	ldr	r3, [r3, #16]
+   d4748:	9301      	str	r3, [sp, #4]
+   d474a:	bd08      	pop	{r3, pc}
+   d474c:	00030240 	.word	0x00030240
+
+000d4750 <network_on>:
+DYNALIB_FN(5, system_net, network_on, void(network_handle_t, uint32_t, uint32_t, void*))
+   d4750:	b508      	push	{r3, lr}
+   d4752:	4b02      	ldr	r3, [pc, #8]	; (d475c <network_on+0xc>)
+   d4754:	681b      	ldr	r3, [r3, #0]
+   d4756:	695b      	ldr	r3, [r3, #20]
+   d4758:	9301      	str	r3, [sp, #4]
+   d475a:	bd08      	pop	{r3, pc}
+   d475c:	00030240 	.word	0x00030240
+
+000d4760 <network_off>:
+DYNALIB_FN(6, system_net, network_off, void(network_handle_t, uint32_t, uint32_t, void*))
+   d4760:	b508      	push	{r3, lr}
+   d4762:	4b02      	ldr	r3, [pc, #8]	; (d476c <network_off+0xc>)
+   d4764:	681b      	ldr	r3, [r3, #0]
+   d4766:	699b      	ldr	r3, [r3, #24]
+   d4768:	9301      	str	r3, [sp, #4]
+   d476a:	bd08      	pop	{r3, pc}
+   d476c:	00030240 	.word	0x00030240
+
+000d4770 <network_listen>:
+DYNALIB_FN(7, system_net, network_listen, void(network_handle_t, uint32_t, void*))
+   d4770:	b508      	push	{r3, lr}
+   d4772:	4b02      	ldr	r3, [pc, #8]	; (d477c <network_listen+0xc>)
+   d4774:	681b      	ldr	r3, [r3, #0]
+   d4776:	69db      	ldr	r3, [r3, #28]
+   d4778:	9301      	str	r3, [sp, #4]
+   d477a:	bd08      	pop	{r3, pc}
+   d477c:	00030240 	.word	0x00030240
+
+000d4780 <network_listening>:
+DYNALIB_FN(8, system_net, network_listening, bool(network_handle_t, uint32_t, void*))
+   d4780:	b508      	push	{r3, lr}
+   d4782:	4b02      	ldr	r3, [pc, #8]	; (d478c <network_listening+0xc>)
+   d4784:	681b      	ldr	r3, [r3, #0]
+   d4786:	6a1b      	ldr	r3, [r3, #32]
+   d4788:	9301      	str	r3, [sp, #4]
+   d478a:	bd08      	pop	{r3, pc}
+   d478c:	00030240 	.word	0x00030240
+
+000d4790 <network_set_listen_timeout>:
+DYNALIB_FN(9, system_net, network_has_credentials, bool(network_handle_t, uint32_t, void*))
+DYNALIB_FN(10, system_net, network_set_credentials, int(network_handle_t, uint32_t, NetworkCredentials*, void*))
+DYNALIB_FN(11, system_net, network_clear_credentials, bool(network_handle_t, uint32_t, NetworkCredentials*, void*))
+DYNALIB_FN(12, system_net, network_set_listen_timeout, void(network_handle_t, uint16_t, void*))
+   d4790:	b508      	push	{r3, lr}
+   d4792:	4b02      	ldr	r3, [pc, #8]	; (d479c <network_set_listen_timeout+0xc>)
+   d4794:	681b      	ldr	r3, [r3, #0]
+   d4796:	6b1b      	ldr	r3, [r3, #48]	; 0x30
+   d4798:	9301      	str	r3, [sp, #4]
+   d479a:	bd08      	pop	{r3, pc}
+   d479c:	00030240 	.word	0x00030240
+
+000d47a0 <network_get_listen_timeout>:
+DYNALIB_FN(13, system_net, network_get_listen_timeout, uint16_t(network_handle_t, uint32_t, void*))
+   d47a0:	b508      	push	{r3, lr}
+   d47a2:	4b02      	ldr	r3, [pc, #8]	; (d47ac <network_get_listen_timeout+0xc>)
+   d47a4:	681b      	ldr	r3, [r3, #0]
+   d47a6:	6b5b      	ldr	r3, [r3, #52]	; 0x34
+   d47a8:	9301      	str	r3, [sp, #4]
+   d47aa:	bd08      	pop	{r3, pc}
+   d47ac:	00030240 	.word	0x00030240
+
+000d47b0 <set_system_mode>:
+#endif
+
+DYNALIB_BEGIN(system)
+
+DYNALIB_FN(0, system, system_mode, System_Mode_TypeDef(void))
+DYNALIB_FN(1, system, set_system_mode, void(System_Mode_TypeDef))
+   d47b0:	b508      	push	{r3, lr}
+   d47b2:	4b02      	ldr	r3, [pc, #8]	; (d47bc <set_system_mode+0xc>)
+   d47b4:	681b      	ldr	r3, [r3, #0]
+   d47b6:	685b      	ldr	r3, [r3, #4]
+   d47b8:	9301      	str	r3, [sp, #4]
+   d47ba:	bd08      	pop	{r3, pc}
+   d47bc:	00030220 	.word	0x00030220
+
+000d47c0 <system_delay_ms>:
+
+DYNALIB_FN(2, system, set_ymodem_serial_flash_update_handler, void(ymodem_serial_flash_update_handler))
+DYNALIB_FN(3, system, system_firmwareUpdate, bool(Stream*, void*))
+DYNALIB_FN(4, system, system_fileTransfer, bool(system_file_transfer_t*, void*))
+
+DYNALIB_FN(5, system, system_delay_ms, void(unsigned long, bool))
+   d47c0:	b508      	push	{r3, lr}
+   d47c2:	4b02      	ldr	r3, [pc, #8]	; (d47cc <system_delay_ms+0xc>)
+   d47c4:	681b      	ldr	r3, [r3, #0]
+   d47c6:	695b      	ldr	r3, [r3, #20]
+   d47c8:	9301      	str	r3, [sp, #4]
+   d47ca:	bd08      	pop	{r3, pc}
+   d47cc:	00030220 	.word	0x00030220
+
+000d47d0 <system_ctrl_set_app_request_handler>:
+DYNALIB_FN(BASE_IDX + 6, system, led_pattern_period, uint16_t(int, int, void*))
+DYNALIB_FN(BASE_IDX + 7, system, system_set_tester_handlers, int(system_tester_handlers_t*, void*))
+DYNALIB_FN(BASE_IDX + 8, system, system_format_diag_data, int(const uint16_t*, size_t, unsigned, appender_fn, void*, void*))
+
+// Control requests
+DYNALIB_FN(BASE_IDX + 9, system, system_ctrl_set_app_request_handler, int(ctrl_request_handler_fn, void*))
+   d47d0:	b508      	push	{r3, lr}
+   d47d2:	4b03      	ldr	r3, [pc, #12]	; (d47e0 <system_ctrl_set_app_request_handler+0x10>)
+   d47d4:	681b      	ldr	r3, [r3, #0]
+   d47d6:	f8d3 3088 	ldr.w	r3, [r3, #136]	; 0x88
+   d47da:	9301      	str	r3, [sp, #4]
+   d47dc:	bd08      	pop	{r3, pc}
+   d47de:	0000      	.short	0x0000
+   d47e0:	00030220 	.word	0x00030220
+
+000d47e4 <system_ctrl_set_result>:
+DYNALIB_FN(BASE_IDX + 10, system, system_ctrl_alloc_reply_data, int(ctrl_request*, size_t, void*))
+DYNALIB_FN(BASE_IDX + 11, system, system_ctrl_free_request_data, void(ctrl_request*, void*))
+DYNALIB_FN(BASE_IDX + 12, system, system_ctrl_set_result, void(ctrl_request*, int, ctrl_completion_handler_fn, void*, void*))
+   d47e4:	b508      	push	{r3, lr}
+   d47e6:	4b03      	ldr	r3, [pc, #12]	; (d47f4 <system_ctrl_set_result+0x10>)
+   d47e8:	681b      	ldr	r3, [r3, #0]
+   d47ea:	f8d3 3094 	ldr.w	r3, [r3, #148]	; 0x94
+   d47ee:	9301      	str	r3, [sp, #4]
+   d47f0:	bd08      	pop	{r3, pc}
+   d47f2:	0000      	.short	0x0000
+   d47f4:	00030220 	.word	0x00030220
+
+000d47f8 <malloc>:
+#include <assert.h>
+#endif
+
+DYNALIB_BEGIN(rt)
+
+DYNALIB_FN(0, rt, malloc, void*(size_t))
+   d47f8:	b508      	push	{r3, lr}
+   d47fa:	4b02      	ldr	r3, [pc, #8]	; (d4804 <malloc+0xc>)
+   d47fc:	681b      	ldr	r3, [r3, #0]
+   d47fe:	681b      	ldr	r3, [r3, #0]
+   d4800:	9301      	str	r3, [sp, #4]
+   d4802:	bd08      	pop	{r3, pc}
+   d4804:	0003021c 	.word	0x0003021c
+
+000d4808 <free>:
+DYNALIB_FN(1, rt, free, void(void*))
+   d4808:	b508      	push	{r3, lr}
+   d480a:	4b02      	ldr	r3, [pc, #8]	; (d4814 <free+0xc>)
+   d480c:	681b      	ldr	r3, [r3, #0]
+   d480e:	685b      	ldr	r3, [r3, #4]
+   d4810:	9301      	str	r3, [sp, #4]
+   d4812:	bd08      	pop	{r3, pc}
+   d4814:	0003021c 	.word	0x0003021c
+
+000d4818 <_ZN5spark12NetworkClass7connectEj>:
+        return Network;
+    }
+}
+
+void NetworkClass::connect(unsigned flags) {
+    network_connect(*this, flags, 0, nullptr);
+   d4818:	2300      	movs	r3, #0
+   d481a:	461a      	mov	r2, r3
+   d481c:	6840      	ldr	r0, [r0, #4]
+   d481e:	f7ff bf77 	b.w	d4710 <network_connect>
+
+000d4822 <_ZN5spark12NetworkClass10disconnectEv>:
+}
+
+void NetworkClass::disconnect() {
+    network_disconnect(*this, NETWORK_DISCONNECT_REASON_USER, nullptr);
+   d4822:	2200      	movs	r2, #0
+   d4824:	2102      	movs	r1, #2
+   d4826:	6840      	ldr	r0, [r0, #4]
+   d4828:	f7ff bf82 	b.w	d4730 <network_disconnect>
+
+000d482c <_ZN5spark12NetworkClass10connectingEv>:
+}
+
+bool NetworkClass::connecting() {
+    return network_connecting(*this, 0, nullptr);
+   d482c:	2200      	movs	r2, #0
+   d482e:	4611      	mov	r1, r2
+   d4830:	6840      	ldr	r0, [r0, #4]
+   d4832:	f7ff bf75 	b.w	d4720 <network_connecting>
+
+000d4836 <_ZN5spark12NetworkClass5readyEv>:
+}
+
+bool NetworkClass::ready() {
+    return network_ready(*this, 0, nullptr);
+   d4836:	2200      	movs	r2, #0
+   d4838:	4611      	mov	r1, r2
+   d483a:	6840      	ldr	r0, [r0, #4]
+   d483c:	f7ff bf80 	b.w	d4740 <network_ready>
+
+000d4840 <_ZN5spark12NetworkClass2onEv>:
+}
+
+void NetworkClass::on() {
+    network_on(*this, 0, 0, nullptr);
+   d4840:	2300      	movs	r3, #0
+   d4842:	461a      	mov	r2, r3
+   d4844:	4619      	mov	r1, r3
+   d4846:	6840      	ldr	r0, [r0, #4]
+   d4848:	f7ff bf82 	b.w	d4750 <network_on>
+
+000d484c <_ZN5spark12NetworkClass3offEv>:
+}
+
+void NetworkClass::off() {
+    network_off(*this, 0, 0, nullptr);
+   d484c:	2300      	movs	r3, #0
+   d484e:	461a      	mov	r2, r3
+   d4850:	4619      	mov	r1, r3
+   d4852:	6840      	ldr	r0, [r0, #4]
+   d4854:	f7ff bf84 	b.w	d4760 <network_off>
+
+000d4858 <_ZN5spark12NetworkClass6listenEb>:
+}
+
+void NetworkClass::listen(bool begin) {
+    network_listen(*this, begin ? 0 : 1, nullptr);
+   d4858:	2200      	movs	r2, #0
+   d485a:	f081 0101 	eor.w	r1, r1, #1
+   d485e:	6840      	ldr	r0, [r0, #4]
+   d4860:	f7ff bf86 	b.w	d4770 <network_listen>
+
+000d4864 <_ZN5spark12NetworkClass16setListenTimeoutEt>:
+}
+
+void NetworkClass::setListenTimeout(uint16_t timeout) {
+    network_set_listen_timeout(*this, timeout, nullptr);
+   d4864:	2200      	movs	r2, #0
+   d4866:	6840      	ldr	r0, [r0, #4]
+   d4868:	f7ff bf92 	b.w	d4790 <network_set_listen_timeout>
+
+000d486c <_ZN5spark12NetworkClass16getListenTimeoutEv>:
+}
+
+uint16_t NetworkClass::getListenTimeout() {
+    return network_get_listen_timeout(*this, 0, nullptr);
+   d486c:	2200      	movs	r2, #0
+   d486e:	4611      	mov	r1, r2
+   d4870:	6840      	ldr	r0, [r0, #4]
+   d4872:	f7ff bf95 	b.w	d47a0 <network_get_listen_timeout>
+
+000d4876 <_ZN5spark12NetworkClass9listeningEv>:
+}
+
+bool NetworkClass::listening() {
+    return network_listening(*this, 0, nullptr);
+   d4876:	2200      	movs	r2, #0
+   d4878:	4611      	mov	r1, r2
+   d487a:	6840      	ldr	r0, [r0, #4]
+   d487c:	f7ff bf80 	b.w	d4780 <network_listening>
+
+000d4880 <_ZN5spark12NetworkClass7resolveEPKc>:
+}
+
+IPAddress NetworkClass::resolve(const char* name) {
+   d4880:	e92d 43f0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, lr}
+    IPAddress addr;
+#if HAL_USE_INET_HAL_POSIX
+    struct addrinfo *ai = nullptr;
+   d4884:	2400      	movs	r4, #0
+
+bool NetworkClass::listening() {
+    return network_listening(*this, 0, nullptr);
+}
+
+IPAddress NetworkClass::resolve(const char* name) {
+   d4886:	b095      	sub	sp, #84	; 0x54
+   d4888:	4616      	mov	r6, r2
+   d488a:	460d      	mov	r5, r1
+   d488c:	4607      	mov	r7, r0
+    IPAddress addr;
+   d488e:	f000 fa5f 	bl	d4d50 <_ZN9IPAddressC1Ev>
+#if HAL_USE_INET_HAL_POSIX
+    struct addrinfo *ai = nullptr;
+    struct addrinfo hints = {};
+   d4892:	4621      	mov	r1, r4
+   d4894:	2220      	movs	r2, #32
+   d4896:	a80c      	add	r0, sp, #48	; 0x30
+}
+
+IPAddress NetworkClass::resolve(const char* name) {
+    IPAddress addr;
+#if HAL_USE_INET_HAL_POSIX
+    struct addrinfo *ai = nullptr;
+   d4898:	9400      	str	r4, [sp, #0]
+    struct addrinfo hints = {};
+   d489a:	f000 fe66 	bl	d556a <memset>
+    hints.ai_flags = AI_ADDRCONFIG;
+   d489e:	2340      	movs	r3, #64	; 0x40
+   d48a0:	930c      	str	r3, [sp, #48]	; 0x30
+    hints.ai_family = AF_UNSPEC;
+    const int r = getaddrinfo(name, nullptr, &hints, &ai);
+   d48a2:	4621      	mov	r1, r4
+   d48a4:	466b      	mov	r3, sp
+   d48a6:	aa0c      	add	r2, sp, #48	; 0x30
+   d48a8:	4630      	mov	r0, r6
+   d48aa:	f7ff ff21 	bl	d46f0 <netdb_getaddrinfo>
+    if (!r) {
+   d48ae:	4604      	mov	r4, r0
+   d48b0:	2800      	cmp	r0, #0
+   d48b2:	d144      	bne.n	d493e <_ZN5spark12NetworkClass7resolveEPKc+0xbe>
+        bool ok = false;
+        // This is not really needed if AI_ADDRCONFIG is properly supported
+        bool ipv4 = network_ready(*this, NETWORK_READY_TYPE_IPV4, nullptr);
+   d48b4:	4602      	mov	r2, r0
+   d48b6:	2101      	movs	r1, #1
+   d48b8:	6868      	ldr	r0, [r5, #4]
+   d48ba:	f7ff ff41 	bl	d4740 <network_ready>
+        bool ipv6 = network_ready(*this, NETWORK_READY_TYPE_IPV6, nullptr);
+   d48be:	2102      	movs	r1, #2
+    hints.ai_family = AF_UNSPEC;
+    const int r = getaddrinfo(name, nullptr, &hints, &ai);
+    if (!r) {
+        bool ok = false;
+        // This is not really needed if AI_ADDRCONFIG is properly supported
+        bool ipv4 = network_ready(*this, NETWORK_READY_TYPE_IPV4, nullptr);
+   d48c0:	4680      	mov	r8, r0
+        bool ipv6 = network_ready(*this, NETWORK_READY_TYPE_IPV6, nullptr);
+   d48c2:	4622      	mov	r2, r4
+   d48c4:	6868      	ldr	r0, [r5, #4]
+   d48c6:	f7ff ff3b 	bl	d4740 <network_ready>
+        for (auto cur = ai; cur != nullptr && !ok; cur = cur->ai_next) {
+   d48ca:	9e00      	ldr	r6, [sp, #0]
+    const int r = getaddrinfo(name, nullptr, &hints, &ai);
+    if (!r) {
+        bool ok = false;
+        // This is not really needed if AI_ADDRCONFIG is properly supported
+        bool ipv4 = network_ready(*this, NETWORK_READY_TYPE_IPV4, nullptr);
+        bool ipv6 = network_ready(*this, NETWORK_READY_TYPE_IPV6, nullptr);
+   d48cc:	4681      	mov	r9, r0
+    struct addrinfo hints = {};
+    hints.ai_flags = AI_ADDRCONFIG;
+    hints.ai_family = AF_UNSPEC;
+    const int r = getaddrinfo(name, nullptr, &hints, &ai);
+    if (!r) {
+        bool ok = false;
+   d48ce:	4621      	mov	r1, r4
+        // This is not really needed if AI_ADDRCONFIG is properly supported
+        bool ipv4 = network_ready(*this, NETWORK_READY_TYPE_IPV4, nullptr);
+        bool ipv6 = network_ready(*this, NETWORK_READY_TYPE_IPV6, nullptr);
+        for (auto cur = ai; cur != nullptr && !ok; cur = cur->ai_next) {
+   d48d0:	2e00      	cmp	r6, #0
+   d48d2:	d034      	beq.n	d493e <_ZN5spark12NetworkClass7resolveEPKc+0xbe>
+   d48d4:	2900      	cmp	r1, #0
+   d48d6:	d132      	bne.n	d493e <_ZN5spark12NetworkClass7resolveEPKc+0xbe>
+            // NOTE: using only the first entry that matches the current state of IPv4/IPv6 connectivity
+            switch (cur->ai_family) {
+   d48d8:	6873      	ldr	r3, [r6, #4]
+   d48da:	2b02      	cmp	r3, #2
+   d48dc:	d002      	beq.n	d48e4 <_ZN5spark12NetworkClass7resolveEPKc+0x64>
+   d48de:	2b0a      	cmp	r3, #10
+   d48e0:	d009      	beq.n	d48f6 <_ZN5spark12NetworkClass7resolveEPKc+0x76>
+   d48e2:	e02a      	b.n	d493a <_ZN5spark12NetworkClass7resolveEPKc+0xba>
+                case AF_INET: {
+                    if (!ipv4) {
+   d48e4:	f1b8 0f00 	cmp.w	r8, #0
+   d48e8:	d027      	beq.n	d493a <_ZN5spark12NetworkClass7resolveEPKc+0xba>
+                        continue;
+                    }
+                    // NOTE: HAL_IPAddress is little-endian
+                    auto in = (struct sockaddr_in*)cur->ai_addr;
+                    addr = (const uint8_t*)(&in->sin_addr.s_addr);
+   d48ea:	6971      	ldr	r1, [r6, #20]
+   d48ec:	4638      	mov	r0, r7
+   d48ee:	3104      	adds	r1, #4
+   d48f0:	f000 fa5b 	bl	d4daa <_ZN9IPAddressaSEPKh>
+   d48f4:	e020      	b.n	d4938 <_ZN5spark12NetworkClass7resolveEPKc+0xb8>
+                    ok = true;
+                    break;
+                }
+                case AF_INET6: {
+                    if (!ipv6) {
+   d48f6:	f1b9 0f00 	cmp.w	r9, #0
+   d48fa:	d01e      	beq.n	d493a <_ZN5spark12NetworkClass7resolveEPKc+0xba>
+                        continue;
+                    }
+                    auto in6 = (struct sockaddr_in6*)cur->ai_addr;
+   d48fc:	6974      	ldr	r4, [r6, #20]
+                    HAL_IPAddress a = {};
+   d48fe:	2211      	movs	r2, #17
+   d4900:	a801      	add	r0, sp, #4
+   d4902:	f000 fe32 	bl	d556a <memset>
+                    a.v = 6;
+   d4906:	2306      	movs	r3, #6
+   d4908:	f88d 3014 	strb.w	r3, [sp, #20]
+                    memcpy(a.ipv6, in6->sin6_addr.s6_addr, sizeof(a.ipv6));
+   d490c:	ad01      	add	r5, sp, #4
+   d490e:	f104 0308 	add.w	r3, r4, #8
+   d4912:	3418      	adds	r4, #24
+   d4914:	6818      	ldr	r0, [r3, #0]
+   d4916:	6859      	ldr	r1, [r3, #4]
+   d4918:	462a      	mov	r2, r5
+   d491a:	c203      	stmia	r2!, {r0, r1}
+   d491c:	3308      	adds	r3, #8
+   d491e:	42a3      	cmp	r3, r4
+   d4920:	4615      	mov	r5, r2
+   d4922:	d1f7      	bne.n	d4914 <_ZN5spark12NetworkClass7resolveEPKc+0x94>
+                    addr = IPAddress(a);
+   d4924:	a901      	add	r1, sp, #4
+   d4926:	a806      	add	r0, sp, #24
+
+/**
+ * The IP address stored in host order.
+ *
+ */
+class IPAddress : public Printable {
+   d4928:	ad07      	add	r5, sp, #28
+   d492a:	f000 fa1f 	bl	d4d6c <_ZN9IPAddressC1ERK16_HAL_IPAddress_t>
+   d492e:	cd0f      	ldmia	r5!, {r0, r1, r2, r3}
+   d4930:	1d3c      	adds	r4, r7, #4
+   d4932:	c40f      	stmia	r4!, {r0, r1, r2, r3}
+   d4934:	682b      	ldr	r3, [r5, #0]
+   d4936:	7023      	strb	r3, [r4, #0]
+                    ok = true;
+   d4938:	2101      	movs	r1, #1
+    if (!r) {
+        bool ok = false;
+        // This is not really needed if AI_ADDRCONFIG is properly supported
+        bool ipv4 = network_ready(*this, NETWORK_READY_TYPE_IPV4, nullptr);
+        bool ipv6 = network_ready(*this, NETWORK_READY_TYPE_IPV6, nullptr);
+        for (auto cur = ai; cur != nullptr && !ok; cur = cur->ai_next) {
+   d493a:	69f6      	ldr	r6, [r6, #28]
+   d493c:	e7c8      	b.n	d48d0 <_ZN5spark12NetworkClass7resolveEPKc+0x50>
+                    break;
+                }
+            }
+        }
+    }
+    freeaddrinfo(ai);
+   d493e:	9800      	ldr	r0, [sp, #0]
+   d4940:	f7ff fece 	bl	d46e0 <netdb_freeaddrinfo>
+    return Cellular.resolve(name);
+#endif // Wiring_Cellular
+
+#endif // HAL_USE_INET_HAL_POSIX
+    return addr;
+}
+   d4944:	4638      	mov	r0, r7
+   d4946:	b015      	add	sp, #84	; 0x54
+   d4948:	e8bd 83f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, pc}
+
+000d494c <_GLOBAL__sub_I__ZN5spark7NetworkE>:
+    static NetworkClass& from(network_interface_t nif);
+
+    virtual IPAddress resolve(const char* name);
+
+    explicit NetworkClass(network_interface_t iface)
+            : iface_(iface) {
+   d494c:	4b02      	ldr	r3, [pc, #8]	; (d4958 <_GLOBAL__sub_I__ZN5spark7NetworkE+0xc>)
+   d494e:	4a03      	ldr	r2, [pc, #12]	; (d495c <_GLOBAL__sub_I__ZN5spark7NetworkE+0x10>)
+   d4950:	601a      	str	r2, [r3, #0]
+   d4952:	2200      	movs	r2, #0
+   d4954:	605a      	str	r2, [r3, #4]
+   d4956:	4770      	bx	lr
+   d4958:	2003e4d0 	.word	0x2003e4d0
+   d495c:	000d5658 	.word	0x000d5658
+
+000d4960 <_ZN5spark9MeshClass9listeningEv>:
+    uint16_t getListenTimeout(void) {
+        return network_get_listen_timeout(*this, 0, NULL);
+    }
+
+    bool listening(void) {
+        return network_listening(*this, 0, NULL);
+   d4960:	2200      	movs	r2, #0
+   d4962:	4611      	mov	r1, r2
+   d4964:	6840      	ldr	r0, [r0, #4]
+   d4966:	f7ff bf0b 	b.w	d4780 <network_listening>
+
+000d496a <_ZN5spark9MeshClass16getListenTimeoutEv>:
+    void setListenTimeout(uint16_t timeout) {
+        network_set_listen_timeout(*this, timeout, NULL);
+    }
+
+    uint16_t getListenTimeout(void) {
+        return network_get_listen_timeout(*this, 0, NULL);
+   d496a:	2200      	movs	r2, #0
+   d496c:	4611      	mov	r1, r2
+   d496e:	6840      	ldr	r0, [r0, #4]
+   d4970:	f7ff bf16 	b.w	d47a0 <network_get_listen_timeout>
+
+000d4974 <_ZN5spark9MeshClass16setListenTimeoutEt>:
+    void listen(bool begin=true) {
+        network_listen(*this, begin ? 0 : 1, NULL);
+    }
+
+    void setListenTimeout(uint16_t timeout) {
+        network_set_listen_timeout(*this, timeout, NULL);
+   d4974:	2200      	movs	r2, #0
+   d4976:	6840      	ldr	r0, [r0, #4]
+   d4978:	f7ff bf0a 	b.w	d4790 <network_set_listen_timeout>
+
+000d497c <_ZN5spark9MeshClass6listenEb>:
+    void disconnect() {
+        network_disconnect(*this, NETWORK_DISCONNECT_REASON_USER, NULL);
+    }
+
+    void listen(bool begin=true) {
+        network_listen(*this, begin ? 0 : 1, NULL);
+   d497c:	2200      	movs	r2, #0
+   d497e:	f081 0101 	eor.w	r1, r1, #1
+   d4982:	6840      	ldr	r0, [r0, #4]
+   d4984:	f7ff bef4 	b.w	d4770 <network_listen>
+
+000d4988 <_ZN5spark9MeshClass3offEv>:
+    void on() {
+        network_on(*this, 0, 0, NULL);
+    }
+
+    void off() {
+        network_off(*this, 0, 0, NULL);
+   d4988:	2300      	movs	r3, #0
+   d498a:	461a      	mov	r2, r3
+   d498c:	4619      	mov	r1, r3
+   d498e:	6840      	ldr	r0, [r0, #4]
+   d4990:	f7ff bee6 	b.w	d4760 <network_off>
+
+000d4994 <_ZN5spark9MeshClass2onEv>:
+    MeshClass() :
+            NetworkClass(NETWORK_INTERFACE_MESH) {
+    }
+
+    void on() {
+        network_on(*this, 0, 0, NULL);
+   d4994:	2300      	movs	r3, #0
+   d4996:	461a      	mov	r2, r3
+   d4998:	4619      	mov	r1, r3
+   d499a:	6840      	ldr	r0, [r0, #4]
+   d499c:	f7ff bed8 	b.w	d4750 <network_on>
+
+000d49a0 <_ZN5spark9MeshClass5readyEv>:
+    bool listening(void) {
+        return network_listening(*this, 0, NULL);
+    }
+
+    bool ready() {
+        return network_ready(*this, 0,  NULL);
+   d49a0:	2200      	movs	r2, #0
+   d49a2:	4611      	mov	r1, r2
+   d49a4:	6840      	ldr	r0, [r0, #4]
+   d49a6:	f7ff becb 	b.w	d4740 <network_ready>
+
+000d49aa <_ZN5spark9MeshClass10connectingEv>:
+    void connect(unsigned flags=0) {
+        network_connect(*this, flags, 0, NULL);
+    }
+
+    bool connecting(void) {
+        return network_connecting(*this, 0, NULL);
+   d49aa:	2200      	movs	r2, #0
+   d49ac:	4611      	mov	r1, r2
+   d49ae:	6840      	ldr	r0, [r0, #4]
+   d49b0:	f7ff beb6 	b.w	d4720 <network_connecting>
+
+000d49b4 <_ZN5spark9MeshClass10disconnectEv>:
+    }
+
+    void disconnect() {
+        network_disconnect(*this, NETWORK_DISCONNECT_REASON_USER, NULL);
+   d49b4:	2200      	movs	r2, #0
+   d49b6:	2102      	movs	r1, #2
+   d49b8:	6840      	ldr	r0, [r0, #4]
+   d49ba:	f7ff beb9 	b.w	d4730 <network_disconnect>
+
+000d49be <_ZN5spark9MeshClass7connectEj>:
+    void off() {
+        network_off(*this, 0, 0, NULL);
+    }
+
+    void connect(unsigned flags=0) {
+        network_connect(*this, flags, 0, NULL);
+   d49be:	2300      	movs	r3, #0
+   d49c0:	461a      	mov	r2, r3
+   d49c2:	6840      	ldr	r0, [r0, #4]
+   d49c4:	f7ff bea4 	b.w	d4710 <network_connect>
+
+000d49c8 <_ZNKSt14default_deleteIN6Thread4DataEEclEPS1_.isra.8>:
+	       enable_if<is_convertible<_Up*, _Tp*>::value>::type>
+        default_delete(const default_delete<_Up>&) noexcept { }
+
+      /// Calls @c delete @p __ptr
+      void
+      operator()(_Tp* __ptr) const
+   d49c8:	b538      	push	{r3, r4, r5, lr}
+      {
+	static_assert(!is_void<_Tp>::value,
+		      "can't delete pointer to incomplete type");
+	static_assert(sizeof(_Tp)>0,
+		      "can't delete pointer to incomplete type");
+	delete __ptr;
+   d49ca:	4605      	mov	r5, r0
+   d49cc:	b178      	cbz	r0, d49ee <_ZNKSt14default_deleteIN6Thread4DataEEclEPS1_.isra.8+0x26>
+
+      /// Destructor, invokes the deleter if the stored pointer is not null.
+      ~unique_ptr() noexcept
+      {
+	auto& __ptr = std::get<0>(_M_t);
+	if (__ptr != nullptr)
+   d49ce:	6804      	ldr	r4, [r0, #0]
+   d49d0:	b144      	cbz	r4, d49e4 <_ZNKSt14default_deleteIN6Thread4DataEEclEPS1_.isra.8+0x1c>
+
+    _Function_base() : _M_manager(nullptr) { }
+
+    ~_Function_base()
+    {
+      if (_M_manager)
+   d49d2:	68a3      	ldr	r3, [r4, #8]
+   d49d4:	b11b      	cbz	r3, d49de <_ZNKSt14default_deleteIN6Thread4DataEEclEPS1_.isra.8+0x16>
+	_M_manager(_M_functor, _M_functor, __destroy_functor);
+   d49d6:	2203      	movs	r2, #3
+   d49d8:	4621      	mov	r1, r4
+   d49da:	4620      	mov	r0, r4
+   d49dc:	4798      	blx	r3
+      {
+	static_assert(!is_void<_Tp>::value,
+		      "can't delete pointer to incomplete type");
+	static_assert(sizeof(_Tp)>0,
+		      "can't delete pointer to incomplete type");
+	delete __ptr;
+   d49de:	4620      	mov	r0, r4
+   d49e0:	f7ff fb5b 	bl	d409a <_ZdlPv>
+   d49e4:	4628      	mov	r0, r5
+      }
+   d49e6:	e8bd 4038 	ldmia.w	sp!, {r3, r4, r5, lr}
+      {
+	static_assert(!is_void<_Tp>::value,
+		      "can't delete pointer to incomplete type");
+	static_assert(sizeof(_Tp)>0,
+		      "can't delete pointer to incomplete type");
+	delete __ptr;
+   d49ea:	f7ff bb56 	b.w	d409a <_ZdlPv>
+   d49ee:	bd38      	pop	{r3, r4, r5, pc}
+
+000d49f0 <_ZNKSt14default_deleteI3UDPEclEPS0_.isra.10.constprop.15>:
+   d49f0:	b110      	cbz	r0, d49f8 <_ZNKSt14default_deleteI3UDPEclEPS0_.isra.10.constprop.15+0x8>
+   d49f2:	6803      	ldr	r3, [r0, #0]
+   d49f4:	685b      	ldr	r3, [r3, #4]
+   d49f6:	4718      	bx	r3
+   d49f8:	4770      	bx	lr
+
+000d49fa <_ZN6ThreadD1Ev>:
+    Thread(Thread&& thread)
+        : d_(std::move(thread.d_))
+    {
+    }
+
+    ~Thread()
+   d49fa:	b510      	push	{r4, lr}
+      }
+
+      /// Return the stored pointer.
+      pointer
+      get() const noexcept
+      { return std::get<0>(_M_t); }
+   d49fc:	6803      	ldr	r3, [r0, #0]
+   d49fe:	4604      	mov	r4, r0
+        dispose();
+    }
+
+    void dispose()
+    {
+        if (!isValid())
+   d4a00:	b1bb      	cbz	r3, d4a32 <_ZN6ThreadD1Ev+0x38>
+        return isCurrent();
+    }
+
+    bool isCurrent() const
+    {
+        return isValid() && os_thread_is_current(d_->handle);
+   d4a02:	6858      	ldr	r0, [r3, #4]
+   d4a04:	f7ff fe24 	bl	d4650 <os_thread_is_current>
+   d4a08:	b978      	cbnz	r0, d4a2a <_ZN6ThreadD1Ev+0x30>
+   d4a0a:	6823      	ldr	r3, [r4, #0]
+
+        // We shouldn't dispose of current thread
+        if (isCurrent())
+            return;
+
+        if (!d_->exited) {
+   d4a0c:	7c5a      	ldrb	r2, [r3, #17]
+   d4a0e:	b912      	cbnz	r2, d4a16 <_ZN6ThreadD1Ev+0x1c>
+        d_.reset();
+    }
+
+    bool join()
+    {
+        return isValid() && os_thread_join(d_->handle)==0;
+   d4a10:	6858      	ldr	r0, [r3, #4]
+   d4a12:	f7ff fe25 	bl	d4660 <os_thread_join>
+
+        if (!d_->exited) {
+            join();
+        }
+
+        os_thread_cleanup(d_->handle);
+   d4a16:	6823      	ldr	r3, [r4, #0]
+   d4a18:	6858      	ldr	r0, [r3, #4]
+   d4a1a:	f7ff fe29 	bl	d4670 <os_thread_cleanup>
+#endif
+    {
+      // concept requirements
+      __glibcxx_function_requires(_SGIAssignableConcept<_Tp>)
+
+      _Tp __tmp = _GLIBCXX_MOVE(__a);
+   d4a1e:	6820      	ldr	r0, [r4, #0]
+      __a = _GLIBCXX_MOVE(__b);
+   d4a20:	2300      	movs	r3, #0
+   d4a22:	6023      	str	r3, [r4, #0]
+      void
+      reset(pointer __p = pointer()) noexcept
+      {
+	using std::swap;
+	swap(std::get<0>(_M_t), __p);
+	if (__p != pointer())
+   d4a24:	b128      	cbz	r0, d4a32 <_ZN6ThreadD1Ev+0x38>
+	  get_deleter()(__p);
+   d4a26:	f7ff ffcf 	bl	d49c8 <_ZNKSt14default_deleteIN6Thread4DataEEclEPS1_.isra.8>
+
+      /// Destructor, invokes the deleter if the stored pointer is not null.
+      ~unique_ptr() noexcept
+      {
+	auto& __ptr = std::get<0>(_M_t);
+	if (__ptr != nullptr)
+   d4a2a:	6820      	ldr	r0, [r4, #0]
+   d4a2c:	b108      	cbz	r0, d4a32 <_ZN6ThreadD1Ev+0x38>
+	  get_deleter()(__ptr);
+   d4a2e:	f7ff ffcb 	bl	d49c8 <_ZNKSt14default_deleteIN6Thread4DataEEclEPS1_.isra.8>
+    }
+
+    ~Thread()
+    {
+        dispose();
+    }
+   d4a32:	4620      	mov	r0, r4
+   d4a34:	bd10      	pop	{r4, pc}
+	...
+
+000d4a38 <_ZN5spark9MeshClassD1Ev>:
+     * Pull data from the socket and handle as required.
+     */
+    int poll();
+};
+
+class MeshClass : public NetworkClass, public MeshPublish {
+   d4a38:	b538      	push	{r3, r4, r5, lr}
+   d4a3a:	4b0b      	ldr	r3, [pc, #44]	; (d4a68 <_ZN5spark9MeshClassD1Ev+0x30>)
+   d4a3c:	6003      	str	r3, [r0, #0]
+   d4a3e:	4604      	mov	r4, r0
+
+      /// Destructor, invokes the deleter if the stored pointer is not null.
+      ~unique_ptr()
+      {
+	auto& __ptr = std::get<0>(_M_t);
+	if (__ptr != nullptr)
+   d4a40:	f8d0 01cc 	ldr.w	r0, [r0, #460]	; 0x1cc
+   d4a44:	b108      	cbz	r0, d4a4a <_ZN5spark9MeshClassD1Ev+0x12>
+      void
+      operator()(_Tp* __ptr) const
+      {
+	static_assert(sizeof(_Tp)>0,
+		      "can't delete pointer to incomplete type");
+	delete [] __ptr;
+   d4a46:	f7ff fb2a 	bl	d409e <_ZdaPv>
+
+      /// Destructor, invokes the deleter if the stored pointer is not null.
+      ~unique_ptr() noexcept
+      {
+	auto& __ptr = std::get<0>(_M_t);
+	if (__ptr != nullptr)
+   d4a4a:	f8d4 51c4 	ldr.w	r5, [r4, #452]	; 0x1c4
+   d4a4e:	b12d      	cbz	r5, d4a5c <_ZN5spark9MeshClassD1Ev+0x24>
+      {
+	static_assert(!is_void<_Tp>::value,
+		      "can't delete pointer to incomplete type");
+	static_assert(sizeof(_Tp)>0,
+		      "can't delete pointer to incomplete type");
+	delete __ptr;
+   d4a50:	4628      	mov	r0, r5
+   d4a52:	f7ff ffd2 	bl	d49fa <_ZN6ThreadD1Ev>
+   d4a56:	4628      	mov	r0, r5
+   d4a58:	f7ff fb1f 	bl	d409a <_ZdlPv>
+
+      /// Destructor, invokes the deleter if the stored pointer is not null.
+      ~unique_ptr() noexcept
+      {
+	auto& __ptr = std::get<0>(_M_t);
+	if (__ptr != nullptr)
+   d4a5c:	68a0      	ldr	r0, [r4, #8]
+   d4a5e:	b108      	cbz	r0, d4a64 <_ZN5spark9MeshClassD1Ev+0x2c>
+	  get_deleter()(__ptr);
+   d4a60:	f7ff ffc6 	bl	d49f0 <_ZNKSt14default_deleteI3UDPEclEPS0_.isra.10.constprop.15>
+   d4a64:	4620      	mov	r0, r4
+   d4a66:	bd38      	pop	{r3, r4, r5, pc}
+   d4a68:	000d568c 	.word	0x000d568c
+
+000d4a6c <_GLOBAL__sub_I__ZN5spark9mesh_loopEv>:
+
+    return addr;
+}
+
+MeshClass Mesh;
+} // namespace spark
+   d4a6c:	b538      	push	{r3, r4, r5, lr}
+   d4a6e:	4c0d      	ldr	r4, [pc, #52]	; (d4aa4 <_GLOBAL__sub_I__ZN5spark9mesh_loopEv+0x38>)
+   d4a70:	4b0d      	ldr	r3, [pc, #52]	; (d4aa8 <_GLOBAL__sub_I__ZN5spark9mesh_loopEv+0x3c>)
+   d4a72:	6023      	str	r3, [r4, #0]
+
+  template<std::size_t _Idx, typename _Head>
+    struct _Head_base<_Idx, _Head, false>
+    {
+      constexpr _Head_base()
+      : _M_head_impl() { }
+   d4a74:	2500      	movs	r5, #0
+   d4a76:	2302      	movs	r3, #2
+     */
+    RecursiveMutex(os_mutex_recursive_t handle) : handle_(handle) {}
+
+    RecursiveMutex() : handle_(nullptr)
+    {
+        os_mutex_recursive_create(&handle_);
+   d4a78:	f504 70e4 	add.w	r0, r4, #456	; 0x1c8
+   d4a7c:	6063      	str	r3, [r4, #4]
+   d4a7e:	60a5      	str	r5, [r4, #8]
+   d4a80:	f8c4 51c4 	str.w	r5, [r4, #452]	; 0x1c4
+    /**
+     * Creates a shared mutex.
+     */
+    RecursiveMutex(os_mutex_recursive_t handle) : handle_(handle) {}
+
+    RecursiveMutex() : handle_(nullptr)
+   d4a84:	f8c4 51c8 	str.w	r5, [r4, #456]	; 0x1c8
+    {
+        os_mutex_recursive_create(&handle_);
+   d4a88:	f7ff fe02 	bl	d4690 <os_mutex_recursive_create>
+public:
+    MeshClass() :
+            NetworkClass(NETWORK_INTERFACE_MESH) {
+   d4a8c:	4b07      	ldr	r3, [pc, #28]	; (d4aac <_GLOBAL__sub_I__ZN5spark9mesh_loopEv+0x40>)
+   d4a8e:	f8c4 51cc 	str.w	r5, [r4, #460]	; 0x1cc
+   d4a92:	6023      	str	r3, [r4, #0]
+    }
+
+    return addr;
+}
+
+MeshClass Mesh;
+   d4a94:	4620      	mov	r0, r4
+   d4a96:	4a06      	ldr	r2, [pc, #24]	; (d4ab0 <_GLOBAL__sub_I__ZN5spark9mesh_loopEv+0x44>)
+   d4a98:	4906      	ldr	r1, [pc, #24]	; (d4ab4 <_GLOBAL__sub_I__ZN5spark9mesh_loopEv+0x48>)
+} // namespace spark
+   d4a9a:	e8bd 4038 	ldmia.w	sp!, {r3, r4, r5, lr}
+    }
+
+    return addr;
+}
+
+MeshClass Mesh;
+   d4a9e:	f000 bbfd 	b.w	d529c <__aeabi_atexit>
+   d4aa2:	bf00      	nop
+   d4aa4:	2003e4d8 	.word	0x2003e4d8
+   d4aa8:	000d5658 	.word	0x000d5658
+   d4aac:	000d568c 	.word	0x000d568c
+   d4ab0:	2003e4bc 	.word	0x2003e4bc
+   d4ab4:	000d4a39 	.word	0x000d4a39
+
+000d4ab8 <_ZN5spark9WiFiClass5readyEv>:
+    bool connecting(void) {
+        return network_connecting(*this, 0, NULL);
+    }
+
+    bool ready(void) {
+        return network_ready(*this, 0, NULL);
+   d4ab8:	2200      	movs	r2, #0
+   d4aba:	4611      	mov	r1, r2
+   d4abc:	6840      	ldr	r0, [r0, #4]
+   d4abe:	f7ff be3f 	b.w	d4740 <network_ready>
+
+000d4ac2 <_ZN5spark9WiFiClass9listeningEv>:
+    uint16_t getListenTimeout(void) {
+        return network_get_listen_timeout(*this, 0, NULL);
+    }
+
+    bool listening(void) {
+        return network_listening(*this, 0, NULL);
+   d4ac2:	2200      	movs	r2, #0
+   d4ac4:	4611      	mov	r1, r2
+   d4ac6:	6840      	ldr	r0, [r0, #4]
+   d4ac8:	f7ff be5a 	b.w	d4780 <network_listening>
+
+000d4acc <_ZN5spark9WiFiClass16getListenTimeoutEv>:
+    void setListenTimeout(uint16_t timeout) {
+        network_set_listen_timeout(*this, timeout, NULL);
+    }
+
+    uint16_t getListenTimeout(void) {
+        return network_get_listen_timeout(*this, 0, NULL);
+   d4acc:	2200      	movs	r2, #0
+   d4ace:	4611      	mov	r1, r2
+   d4ad0:	6840      	ldr	r0, [r0, #4]
+   d4ad2:	f7ff be65 	b.w	d47a0 <network_get_listen_timeout>
+
+000d4ad6 <_ZN5spark9WiFiClass16setListenTimeoutEt>:
+    void listen(bool begin=true) {
+        network_listen(*this, begin ? 0 : 1, NULL);
+    }
+
+    void setListenTimeout(uint16_t timeout) {
+        network_set_listen_timeout(*this, timeout, NULL);
+   d4ad6:	2200      	movs	r2, #0
+   d4ad8:	6840      	ldr	r0, [r0, #4]
+   d4ada:	f7ff be59 	b.w	d4790 <network_set_listen_timeout>
+
+000d4ade <_ZN5spark9WiFiClass6listenEb>:
+    void off(void) {
+        network_off(*this, 0, 0, NULL);
+    }
+
+    void listen(bool begin=true) {
+        network_listen(*this, begin ? 0 : 1, NULL);
+   d4ade:	2200      	movs	r2, #0
+   d4ae0:	f081 0101 	eor.w	r1, r1, #1
+   d4ae4:	6840      	ldr	r0, [r0, #4]
+   d4ae6:	f7ff be43 	b.w	d4770 <network_listen>
+
+000d4aea <_ZN5spark9WiFiClass3offEv>:
+    void on(void) {
+        network_on(*this, 0, 0, NULL);
+    }
+
+    void off(void) {
+        network_off(*this, 0, 0, NULL);
+   d4aea:	2300      	movs	r3, #0
+   d4aec:	461a      	mov	r2, r3
+   d4aee:	4619      	mov	r1, r3
+   d4af0:	6840      	ldr	r0, [r0, #4]
+   d4af2:	f7ff be35 	b.w	d4760 <network_off>
+
+000d4af6 <_ZN5spark9WiFiClass2onEv>:
+    bool ready(void) {
+        return network_ready(*this, 0, NULL);
+    }
+
+    void on(void) {
+        network_on(*this, 0, 0, NULL);
+   d4af6:	2300      	movs	r3, #0
+   d4af8:	461a      	mov	r2, r3
+   d4afa:	4619      	mov	r1, r3
+   d4afc:	6840      	ldr	r0, [r0, #4]
+   d4afe:	f7ff be27 	b.w	d4750 <network_on>
+
+000d4b02 <_ZN5spark9WiFiClass10connectingEv>:
+    void disconnect(void) {
+        network_disconnect(*this, NETWORK_DISCONNECT_REASON_USER, NULL);
+    }
+
+    bool connecting(void) {
+        return network_connecting(*this, 0, NULL);
+   d4b02:	2200      	movs	r2, #0
+   d4b04:	4611      	mov	r1, r2
+   d4b06:	6840      	ldr	r0, [r0, #4]
+   d4b08:	f7ff be0a 	b.w	d4720 <network_connecting>
+
+000d4b0c <_ZN5spark9WiFiClass10disconnectEv>:
+    void connect(unsigned flags=0) {
+        network_connect(*this, flags, 0, NULL);
+    }
+
+    void disconnect(void) {
+        network_disconnect(*this, NETWORK_DISCONNECT_REASON_USER, NULL);
+   d4b0c:	2200      	movs	r2, #0
+   d4b0e:	2102      	movs	r1, #2
+   d4b10:	6840      	ldr	r0, [r0, #4]
+   d4b12:	f7ff be0d 	b.w	d4730 <network_disconnect>
+
+000d4b16 <_ZN5spark9WiFiClass7connectEj>:
+    uint32_t ping(IPAddress remoteIP, uint8_t nTries) {
+        return inet_ping(&remoteIP.raw(), *this, nTries, NULL);
+    }
+
+    void connect(unsigned flags=0) {
+        network_connect(*this, flags, 0, NULL);
+   d4b16:	2300      	movs	r3, #0
+   d4b18:	461a      	mov	r2, r3
+   d4b1a:	6840      	ldr	r0, [r0, #4]
+   d4b1c:	f7ff bdf8 	b.w	d4710 <network_connect>
+
+000d4b20 <_GLOBAL__sub_I__ZN10WiFiSignalC2ERK21wlan_connected_info_t>:
+   d4b20:	4b02      	ldr	r3, [pc, #8]	; (d4b2c <_GLOBAL__sub_I__ZN10WiFiSignalC2ERK21wlan_connected_info_t+0xc>)
+   d4b22:	2204      	movs	r2, #4
+   d4b24:	605a      	str	r2, [r3, #4]
+        wlan_set_ipaddress_source(source, true, NULL);
+    }
+
+public:
+    WiFiClass() :
+            NetworkClass(NETWORK_INTERFACE_WIFI_STA) {
+   d4b26:	4a02      	ldr	r2, [pc, #8]	; (d4b30 <_GLOBAL__sub_I__ZN10WiFiSignalC2ERK21wlan_connected_info_t+0x10>)
+   d4b28:	601a      	str	r2, [r3, #0]
+   d4b2a:	4770      	bx	lr
+   d4b2c:	2003e6a8 	.word	0x2003e6a8
+   d4b30:	000d56c0 	.word	0x000d56c0
+
+000d4b34 <_ZN7TwoWireD1Ev>:
+private:
+  HAL_I2C_Interface _i2c;
+
+public:
+  TwoWire(HAL_I2C_Interface i2c);
+  virtual ~TwoWire() {};
+   d4b34:	4770      	bx	lr
+
+000d4b36 <_ZN7TwoWire5writeEPKhj>:
+
+// must be called in:
+// slave tx event callback
+// or after beginTransmission(address)
+size_t TwoWire::write(const uint8_t *data, size_t quantity)
+{
+   d4b36:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+   d4b38:	4606      	mov	r6, r0
+   d4b3a:	4615      	mov	r5, r2
+   d4b3c:	460c      	mov	r4, r1
+   d4b3e:	188f      	adds	r7, r1, r2
+  // in master/slave transmitter mode
+  for(size_t i = 0; i < quantity; ++i)
+   d4b40:	42bc      	cmp	r4, r7
+   d4b42:	d006      	beq.n	d4b52 <_ZN7TwoWire5writeEPKhj+0x1c>
+  {
+    write(data[i]);
+   d4b44:	6833      	ldr	r3, [r6, #0]
+   d4b46:	f814 1b01 	ldrb.w	r1, [r4], #1
+   d4b4a:	689b      	ldr	r3, [r3, #8]
+   d4b4c:	4630      	mov	r0, r6
+   d4b4e:	4798      	blx	r3
+// slave tx event callback
+// or after beginTransmission(address)
+size_t TwoWire::write(const uint8_t *data, size_t quantity)
+{
+  // in master/slave transmitter mode
+  for(size_t i = 0; i < quantity; ++i)
+   d4b50:	e7f6      	b.n	d4b40 <_ZN7TwoWire5writeEPKhj+0xa>
+  {
+    write(data[i]);
+  }
+
+  return quantity;
+}
+   d4b52:	4628      	mov	r0, r5
+   d4b54:	bdf8      	pop	{r3, r4, r5, r6, r7, pc}
+
+000d4b56 <_ZN7TwoWire5writeEh>:
+// must be called in:
+// slave tx event callback
+// or after beginTransmission(address)
+size_t TwoWire::write(uint8_t data)
+{
+  return HAL_I2C_Write_Data(_i2c, data, NULL);
+   d4b56:	2200      	movs	r2, #0
+   d4b58:	7c00      	ldrb	r0, [r0, #16]
+   d4b5a:	f7ff bd09 	b.w	d4570 <HAL_I2C_Write_Data>
+
+000d4b5e <_ZN7TwoWire9availableEv>:
+// must be called in:
+// slave rx event callback
+// or after requestFrom(address, numBytes)
+int TwoWire::available(void)
+{
+  return HAL_I2C_Available_Data(_i2c, NULL);
+   d4b5e:	2100      	movs	r1, #0
+   d4b60:	7c00      	ldrb	r0, [r0, #16]
+   d4b62:	f7ff bd0d 	b.w	d4580 <HAL_I2C_Available_Data>
+
+000d4b66 <_ZN7TwoWire4readEv>:
+// must be called in:
+// slave rx event callback
+// or after requestFrom(address, numBytes)
+int TwoWire::read(void)
+{
+  return HAL_I2C_Read_Data(_i2c, NULL);
+   d4b66:	2100      	movs	r1, #0
+   d4b68:	7c00      	ldrb	r0, [r0, #16]
+   d4b6a:	f7ff bd11 	b.w	d4590 <HAL_I2C_Read_Data>
+
+000d4b6e <_ZN7TwoWire4peekEv>:
+// must be called in:
+// slave rx event callback
+// or after requestFrom(address, numBytes)
+int TwoWire::peek(void)
+{
+  return HAL_I2C_Peek_Data(_i2c, NULL);
+   d4b6e:	2100      	movs	r1, #0
+   d4b70:	7c00      	ldrb	r0, [r0, #16]
+   d4b72:	f7ff bd15 	b.w	d45a0 <HAL_I2C_Peek_Data>
+
+000d4b76 <_ZN7TwoWire5flushEv>:
+}
+
+void TwoWire::flush(void)
+{
+  HAL_I2C_Flush_Data(_i2c, NULL);
+   d4b76:	2100      	movs	r1, #0
+   d4b78:	7c00      	ldrb	r0, [r0, #16]
+   d4b7a:	f7ff bd19 	b.w	d45b0 <HAL_I2C_Flush_Data>
+
+000d4b7e <_ZN7TwoWireD0Ev>:
+   d4b7e:	b510      	push	{r4, lr}
+   d4b80:	4604      	mov	r4, r0
+   d4b82:	f7ff fa8a 	bl	d409a <_ZdlPv>
+   d4b86:	4620      	mov	r0, r4
+   d4b88:	bd10      	pop	{r4, pc}
+	...
+
+000d4b8c <_ZN7TwoWireC1E17HAL_I2C_Interface>:
+#include "i2c_hal.h"
+#include "spark_wiring_thread.h"
+
+// Constructors ////////////////////////////////////////////////////////////////
+
+TwoWire::TwoWire(HAL_I2C_Interface i2c)
+   d4b8c:	b510      	push	{r4, lr}
+   d4b8e:	4604      	mov	r4, r0
+    virtual int available() = 0;
+    virtual int read() = 0;
+    virtual int peek() = 0;
+    virtual void flush() = 0;
+
+    Stream() {_timeout=1000;}
+   d4b90:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
+   d4b94:	4608      	mov	r0, r1
+   d4b96:	60a3      	str	r3, [r4, #8]
+  protected:
+    void setWriteError(int err = 1) { write_error = err; }
+    size_t printf_impl(bool newline, const char* format, ...);
+
+  public:
+    Print() : write_error(0) {}
+   d4b98:	2100      	movs	r1, #0
+   d4b9a:	4b04      	ldr	r3, [pc, #16]	; (d4bac <_ZN7TwoWireC1E17HAL_I2C_Interface+0x20>)
+{
+  _i2c = i2c;
+   d4b9c:	7420      	strb	r0, [r4, #16]
+   d4b9e:	6061      	str	r1, [r4, #4]
+#include "i2c_hal.h"
+#include "spark_wiring_thread.h"
+
+// Constructors ////////////////////////////////////////////////////////////////
+
+TwoWire::TwoWire(HAL_I2C_Interface i2c)
+   d4ba0:	6023      	str	r3, [r4, #0]
+{
+  _i2c = i2c;
+  HAL_I2C_Init(_i2c, NULL);
+   d4ba2:	f7ff fd0d 	bl	d45c0 <HAL_I2C_Init>
+
+}
+   d4ba6:	4620      	mov	r0, r4
+   d4ba8:	bd10      	pop	{r4, pc}
+   d4baa:	bf00      	nop
+   d4bac:	000d56f4 	.word	0x000d56f4
+
+000d4bb0 <_ZN7TwoWire5beginEv>:
+  HAL_I2C_Stretch_Clock(_i2c, stretch, NULL);
+}
+
+void TwoWire::begin(void)
+{
+	HAL_I2C_Begin(_i2c, I2C_MODE_MASTER, 0x00, NULL);
+   d4bb0:	2300      	movs	r3, #0
+   d4bb2:	461a      	mov	r2, r3
+   d4bb4:	4619      	mov	r1, r3
+   d4bb6:	7c00      	ldrb	r0, [r0, #16]
+   d4bb8:	f7ff bcba 	b.w	d4530 <HAL_I2C_Begin>
+
+000d4bbc <_ZN7TwoWire11requestFromEhhh>:
+{
+	HAL_I2C_End(_i2c, NULL);
+}
+
+uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint8_t sendStop)
+{
+   d4bbc:	b513      	push	{r0, r1, r4, lr}
+  uint8_t result = HAL_I2C_Request_Data(_i2c, address, quantity, sendStop, NULL);
+   d4bbe:	2400      	movs	r4, #0
+   d4bc0:	7c00      	ldrb	r0, [r0, #16]
+   d4bc2:	9400      	str	r4, [sp, #0]
+   d4bc4:	f7ff fcbc 	bl	d4540 <HAL_I2C_Request_Data>
+  return result;
+}
+   d4bc8:	b2c0      	uxtb	r0, r0
+   d4bca:	b002      	add	sp, #8
+   d4bcc:	bd10      	pop	{r4, pc}
+
+000d4bce <_ZN7TwoWire11requestFromEhh>:
+
+uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity)
+{
+  return requestFrom((uint8_t)address, (uint8_t)quantity, (uint8_t)true);
+   d4bce:	2301      	movs	r3, #1
+   d4bd0:	f7ff bff4 	b.w	d4bbc <_ZN7TwoWire11requestFromEhhh>
+
+000d4bd4 <_ZN7TwoWire11requestFromEii>:
+}
+
+uint8_t TwoWire::requestFrom(int address, int quantity)
+{
+  return requestFrom((uint8_t)address, (uint8_t)quantity, (uint8_t)true);
+   d4bd4:	2301      	movs	r3, #1
+   d4bd6:	b2d2      	uxtb	r2, r2
+   d4bd8:	b2c9      	uxtb	r1, r1
+   d4bda:	f7ff bfef 	b.w	d4bbc <_ZN7TwoWire11requestFromEhhh>
+
+000d4bde <_ZN7TwoWire17beginTransmissionEh>:
+  return requestFrom((uint8_t)address, (uint8_t)quantity, (uint8_t)sendStop);
+}
+
+void TwoWire::beginTransmission(uint8_t address)
+{
+	HAL_I2C_Begin_Transmission(_i2c, address, NULL);
+   d4bde:	2200      	movs	r2, #0
+   d4be0:	7c00      	ldrb	r0, [r0, #16]
+   d4be2:	f7ff bcb5 	b.w	d4550 <HAL_I2C_Begin_Transmission>
+
+000d4be6 <_ZN7TwoWire17beginTransmissionEi>:
+}
+
+void TwoWire::beginTransmission(int address)
+{
+  beginTransmission((uint8_t)address);
+   d4be6:	b2c9      	uxtb	r1, r1
+   d4be8:	f7ff bff9 	b.w	d4bde <_ZN7TwoWire17beginTransmissionEh>
+
+000d4bec <_ZN7TwoWire15endTransmissionEh>:
+//	no call to endTransmission(true) is made. Some I2C
+//	devices will behave oddly if they do not see a STOP.
+//
+uint8_t TwoWire::endTransmission(uint8_t sendStop)
+{
+	return HAL_I2C_End_Transmission(_i2c, sendStop, NULL);
+   d4bec:	2200      	movs	r2, #0
+   d4bee:	7c00      	ldrb	r0, [r0, #16]
+   d4bf0:	f7ff bcb6 	b.w	d4560 <HAL_I2C_End_Transmission>
+
+000d4bf4 <_ZN7TwoWire15endTransmissionEv>:
+//	This provides backwards compatibility with the original
+//	definition, and expected behaviour, of endTransmission
+//
+uint8_t TwoWire::endTransmission(void)
+{
+  return endTransmission(true);
+   d4bf4:	2101      	movs	r1, #1
+   d4bf6:	f7ff bff9 	b.w	d4bec <_ZN7TwoWire15endTransmissionEh>
+
+000d4bfa <_ZN9USBSerial14blockOnOverrunEb>:
+  HAL_USB_USART_Flush_Data(_serial);
+}
+
+void USBSerial::blockOnOverrun(bool block)
+{
+  _blocking = block;
+   d4bfa:	7441      	strb	r1, [r0, #17]
+   d4bfc:	4770      	bx	lr
+
+000d4bfe <_ZN9USBSerialD1Ev>:
+#include "usb_hal.h"
+#include "system_task.h"
+#include "spark_wiring_startup.h"
+#include "concurrent_hal.h"
+
+class USBSerial : public Stream
+   d4bfe:	4770      	bx	lr
+
+000d4c00 <_ZN9USBSerial4readEv>:
+
+
+// Read data from buffer
+int USBSerial::read()
+{
+	return HAL_USB_USART_Receive_Data(_serial, false);
+   d4c00:	2100      	movs	r1, #0
+   d4c02:	7c00      	ldrb	r0, [r0, #16]
+   d4c04:	f7ff bc7c 	b.w	d4500 <HAL_USB_USART_Receive_Data>
+
+000d4c08 <_ZN9USBSerial4peekEv>:
+  _blocking = block;
+}
+
+int USBSerial::peek()
+{
+	return HAL_USB_USART_Receive_Data(_serial, true);
+   d4c08:	2101      	movs	r1, #1
+   d4c0a:	7c00      	ldrb	r0, [r0, #16]
+   d4c0c:	f7ff bc78 	b.w	d4500 <HAL_USB_USART_Receive_Data>
+
+000d4c10 <_ZN9USBSerial17availableForWriteEv>:
+	return HAL_USB_USART_Receive_Data(_serial, false);
+}
+
+int USBSerial::availableForWrite()
+{
+  return HAL_USB_USART_Available_Data_For_Write(_serial);
+   d4c10:	7c00      	ldrb	r0, [r0, #16]
+   d4c12:	f7ff bc6d 	b.w	d44f0 <HAL_USB_USART_Available_Data_For_Write>
+
+000d4c16 <_ZN9USBSerial9availableEv>:
+}
+
+int USBSerial::available()
+{
+	return HAL_USB_USART_Available_Data(_serial);
+   d4c16:	7c00      	ldrb	r0, [r0, #16]
+   d4c18:	f7ff bc62 	b.w	d44e0 <HAL_USB_USART_Available_Data>
+
+000d4c1c <_ZN9USBSerial5writeEh>:
+}
+
+size_t USBSerial::write(uint8_t byte)
+{
+   d4c1c:	b538      	push	{r3, r4, r5, lr}
+   d4c1e:	4604      	mov	r4, r0
+  if (HAL_USB_USART_Available_Data_For_Write(_serial) > 0 || _blocking) {
+   d4c20:	7c00      	ldrb	r0, [r0, #16]
+{
+	return HAL_USB_USART_Available_Data(_serial);
+}
+
+size_t USBSerial::write(uint8_t byte)
+{
+   d4c22:	460d      	mov	r5, r1
+  if (HAL_USB_USART_Available_Data_For_Write(_serial) > 0 || _blocking) {
+   d4c24:	f7ff fc64 	bl	d44f0 <HAL_USB_USART_Available_Data_For_Write>
+   d4c28:	2800      	cmp	r0, #0
+   d4c2a:	dc01      	bgt.n	d4c30 <_ZN9USBSerial5writeEh+0x14>
+   d4c2c:	7c60      	ldrb	r0, [r4, #17]
+   d4c2e:	b120      	cbz	r0, d4c3a <_ZN9USBSerial5writeEh+0x1e>
+    HAL_USB_USART_Send_Data(_serial, byte);
+   d4c30:	4629      	mov	r1, r5
+   d4c32:	7c20      	ldrb	r0, [r4, #16]
+   d4c34:	f7ff fc6c 	bl	d4510 <HAL_USB_USART_Send_Data>
+    return 1;
+   d4c38:	2001      	movs	r0, #1
+  }
+  return 0;
+}
+   d4c3a:	bd38      	pop	{r3, r4, r5, pc}
+
+000d4c3c <_ZN9USBSerial5flushEv>:
+
+void USBSerial::flush()
+{
+  HAL_USB_USART_Flush_Data(_serial);
+   d4c3c:	7c00      	ldrb	r0, [r0, #16]
+   d4c3e:	f7ff bc6f 	b.w	d4520 <HAL_USB_USART_Flush_Data>
+
+000d4c42 <_ZN9USBSerialD0Ev>:
+   d4c42:	b510      	push	{r4, lr}
+   d4c44:	4604      	mov	r4, r0
+   d4c46:	f7ff fa28 	bl	d409a <_ZdlPv>
+   d4c4a:	4620      	mov	r0, r4
+   d4c4c:	bd10      	pop	{r4, pc}
+	...
+
+000d4c50 <_ZN9USBSerialC1E20HAL_USB_USART_SerialRK20HAL_USB_USART_Config>:
+
+  HAL_USB_USART_Config conf = acquireSerialBuffer();
+  HAL_USB_USART_Init(_serial, &conf);
+}
+
+USBSerial::USBSerial(HAL_USB_USART_Serial serial, const HAL_USB_USART_Config& conf)
+   d4c50:	b510      	push	{r4, lr}
+   d4c52:	4604      	mov	r4, r0
+   d4c54:	2300      	movs	r3, #0
+   d4c56:	6063      	str	r3, [r4, #4]
+   d4c58:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
+   d4c5c:	60a3      	str	r3, [r4, #8]
+   d4c5e:	4b05      	ldr	r3, [pc, #20]	; (d4c74 <_ZN9USBSerialC1E20HAL_USB_USART_SerialRK20HAL_USB_USART_Config+0x24>)
+   d4c60:	6023      	str	r3, [r4, #0]
+{
+  _serial = serial;
+  _blocking = true;
+   d4c62:	2301      	movs	r3, #1
+
+  HAL_USB_USART_Config conf = acquireSerialBuffer();
+  HAL_USB_USART_Init(_serial, &conf);
+}
+
+USBSerial::USBSerial(HAL_USB_USART_Serial serial, const HAL_USB_USART_Config& conf)
+   d4c64:	4608      	mov	r0, r1
+{
+  _serial = serial;
+   d4c66:	7421      	strb	r1, [r4, #16]
+  _blocking = true;
+   d4c68:	7463      	strb	r3, [r4, #17]
+
+  HAL_USB_USART_Init(_serial, &conf);
+   d4c6a:	4611      	mov	r1, r2
+   d4c6c:	f7ff fc28 	bl	d44c0 <HAL_USB_USART_Init>
+}
+   d4c70:	4620      	mov	r0, r4
+   d4c72:	bd10      	pop	{r4, pc}
+   d4c74:	000d571c 	.word	0x000d571c
+
+000d4c78 <_ZN9USBSerial5beginEl>:
+// Public methods
+//
+
+void USBSerial::begin(long speed)
+{
+    HAL_USB_USART_Begin(_serial, speed, NULL);
+   d4c78:	2200      	movs	r2, #0
+   d4c7a:	7c00      	ldrb	r0, [r0, #16]
+   d4c7c:	f7ff bc28 	b.w	d44d0 <HAL_USB_USART_Begin>
+
+000d4c80 <_Z19acquireSerialBufferv>:
+
+// Preinstantiate Objects //////////////////////////////////////////////////////
+#ifdef SPARK_USB_SERIAL
+
+HAL_USB_USART_Config __attribute__((weak)) acquireSerialBuffer()
+{
+   d4c80:	b510      	push	{r4, lr}
+  HAL_USB_USART_Config conf = {0};
+   d4c82:	2214      	movs	r2, #20
+
+// Preinstantiate Objects //////////////////////////////////////////////////////
+#ifdef SPARK_USB_SERIAL
+
+HAL_USB_USART_Config __attribute__((weak)) acquireSerialBuffer()
+{
+   d4c84:	4604      	mov	r4, r0
+  HAL_USB_USART_Config conf = {0};
+   d4c86:	2100      	movs	r1, #0
+   d4c88:	f000 fc6f 	bl	d556a <memset>
+  conf.rx_buffer_size = USB_RX_BUFFER_SIZE;
+  conf.tx_buffer_size = USB_TX_BUFFER_SIZE;
+#endif
+
+  return conf;
+}
+   d4c8c:	4620      	mov	r0, r4
+   d4c8e:	bd10      	pop	{r4, pc}
+
+000d4c90 <_Z16_fetch_usbserialv>:
+
+USBSerial& _fetch_usbserial()
+{
+   d4c90:	b530      	push	{r4, r5, lr}
+  HAL_USB_USART_Config conf = acquireSerialBuffer();
+	static USBSerial _usbserial(HAL_USB_USART_SERIAL, conf);
+   d4c92:	4d0e      	ldr	r5, [pc, #56]	; (d4ccc <_Z16_fetch_usbserialv+0x3c>)
+
+  return conf;
+}
+
+USBSerial& _fetch_usbserial()
+{
+   d4c94:	b087      	sub	sp, #28
+  HAL_USB_USART_Config conf = acquireSerialBuffer();
+   d4c96:	a801      	add	r0, sp, #4
+   d4c98:	f7ff fff2 	bl	d4c80 <_Z19acquireSerialBufferv>
+	static USBSerial _usbserial(HAL_USB_USART_SERIAL, conf);
+   d4c9c:	6829      	ldr	r1, [r5, #0]
+   d4c9e:	f011 0401 	ands.w	r4, r1, #1
+   d4ca2:	d110      	bne.n	d4cc6 <_Z16_fetch_usbserialv+0x36>
+   d4ca4:	4628      	mov	r0, r5
+   d4ca6:	f7ff f9fc 	bl	d40a2 <__cxa_guard_acquire>
+   d4caa:	b160      	cbz	r0, d4cc6 <_Z16_fetch_usbserialv+0x36>
+   d4cac:	aa01      	add	r2, sp, #4
+   d4cae:	4621      	mov	r1, r4
+   d4cb0:	4807      	ldr	r0, [pc, #28]	; (d4cd0 <_Z16_fetch_usbserialv+0x40>)
+   d4cb2:	f7ff ffcd 	bl	d4c50 <_ZN9USBSerialC1E20HAL_USB_USART_SerialRK20HAL_USB_USART_Config>
+   d4cb6:	4628      	mov	r0, r5
+   d4cb8:	f7ff f9f8 	bl	d40ac <__cxa_guard_release>
+   d4cbc:	4a05      	ldr	r2, [pc, #20]	; (d4cd4 <_Z16_fetch_usbserialv+0x44>)
+   d4cbe:	4906      	ldr	r1, [pc, #24]	; (d4cd8 <_Z16_fetch_usbserialv+0x48>)
+   d4cc0:	4803      	ldr	r0, [pc, #12]	; (d4cd0 <_Z16_fetch_usbserialv+0x40>)
+   d4cc2:	f000 faeb 	bl	d529c <__aeabi_atexit>
+	return _usbserial;
+}
+   d4cc6:	4802      	ldr	r0, [pc, #8]	; (d4cd0 <_Z16_fetch_usbserialv+0x40>)
+   d4cc8:	b007      	add	sp, #28
+   d4cca:	bd30      	pop	{r4, r5, pc}
+   d4ccc:	2003e6b0 	.word	0x2003e6b0
+   d4cd0:	2003e6b4 	.word	0x2003e6b4
+   d4cd4:	2003e4bc 	.word	0x2003e4bc
+   d4cd8:	000d4bff 	.word	0x000d4bff
+
+000d4cdc <_ZN9IPAddressD1Ev>:
+    IPAddress(uint8_t first_octet, uint8_t second_octet, uint8_t third_octet, uint8_t fourth_octet);
+    IPAddress(uint32_t address);
+    IPAddress(const uint8_t* address);
+    IPAddress(const HAL_IPAddress& address);
+
+    virtual ~IPAddress() {}
+   d4cdc:	4770      	bx	lr
+
+000d4cde <_ZN9IPAddressD0Ev>:
+   d4cde:	b510      	push	{r4, lr}
+   d4ce0:	4604      	mov	r4, r0
+   d4ce2:	f7ff f9da 	bl	d409a <_ZdlPv>
+   d4ce6:	4620      	mov	r0, r4
+   d4ce8:	bd10      	pop	{r4, pc}
+
+000d4cea <_ZNK9IPAddress7printToER5Print>:
+#endif // Wiring_IPv6
+	return address.ipv4==that.address.ipv4;
+}
+
+size_t IPAddress::printTo(Print& p) const
+{
+   d4cea:	b5f0      	push	{r4, r5, r6, r7, lr}
+#if Wiring_IPv6
+#if HAL_USE_INET_HAL_POSIX
+	if (address.v==6) {
+   d4cec:	7d03      	ldrb	r3, [r0, #20]
+   d4cee:	2b06      	cmp	r3, #6
+#endif // Wiring_IPv6
+	return address.ipv4==that.address.ipv4;
+}
+
+size_t IPAddress::printTo(Print& p) const
+{
+   d4cf0:	b08d      	sub	sp, #52	; 0x34
+   d4cf2:	460e      	mov	r6, r1
+   d4cf4:	f100 0704 	add.w	r7, r0, #4
+   d4cf8:	f04f 0400 	mov.w	r4, #0
+#if Wiring_IPv6
+#if HAL_USE_INET_HAL_POSIX
+	if (address.v==6) {
+   d4cfc:	d002      	beq.n	d4d04 <_ZNK9IPAddress7printToER5Print+0x1a>
+   d4cfe:	f100 0508 	add.w	r5, r0, #8
+   d4d02:	e018      	b.n	d4d36 <_ZNK9IPAddress7printToER5Print+0x4c>
+		char buf[INET6_ADDRSTRLEN+1];
+		buf[0] = 0;
+   d4d04:	ad0c      	add	r5, sp, #48	; 0x30
+		inet_inet_ntop(AF_INET6, address.ipv6, buf, sizeof(buf));
+   d4d06:	4639      	mov	r1, r7
+{
+#if Wiring_IPv6
+#if HAL_USE_INET_HAL_POSIX
+	if (address.v==6) {
+		char buf[INET6_ADDRSTRLEN+1];
+		buf[0] = 0;
+   d4d08:	f805 4d30 	strb.w	r4, [r5, #-48]!
+		inet_inet_ntop(AF_INET6, address.ipv6, buf, sizeof(buf));
+   d4d0c:	232f      	movs	r3, #47	; 0x2f
+   d4d0e:	462a      	mov	r2, r5
+   d4d10:	200a      	movs	r0, #10
+   d4d12:	f7ff fc95 	bl	d4640 <inet_inet_ntop>
+    void clearWriteError() { setWriteError(0); }
+
+    virtual size_t write(uint8_t) = 0;
+    size_t write(const char *str) {
+      if (str == NULL) return 0;
+      return write((const uint8_t *)str, strlen(str));
+   d4d16:	4628      	mov	r0, r5
+   d4d18:	f000 fc58 	bl	d55cc <strlen>
+   d4d1c:	6833      	ldr	r3, [r6, #0]
+   d4d1e:	4602      	mov	r2, r0
+   d4d20:	68db      	ldr	r3, [r3, #12]
+   d4d22:	4629      	mov	r1, r5
+   d4d24:	4630      	mov	r0, r6
+   d4d26:	4798      	blx	r3
+   d4d28:	e00f      	b.n	d4d4a <_ZNK9IPAddress7printToER5Print+0x60>
+#endif // HAL_USE_INET_HAL_POSIX
+#endif // Wiring_IPv6
+    size_t n = 0;
+    for (int i = 0; i < 4; i++)
+    {
+        if (n)
+   d4d2a:	b124      	cbz	r4, d4d36 <_ZNK9IPAddress7printToER5Print+0x4c>
+            n += p.print('.');
+   d4d2c:	212e      	movs	r1, #46	; 0x2e
+   d4d2e:	4630      	mov	r0, r6
+   d4d30:	f000 f90c 	bl	d4f4c <_ZN5Print5printEc>
+   d4d34:	4404      	add	r4, r0
+        n += p.print((*this)[i], DEC);
+   d4d36:	f815 1d01 	ldrb.w	r1, [r5, #-1]!
+   d4d3a:	220a      	movs	r2, #10
+   d4d3c:	4630      	mov	r0, r6
+   d4d3e:	f000 f94b 	bl	d4fd8 <_ZN5Print5printEhi>
+#else
+#pragma message "HAL_USE_INET_HAL_POSIX is required for IPv6 support in IPAddress::printTo()"
+#endif // HAL_USE_INET_HAL_POSIX
+#endif // Wiring_IPv6
+    size_t n = 0;
+    for (int i = 0; i < 4; i++)
+   d4d42:	42bd      	cmp	r5, r7
+    {
+        if (n)
+            n += p.print('.');
+        n += p.print((*this)[i], DEC);
+   d4d44:	4404      	add	r4, r0
+#else
+#pragma message "HAL_USE_INET_HAL_POSIX is required for IPv6 support in IPAddress::printTo()"
+#endif // HAL_USE_INET_HAL_POSIX
+#endif // Wiring_IPv6
+    size_t n = 0;
+    for (int i = 0; i < 4; i++)
+   d4d46:	d1f0      	bne.n	d4d2a <_ZNK9IPAddress7printToER5Print+0x40>
+    {
+        if (n)
+            n += p.print('.');
+        n += p.print((*this)[i], DEC);
+   d4d48:	4620      	mov	r0, r4
+    }
+    return n;
+}
+   d4d4a:	b00d      	add	sp, #52	; 0x34
+   d4d4c:	bdf0      	pop	{r4, r5, r6, r7, pc}
+	...
+
+000d4d50 <_ZN9IPAddressC1Ev>:
+
+#if HAL_USE_INET_HAL_POSIX
+#include <arpa/inet.h>
+#endif // HAL_USE_INET_HAL_POSIX
+
+IPAddress::IPAddress()
+   d4d50:	b510      	push	{r4, lr}
+   d4d52:	4b05      	ldr	r3, [pc, #20]	; (d4d68 <_ZN9IPAddressC1Ev+0x18>)
+   d4d54:	4604      	mov	r4, r0
+        return address;
+    }
+
+    virtual size_t printTo(Print& p) const;
+
+    void clear() { memset(&address, 0, sizeof (address)); }
+   d4d56:	2211      	movs	r2, #17
+   d4d58:	f840 3b04 	str.w	r3, [r0], #4
+   d4d5c:	2100      	movs	r1, #0
+   d4d5e:	f000 fc04 	bl	d556a <memset>
+{
+    clear();
+}
+   d4d62:	4620      	mov	r0, r4
+   d4d64:	bd10      	pop	{r4, pc}
+   d4d66:	bf00      	nop
+   d4d68:	000d574c 	.word	0x000d574c
+
+000d4d6c <_ZN9IPAddressC1ERK16_HAL_IPAddress_t>:
+
+IPAddress::IPAddress(const HAL_IPAddress& address)
+   d4d6c:	4603      	mov	r3, r0
+   d4d6e:	4a07      	ldr	r2, [pc, #28]	; (d4d8c <_ZN9IPAddressC1ERK16_HAL_IPAddress_t+0x20>)
+   d4d70:	b510      	push	{r4, lr}
+   d4d72:	f843 2b04 	str.w	r2, [r3], #4
+{
+    memcpy(&this->address, &address, sizeof(address));
+   d4d76:	f101 0210 	add.w	r2, r1, #16
+   d4d7a:	f851 4b04 	ldr.w	r4, [r1], #4
+   d4d7e:	f843 4b04 	str.w	r4, [r3], #4
+   d4d82:	4291      	cmp	r1, r2
+   d4d84:	d1f9      	bne.n	d4d7a <_ZN9IPAddressC1ERK16_HAL_IPAddress_t+0xe>
+   d4d86:	780a      	ldrb	r2, [r1, #0]
+   d4d88:	701a      	strb	r2, [r3, #0]
+}
+   d4d8a:	bd10      	pop	{r4, pc}
+   d4d8c:	000d574c 	.word	0x000d574c
+
+000d4d90 <_ZN9IPAddress8set_ipv4Ehhhh>:
+    return address.ipv4!=0;
+#endif
+}
+
+void IPAddress::set_ipv4(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
+{
+   d4d90:	b510      	push	{r4, lr}
+    address.ipv4 = b0<<24 | b1 << 16 | b2 << 8 | b3;
+   d4d92:	f89d 4008 	ldrb.w	r4, [sp, #8]
+   d4d96:	ea44 2303 	orr.w	r3, r4, r3, lsl #8
+   d4d9a:	ea43 4202 	orr.w	r2, r3, r2, lsl #16
+   d4d9e:	ea42 6101 	orr.w	r1, r2, r1, lsl #24
+        return &address;
+    }
+
+    inline void setVersion(uint8_t version) {
+#if HAL_IPv6
+        address.v = version;
+   d4da2:	2304      	movs	r3, #4
+   d4da4:	6041      	str	r1, [r0, #4]
+   d4da6:	7503      	strb	r3, [r0, #20]
+   d4da8:	bd10      	pop	{r4, pc}
+
+000d4daa <_ZN9IPAddressaSEPKh>:
+    setVersion(4);
+}
+
+IPAddress& IPAddress::operator=(const uint8_t* address)
+{
+   d4daa:	b537      	push	{r0, r1, r2, r4, r5, lr}
+    set_ipv4(address[0], address[1], address[2], address[3]);
+   d4dac:	780d      	ldrb	r5, [r1, #0]
+   d4dae:	788b      	ldrb	r3, [r1, #2]
+   d4db0:	784a      	ldrb	r2, [r1, #1]
+   d4db2:	78c9      	ldrb	r1, [r1, #3]
+   d4db4:	9100      	str	r1, [sp, #0]
+   d4db6:	4629      	mov	r1, r5
+   d4db8:	f7ff ffea 	bl	d4d90 <_ZN9IPAddress8set_ipv4Ehhhh>
+    return *this;
+}
+   d4dbc:	b003      	add	sp, #12
+   d4dbe:	bd30      	pop	{r4, r5, pc}
+
+000d4dc0 <_ZNSt14_Function_baseD1Ev>:
+	}
+      };
+
+    _Function_base() : _M_manager(nullptr) { }
+
+    ~_Function_base()
+   d4dc0:	b510      	push	{r4, lr}
+    {
+      if (_M_manager)
+   d4dc2:	6883      	ldr	r3, [r0, #8]
+	}
+      };
+
+    _Function_base() : _M_manager(nullptr) { }
+
+    ~_Function_base()
+   d4dc4:	4604      	mov	r4, r0
+    {
+      if (_M_manager)
+   d4dc6:	b113      	cbz	r3, d4dce <_ZNSt14_Function_baseD1Ev+0xe>
+	_M_manager(_M_functor, _M_functor, __destroy_functor);
+   d4dc8:	2203      	movs	r2, #3
+   d4dca:	4601      	mov	r1, r0
+   d4dcc:	4798      	blx	r3
+    }
+   d4dce:	4620      	mov	r0, r4
+   d4dd0:	bd10      	pop	{r4, pc}
+
+000d4dd2 <delay>:
+    return (value - fromStart) * (toEnd - toStart) / (fromEnd - fromStart) + toStart;
+}
+
+void delay(unsigned long ms)
+{
+    system_delay_ms(ms, false);
+   d4dd2:	2100      	movs	r1, #0
+   d4dd4:	f7ff bcf4 	b.w	d47c0 <system_delay_ms>
+
+000d4dd8 <serialEventRun>:
+
+/**
+ * Provides background processing of serial data.
+ */
+void serialEventRun()
+{
+   d4dd8:	b508      	push	{r3, lr}
+    if (serialEvent && Serial.available()>0)
+   d4dda:	4b0c      	ldr	r3, [pc, #48]	; (d4e0c <serialEventRun+0x34>)
+   d4ddc:	b133      	cbz	r3, d4dec <serialEventRun+0x14>
+   d4dde:	f7ff ff57 	bl	d4c90 <_Z16_fetch_usbserialv>
+   d4de2:	6803      	ldr	r3, [r0, #0]
+   d4de4:	691b      	ldr	r3, [r3, #16]
+   d4de6:	4798      	blx	r3
+   d4de8:	2800      	cmp	r0, #0
+   d4dea:	dc09      	bgt.n	d4e00 <serialEventRun+0x28>
+        serialEvent();
+
+    if (serialEvent1 && Serial1.available()>0)
+   d4dec:	4b08      	ldr	r3, [pc, #32]	; (d4e10 <serialEventRun+0x38>)
+   d4dee:	b163      	cbz	r3, d4e0a <serialEventRun+0x32>
+   d4df0:	f000 f96c 	bl	d50cc <_Z22__fetch_global_Serial1v>
+   d4df4:	6803      	ldr	r3, [r0, #0]
+   d4df6:	691b      	ldr	r3, [r3, #16]
+   d4df8:	4798      	blx	r3
+   d4dfa:	2800      	cmp	r0, #0
+   d4dfc:	dc03      	bgt.n	d4e06 <serialEventRun+0x2e>
+   d4dfe:	bd08      	pop	{r3, pc}
+ * Provides background processing of serial data.
+ */
+void serialEventRun()
+{
+    if (serialEvent && Serial.available()>0)
+        serialEvent();
+   d4e00:	f3af 8000 	nop.w
+   d4e04:	e7f2      	b.n	d4dec <serialEventRun+0x14>
+
+    if (serialEvent1 && Serial1.available()>0)
+        serialEvent1();
+   d4e06:	f3af 8000 	nop.w
+   d4e0a:	bd08      	pop	{r3, pc}
+	...
+
+000d4e14 <_post_loop>:
+#if Wiring_Serial5
+void serialEvent5() __attribute__((weak));
+#endif
+
+void _post_loop()
+{
+   d4e14:	b508      	push	{r3, lr}
+	serialEventRun();
+   d4e16:	f7ff ffdf 	bl	d4dd8 <serialEventRun>
+		return !timeout_fn;
+	}
+
+	static inline system_tick_t current_time()
+	{
+		return HAL_Timer_Get_Milli_Seconds();
+   d4e1a:	f7ff fc49 	bl	d46b0 <HAL_Timer_Get_Milli_Seconds>
+	/**
+	 * Lifesign that the application is still working normally.
+	 */
+	static void checkin()
+	{
+		last_checkin = current_time();
+   d4e1e:	4b01      	ldr	r3, [pc, #4]	; (d4e24 <_post_loop+0x10>)
+   d4e20:	6018      	str	r0, [r3, #0]
+   d4e22:	bd08      	pop	{r3, pc}
+   d4e24:	2003e72c 	.word	0x2003e72c
+
+000d4e28 <_Z27ctrl_request_custom_handlerP12ctrl_request>:
+bool __backup_ram_was_valid() { return false; }
+
+#endif
+
+// Default handler for CTRL_REQUEST_APP_CUSTOM requests
+void __attribute((weak)) ctrl_request_custom_handler(ctrl_request* req) {
+   d4e28:	b507      	push	{r0, r1, r2, lr}
+    system_ctrl_set_result(req, SYSTEM_ERROR_NOT_SUPPORTED, nullptr, nullptr, nullptr);
+   d4e2a:	2300      	movs	r3, #0
+   d4e2c:	9300      	str	r3, [sp, #0]
+   d4e2e:	461a      	mov	r2, r3
+   d4e30:	f06f 0177 	mvn.w	r1, #119	; 0x77
+   d4e34:	f7ff fcd6 	bl	d47e4 <system_ctrl_set_result>
+}
+   d4e38:	b003      	add	sp, #12
+   d4e3a:	f85d fb04 	ldr.w	pc, [sp], #4
+	...
+
+000d4e40 <_ZL20ctrl_request_handlerP12ctrl_request>:
+// Callback invoked to process a logging configuration request
+void(*log_process_ctrl_request_callback)(ctrl_request* req) = nullptr;
+#endif
+
+// Application handler for control requests
+static void ctrl_request_handler(ctrl_request* req) {
+   d4e40:	b507      	push	{r0, r1, r2, lr}
+    switch (req->type) {
+   d4e42:	8843      	ldrh	r3, [r0, #2]
+   d4e44:	2b0a      	cmp	r3, #10
+   d4e46:	d008      	beq.n	d4e5a <_ZL20ctrl_request_handlerP12ctrl_request+0x1a>
+   d4e48:	2b50      	cmp	r3, #80	; 0x50
+   d4e4a:	d109      	bne.n	d4e60 <_ZL20ctrl_request_handlerP12ctrl_request+0x20>
+#if Wiring_LogConfig
+    case CTRL_REQUEST_LOG_CONFIG: {
+        if (log_process_ctrl_request_callback) {
+   d4e4c:	4b09      	ldr	r3, [pc, #36]	; (d4e74 <_ZL20ctrl_request_handlerP12ctrl_request+0x34>)
+   d4e4e:	681b      	ldr	r3, [r3, #0]
+   d4e50:	b13b      	cbz	r3, d4e62 <_ZL20ctrl_request_handlerP12ctrl_request+0x22>
+    }
+    default:
+        system_ctrl_set_result(req, SYSTEM_ERROR_NOT_SUPPORTED, nullptr, nullptr, nullptr);
+        break;
+    }
+}
+   d4e52:	b003      	add	sp, #12
+   d4e54:	f85d eb04 	ldr.w	lr, [sp], #4
+static void ctrl_request_handler(ctrl_request* req) {
+    switch (req->type) {
+#if Wiring_LogConfig
+    case CTRL_REQUEST_LOG_CONFIG: {
+        if (log_process_ctrl_request_callback) {
+            log_process_ctrl_request_callback(req);
+   d4e58:	4718      	bx	r3
+        }
+        break;
+    }
+#endif
+    case CTRL_REQUEST_APP_CUSTOM: {
+        ctrl_request_custom_handler(req);
+   d4e5a:	f7ff ffe5 	bl	d4e28 <_Z27ctrl_request_custom_handlerP12ctrl_request>
+        break;
+   d4e5e:	e006      	b.n	d4e6e <_ZL20ctrl_request_handlerP12ctrl_request+0x2e>
+    }
+    default:
+        system_ctrl_set_result(req, SYSTEM_ERROR_NOT_SUPPORTED, nullptr, nullptr, nullptr);
+   d4e60:	2300      	movs	r3, #0
+   d4e62:	9300      	str	r3, [sp, #0]
+   d4e64:	461a      	mov	r2, r3
+   d4e66:	f06f 0177 	mvn.w	r1, #119	; 0x77
+   d4e6a:	f7ff fcbb 	bl	d47e4 <system_ctrl_set_result>
+        break;
+    }
+}
+   d4e6e:	b003      	add	sp, #12
+   d4e70:	f85d fb04 	ldr.w	pc, [sp], #4
+   d4e74:	2003e6c8 	.word	0x2003e6c8
+
+000d4e78 <module_user_init_hook>:
+
+void module_user_init_hook()
+{
+   d4e78:	b510      	push	{r4, lr}
+    }
+#endif
+
+#if HAL_PLATFORM_RNG
+    // Initialize the default stdlib PRNG using hardware RNG as a seed
+    const uint32_t seed = HAL_RNG_GetRandomNumber();
+   d4e7a:	f7ff fc11 	bl	d46a0 <HAL_RNG_GetRandomNumber>
+   d4e7e:	4604      	mov	r4, r0
+    srand(seed);
+   d4e80:	f000 fb7c 	bl	d557c <srand>
+
+    // If the user defines random_seed_from_cloud, call it with a seed value
+    // generated by a hardware RNG as well.
+    if (random_seed_from_cloud) {
+   d4e84:	4b07      	ldr	r3, [pc, #28]	; (d4ea4 <module_user_init_hook+0x2c>)
+   d4e86:	b113      	cbz	r3, d4e8e <module_user_init_hook+0x16>
+        random_seed_from_cloud(seed);
+   d4e88:	4620      	mov	r0, r4
+   d4e8a:	f3af 8000 	nop.w
+    }
+#endif
+    // Register the random_seed_from_cloud handler
+    spark_set_random_seed_from_cloud_handler(&random_seed_from_cloud, nullptr);
+   d4e8e:	2100      	movs	r1, #0
+   d4e90:	4804      	ldr	r0, [pc, #16]	; (d4ea4 <module_user_init_hook+0x2c>)
+   d4e92:	f7ff fc35 	bl	d4700 <spark_set_random_seed_from_cloud_handler>
+
+    // Register application handler for the control requests
+    system_ctrl_set_app_request_handler(ctrl_request_handler, nullptr);
+   d4e96:	2100      	movs	r1, #0
+   d4e98:	4803      	ldr	r0, [pc, #12]	; (d4ea8 <module_user_init_hook+0x30>)
+}
+   d4e9a:	e8bd 4010 	ldmia.w	sp!, {r4, lr}
+#endif
+    // Register the random_seed_from_cloud handler
+    spark_set_random_seed_from_cloud_handler(&random_seed_from_cloud, nullptr);
+
+    // Register application handler for the control requests
+    system_ctrl_set_app_request_handler(ctrl_request_handler, nullptr);
+   d4e9e:	f7ff bc97 	b.w	d47d0 <system_ctrl_set_app_request_handler>
+   d4ea2:	bf00      	nop
+   d4ea4:	00000000 	.word	0x00000000
+   d4ea8:	000d4e41 	.word	0x000d4e41
+
+000d4eac <_ZN8RGBClassD1Ev>:
+#include "rgbled.h"
+
+typedef void (raw_rgb_change_handler_t)(uint8_t, uint8_t, uint8_t);
+typedef std::function<raw_rgb_change_handler_t> wiring_rgb_change_handler_t;
+
+class RGBClass {
+   d4eac:	b510      	push	{r4, lr}
+   d4eae:	4604      	mov	r4, r0
+   *  @ingroup functors
+   *
+   *  Polymorphic function wrapper.
+   */
+  template<typename _Res, typename... _ArgTypes>
+    class function<_Res(_ArgTypes...)>
+   d4eb0:	f7ff ff86 	bl	d4dc0 <_ZNSt14_Function_baseD1Ev>
+   d4eb4:	4620      	mov	r0, r4
+   d4eb6:	bd10      	pop	{r4, pc}
+
+000d4eb8 <_GLOBAL__sub_I_RGB>:
+	{
+	  _Base::_M_init_functor(__functor, std::__addressof(__f.get()));
+	}
+      };
+
+    _Function_base() : _M_manager(nullptr) { }
+   d4eb8:	4803      	ldr	r0, [pc, #12]	; (d4ec8 <_GLOBAL__sub_I_RGB+0x10>)
+#include "spark_wiring_rgb.h"
+#include "spark_wiring_interrupts.h"
+
+#include "core_hal.h"
+
+RGBClass RGB;
+   d4eba:	4a04      	ldr	r2, [pc, #16]	; (d4ecc <_GLOBAL__sub_I_RGB+0x14>)
+   d4ebc:	4904      	ldr	r1, [pc, #16]	; (d4ed0 <_GLOBAL__sub_I_RGB+0x18>)
+   d4ebe:	2300      	movs	r3, #0
+   d4ec0:	6083      	str	r3, [r0, #8]
+   d4ec2:	f000 b9eb 	b.w	d529c <__aeabi_atexit>
+   d4ec6:	bf00      	nop
+   d4ec8:	2003e6cc 	.word	0x2003e6cc
+   d4ecc:	2003e4bc 	.word	0x2003e4bc
+   d4ed0:	000d4ead 	.word	0x000d4ead
+
+000d4ed4 <_GLOBAL__sub_I_TIME_FORMAT_DEFAULT>:
+            calendar_time_cache = Convert_UnixTime_To_CalendarTime(unix_time);
+            unix_time_cache = unix_time;
+    }
+}
+
+const char* TimeClass::format_spec = TIME_FORMAT_DEFAULT;
+   d4ed4:	4b02      	ldr	r3, [pc, #8]	; (d4ee0 <_GLOBAL__sub_I_TIME_FORMAT_DEFAULT+0xc>)
+   d4ed6:	681a      	ldr	r2, [r3, #0]
+   d4ed8:	4b02      	ldr	r3, [pc, #8]	; (d4ee4 <_GLOBAL__sub_I_TIME_FORMAT_DEFAULT+0x10>)
+   d4eda:	601a      	str	r2, [r3, #0]
+   d4edc:	4770      	bx	lr
+   d4ede:	bf00      	nop
+   d4ee0:	2003e454 	.word	0x2003e454
+   d4ee4:	2003e6dc 	.word	0x2003e6dc
+
+000d4ee8 <_GLOBAL__sub_I__ZN5spark3LogE>:
+    // This handler doesn't support direct logging
+}
+
+// spark::Logger
+inline spark::Logger::Logger(const char *name) :
+        name_(name) {
+   d4ee8:	4b01      	ldr	r3, [pc, #4]	; (d4ef0 <_GLOBAL__sub_I__ZN5spark3LogE+0x8>)
+   d4eea:	4a02      	ldr	r2, [pc, #8]	; (d4ef4 <_GLOBAL__sub_I__ZN5spark3LogE+0xc>)
+   d4eec:	601a      	str	r2, [r3, #0]
+   d4eee:	4770      	bx	lr
+   d4ef0:	2003e6e0 	.word	0x2003e6e0
+   d4ef4:	000d5839 	.word	0x000d5839
+
+000d4ef8 <_ZN5Print5writeEPKhj>:
+
+// Public Methods //////////////////////////////////////////////////////////////
+
+/* default implementation: may be overridden */
+size_t Print::write(const uint8_t *buffer, size_t size)
+{
+   d4ef8:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+   d4efa:	4606      	mov	r6, r0
+   d4efc:	460d      	mov	r5, r1
+   d4efe:	188f      	adds	r7, r1, r2
+  size_t n = 0;
+   d4f00:	2400      	movs	r4, #0
+  while (size--) {
+   d4f02:	42bd      	cmp	r5, r7
+   d4f04:	d00c      	beq.n	d4f20 <_ZN5Print5writeEPKhj+0x28>
+     int chunk = write(*buffer++);
+   d4f06:	6833      	ldr	r3, [r6, #0]
+   d4f08:	f815 1b01 	ldrb.w	r1, [r5], #1
+   d4f0c:	689b      	ldr	r3, [r3, #8]
+   d4f0e:	4630      	mov	r0, r6
+   d4f10:	4798      	blx	r3
+     if (chunk>=0)
+   d4f12:	2800      	cmp	r0, #0
+   d4f14:	db01      	blt.n	d4f1a <_ZN5Print5writeEPKhj+0x22>
+         n += chunk;
+   d4f16:	4404      	add	r4, r0
+
+/* default implementation: may be overridden */
+size_t Print::write(const uint8_t *buffer, size_t size)
+{
+  size_t n = 0;
+  while (size--) {
+   d4f18:	e7f3      	b.n	d4f02 <_ZN5Print5writeEPKhj+0xa>
+     int chunk = write(*buffer++);
+   d4f1a:	2c00      	cmp	r4, #0
+   d4f1c:	bf08      	it	eq
+   d4f1e:	4604      	moveq	r4, r0
+             n = chunk;
+         break;
+     }
+  }
+  return n;
+}
+   d4f20:	4620      	mov	r0, r4
+   d4f22:	bdf8      	pop	{r3, r4, r5, r6, r7, pc}
+
+000d4f24 <_ZN5Print5writeEPKc>:
+
+    int getWriteError() { return write_error; }
+    void clearWriteError() { setWriteError(0); }
+
+    virtual size_t write(uint8_t) = 0;
+    size_t write(const char *str) {
+   d4f24:	b570      	push	{r4, r5, r6, lr}
+   d4f26:	4605      	mov	r5, r0
+      if (str == NULL) return 0;
+   d4f28:	460c      	mov	r4, r1
+      return write((const uint8_t *)str, strlen(str));
+    }
+   d4f2a:	4608      	mov	r0, r1
+    int getWriteError() { return write_error; }
+    void clearWriteError() { setWriteError(0); }
+
+    virtual size_t write(uint8_t) = 0;
+    size_t write(const char *str) {
+      if (str == NULL) return 0;
+   d4f2c:	b149      	cbz	r1, d4f42 <_ZN5Print5writeEPKc+0x1e>
+      return write((const uint8_t *)str, strlen(str));
+   d4f2e:	f000 fb4d 	bl	d55cc <strlen>
+   d4f32:	682b      	ldr	r3, [r5, #0]
+   d4f34:	4602      	mov	r2, r0
+   d4f36:	4621      	mov	r1, r4
+   d4f38:	4628      	mov	r0, r5
+   d4f3a:	68db      	ldr	r3, [r3, #12]
+    }
+   d4f3c:	e8bd 4070 	ldmia.w	sp!, {r4, r5, r6, lr}
+    void clearWriteError() { setWriteError(0); }
+
+    virtual size_t write(uint8_t) = 0;
+    size_t write(const char *str) {
+      if (str == NULL) return 0;
+      return write((const uint8_t *)str, strlen(str));
+   d4f40:	4718      	bx	r3
+    }
+   d4f42:	bd70      	pop	{r4, r5, r6, pc}
+
+000d4f44 <_ZN5Print5printEPKc>:
+   d4f44:	b508      	push	{r3, lr}
+   d4f46:	f7ff ffed 	bl	d4f24 <_ZN5Print5writeEPKc>
+   d4f4a:	bd08      	pop	{r3, pc}
+
+000d4f4c <_ZN5Print5printEc>:
+  return write(str);
+}
+
+size_t Print::print(char c)
+{
+  return write(c);
+   d4f4c:	6803      	ldr	r3, [r0, #0]
+   d4f4e:	689b      	ldr	r3, [r3, #8]
+   d4f50:	4718      	bx	r3
+
+000d4f52 <_ZN5Print7printlnEv>:
+{
+  return print(reinterpret_cast<const char*>(str));
+}
+
+size_t Print::println(void)
+{
+   d4f52:	b538      	push	{r3, r4, r5, lr}
+  size_t n = print('\r');
+   d4f54:	210d      	movs	r1, #13
+{
+  return print(reinterpret_cast<const char*>(str));
+}
+
+size_t Print::println(void)
+{
+   d4f56:	4605      	mov	r5, r0
+  size_t n = print('\r');
+   d4f58:	f7ff fff8 	bl	d4f4c <_ZN5Print5printEc>
+  n += print('\n');
+   d4f5c:	210a      	movs	r1, #10
+  return print(reinterpret_cast<const char*>(str));
+}
+
+size_t Print::println(void)
+{
+  size_t n = print('\r');
+   d4f5e:	4604      	mov	r4, r0
+  n += print('\n');
+   d4f60:	4628      	mov	r0, r5
+   d4f62:	f7ff fff3 	bl	d4f4c <_ZN5Print5printEc>
+  return n;
+}
+   d4f66:	4420      	add	r0, r4
+   d4f68:	bd38      	pop	{r3, r4, r5, pc}
+
+000d4f6a <_ZN5Print7printlnEPKc>:
+
+size_t Print::println(const char c[])
+{
+   d4f6a:	b538      	push	{r3, r4, r5, lr}
+   d4f6c:	4605      	mov	r5, r0
+  return n;
+}
+
+size_t Print::print(const char str[])
+{
+  return write(str);
+   d4f6e:	f7ff ffd9 	bl	d4f24 <_ZN5Print5writeEPKc>
+   d4f72:	4604      	mov	r4, r0
+}
+
+size_t Print::println(const char c[])
+{
+  size_t n = print(c);
+  n += println();
+   d4f74:	4628      	mov	r0, r5
+   d4f76:	f7ff ffec 	bl	d4f52 <_ZN5Print7printlnEv>
+  return n;
+}
+   d4f7a:	4420      	add	r0, r4
+   d4f7c:	bd38      	pop	{r3, r4, r5, pc}
+
+000d4f7e <_ZN5Print11printNumberEmh>:
+  return println(reinterpret_cast<const char*>(str));
+}
+
+// Private Methods /////////////////////////////////////////////////////////////
+
+size_t Print::printNumber(unsigned long n, uint8_t base) {
+   d4f7e:	b530      	push	{r4, r5, lr}
+   d4f80:	b08b      	sub	sp, #44	; 0x2c
+   d4f82:	460b      	mov	r3, r1
+  char buf[8 * sizeof(long) + 1]; // Assumes 8-bit chars plus zero byte.
+  char *str = &buf[sizeof(buf) - 1];
+
+  *str = '\0';
+   d4f84:	2100      	movs	r1, #0
+   d4f86:	f88d 1024 	strb.w	r1, [sp, #36]	; 0x24
+
+  // prevent crash if called with base == 1
+  if (base < 2) base = 10;
+   d4f8a:	2a01      	cmp	r2, #1
+   d4f8c:	bf98      	it	ls
+   d4f8e:	220a      	movls	r2, #10
+   d4f90:	f10d 0423 	add.w	r4, sp, #35	; 0x23
+
+  do {
+    unsigned long m = n;
+    n /= base;
+   d4f94:	fbb3 f5f2 	udiv	r5, r3, r2
+    char c = m - base * n;
+   d4f98:	fb05 3312 	mls	r3, r5, r2, r3
+   d4f9c:	f003 03ff 	and.w	r3, r3, #255	; 0xff
+    *--str = c < 10 ? c + '0' : c + 'A' - 10;
+   d4fa0:	2b09      	cmp	r3, #9
+   d4fa2:	bf94      	ite	ls
+   d4fa4:	3330      	addls	r3, #48	; 0x30
+   d4fa6:	3337      	addhi	r3, #55	; 0x37
+   d4fa8:	b2db      	uxtb	r3, r3
+   d4faa:	4621      	mov	r1, r4
+   d4fac:	f804 3901 	strb.w	r3, [r4], #-1
+   d4fb0:	462b      	mov	r3, r5
+  *str = '\0';
+
+  // prevent crash if called with base == 1
+  if (base < 2) base = 10;
+
+  do {
+   d4fb2:	2d00      	cmp	r5, #0
+   d4fb4:	d1ee      	bne.n	d4f94 <_ZN5Print11printNumberEmh+0x16>
+    n /= base;
+    char c = m - base * n;
+    *--str = c < 10 ? c + '0' : c + 'A' - 10;
+  } while(n);
+
+  return write(str);
+   d4fb6:	f7ff ffb5 	bl	d4f24 <_ZN5Print5writeEPKc>
+}
+   d4fba:	b00b      	add	sp, #44	; 0x2c
+   d4fbc:	bd30      	pop	{r4, r5, pc}
+
+000d4fbe <_ZN5Print5printEmi>:
+    return printNumber(n, base);
+  }
+}
+
+size_t Print::print(unsigned long n, int base)
+{
+   d4fbe:	b410      	push	{r4}
+  if (base == 0) return write(n);
+   d4fc0:	b92a      	cbnz	r2, d4fce <_ZN5Print5printEmi+0x10>
+   d4fc2:	6803      	ldr	r3, [r0, #0]
+  else return printNumber(n, base);
+}
+   d4fc4:	f85d 4b04 	ldr.w	r4, [sp], #4
+  }
+}
+
+size_t Print::print(unsigned long n, int base)
+{
+  if (base == 0) return write(n);
+   d4fc8:	689b      	ldr	r3, [r3, #8]
+   d4fca:	b2c9      	uxtb	r1, r1
+   d4fcc:	4718      	bx	r3
+  else return printNumber(n, base);
+   d4fce:	b2d2      	uxtb	r2, r2
+}
+   d4fd0:	f85d 4b04 	ldr.w	r4, [sp], #4
+}
+
+size_t Print::print(unsigned long n, int base)
+{
+  if (base == 0) return write(n);
+  else return printNumber(n, base);
+   d4fd4:	f7ff bfd3 	b.w	d4f7e <_ZN5Print11printNumberEmh>
+
+000d4fd8 <_ZN5Print5printEhi>:
+  return write(c);
+}
+
+size_t Print::print(unsigned char b, int base)
+{
+  return print((unsigned long) b, base);
+   d4fd8:	f7ff bff1 	b.w	d4fbe <_ZN5Print5printEmi>
+
+000d4fdc <_ZN5Print7printlnEhi>:
+  n += println();
+  return n;
+}
+
+size_t Print::println(unsigned char b, int base)
+{
+   d4fdc:	b538      	push	{r3, r4, r5, lr}
+   d4fde:	4605      	mov	r5, r0
+  return write(c);
+}
+
+size_t Print::print(unsigned char b, int base)
+{
+  return print((unsigned long) b, base);
+   d4fe0:	f7ff ffed 	bl	d4fbe <_ZN5Print5printEmi>
+   d4fe4:	4604      	mov	r4, r0
+}
+
+size_t Print::println(unsigned char b, int base)
+{
+  size_t n = print(b, base);
+  n += println();
+   d4fe6:	4628      	mov	r0, r5
+   d4fe8:	f7ff ffb3 	bl	d4f52 <_ZN5Print7printlnEv>
+  return n;
+}
+   d4fec:	4420      	add	r0, r4
+   d4fee:	bd38      	pop	{r3, r4, r5, pc}
+
+000d4ff0 <_ZN5Print5printEli>:
+{
+  return print((unsigned long) n, base);
+}
+
+size_t Print::print(long n, int base)
+{
+   d4ff0:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
+   d4ff4:	4607      	mov	r7, r0
+   d4ff6:	460e      	mov	r6, r1
+  if (base == 0) {
+   d4ff8:	4615      	mov	r5, r2
+   d4ffa:	b92a      	cbnz	r2, d5008 <_ZN5Print5printEli+0x18>
+    return write(n);
+   d4ffc:	6803      	ldr	r3, [r0, #0]
+   d4ffe:	b2c9      	uxtb	r1, r1
+   d5000:	689b      	ldr	r3, [r3, #8]
+    }
+    return printNumber(n, 10);
+  } else {
+    return printNumber(n, base);
+  }
+}
+   d5002:	e8bd 41f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, lr}
+}
+
+size_t Print::print(long n, int base)
+{
+  if (base == 0) {
+    return write(n);
+   d5006:	4718      	bx	r3
+  } else if (base == 10) {
+   d5008:	2a0a      	cmp	r2, #10
+   d500a:	d102      	bne.n	d5012 <_ZN5Print5printEli+0x22>
+    if (n < 0) {
+   d500c:	2900      	cmp	r1, #0
+   d500e:	da01      	bge.n	d5014 <_ZN5Print5printEli+0x24>
+   d5010:	e004      	b.n	d501c <_ZN5Print5printEli+0x2c>
+      n = -n;
+      return printNumber(n, 10) + t;
+    }
+    return printNumber(n, 10);
+  } else {
+    return printNumber(n, base);
+   d5012:	b2d2      	uxtb	r2, r2
+  }
+}
+   d5014:	e8bd 41f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, lr}
+      n = -n;
+      return printNumber(n, 10) + t;
+    }
+    return printNumber(n, 10);
+  } else {
+    return printNumber(n, base);
+   d5018:	f7ff bfb1 	b.w	d4f7e <_ZN5Print11printNumberEmh>
+{
+  if (base == 0) {
+    return write(n);
+  } else if (base == 10) {
+    if (n < 0) {
+      int t = print('-');
+   d501c:	212d      	movs	r1, #45	; 0x2d
+   d501e:	f7ff ff95 	bl	d4f4c <_ZN5Print5printEc>
+      n = -n;
+      return printNumber(n, 10) + t;
+   d5022:	462a      	mov	r2, r5
+{
+  if (base == 0) {
+    return write(n);
+  } else if (base == 10) {
+    if (n < 0) {
+      int t = print('-');
+   d5024:	4604      	mov	r4, r0
+      n = -n;
+      return printNumber(n, 10) + t;
+   d5026:	4271      	negs	r1, r6
+   d5028:	4638      	mov	r0, r7
+   d502a:	f7ff ffa8 	bl	d4f7e <_ZN5Print11printNumberEmh>
+   d502e:	4420      	add	r0, r4
+    }
+    return printNumber(n, 10);
+  } else {
+    return printNumber(n, base);
+  }
+}
+   d5030:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
+
+000d5034 <_ZN5Print5printEii>:
+  return print((unsigned long) b, base);
+}
+
+size_t Print::print(int n, int base)
+{
+  return print((long) n, base);
+   d5034:	f7ff bfdc 	b.w	d4ff0 <_ZN5Print5printEli>
+
+000d5038 <_ZN5Print7printlnEii>:
+  n += println();
+  return n;
+}
+
+size_t Print::println(int num, int base)
+{
+   d5038:	b538      	push	{r3, r4, r5, lr}
+   d503a:	4605      	mov	r5, r0
+  return print((unsigned long) b, base);
+}
+
+size_t Print::print(int n, int base)
+{
+  return print((long) n, base);
+   d503c:	f7ff ffd8 	bl	d4ff0 <_ZN5Print5printEli>
+   d5040:	4604      	mov	r4, r0
+}
+
+size_t Print::println(int num, int base)
+{
+  size_t n = print(num, base);
+  n += println();
+   d5042:	4628      	mov	r0, r5
+   d5044:	f7ff ff85 	bl	d4f52 <_ZN5Print7printlnEv>
+  return n;
+}
+   d5048:	4420      	add	r0, r4
+   d504a:	bd38      	pop	{r3, r4, r5, pc}
+
+000d504c <_ZN11USARTSerialD1Ev>:
+private:
+  HAL_USART_Serial _serial;
+  bool _blocking;
+public:
+  USARTSerial(HAL_USART_Serial serial, Ring_Buffer *rx_buffer, Ring_Buffer *tx_buffer);
+  virtual ~USARTSerial() {};
+   d504c:	4770      	bx	lr
+
+000d504e <_ZN11USARTSerial14blockOnOverrunEb>:
+    HAL_USART_Half_Duplex(_serial, Enable);
+}
+
+void USARTSerial::blockOnOverrun(bool block)
+{
+  _blocking = block;
+   d504e:	7441      	strb	r1, [r0, #17]
+   d5050:	4770      	bx	lr
+
+000d5052 <_ZN11USARTSerial17availableForWriteEv>:
+}
+
+
+int USARTSerial::availableForWrite(void)
+{
+  return HAL_USART_Available_Data_For_Write(_serial);
+   d5052:	7c00      	ldrb	r0, [r0, #16]
+   d5054:	f7ff baec 	b.w	d4630 <HAL_USART_Available_Data_For_Write>
+
+000d5058 <_ZN11USARTSerial9availableEv>:
+}
+
+int USARTSerial::available(void)
+{
+  return HAL_USART_Available_Data(_serial);
+   d5058:	7c00      	ldrb	r0, [r0, #16]
+   d505a:	f7ff bac9 	b.w	d45f0 <HAL_USART_Available_Data>
+
+000d505e <_ZN11USARTSerial4peekEv>:
+}
+
+int USARTSerial::peek(void)
+{
+  return HAL_USART_Peek_Data(_serial);
+   d505e:	7c00      	ldrb	r0, [r0, #16]
+   d5060:	f7ff bad6 	b.w	d4610 <HAL_USART_Peek_Data>
+
+000d5064 <_ZN11USARTSerial4readEv>:
+}
+
+int USARTSerial::read(void)
+{
+  return HAL_USART_Read_Data(_serial);
+   d5064:	7c00      	ldrb	r0, [r0, #16]
+   d5066:	f7ff bacb 	b.w	d4600 <HAL_USART_Read_Data>
+
+000d506a <_ZN11USARTSerial5flushEv>:
+}
+
+void USARTSerial::flush()
+{
+  HAL_USART_Flush_Data(_serial);
+   d506a:	7c00      	ldrb	r0, [r0, #16]
+   d506c:	f7ff bad8 	b.w	d4620 <HAL_USART_Flush_Data>
+
+000d5070 <_ZN11USARTSerialD0Ev>:
+   d5070:	b510      	push	{r4, lr}
+   d5072:	4604      	mov	r4, r0
+   d5074:	f7ff f811 	bl	d409a <_ZdlPv>
+   d5078:	4620      	mov	r0, r4
+   d507a:	bd10      	pop	{r4, pc}
+
+000d507c <_ZN11USARTSerial5writeEh>:
+}
+
+size_t USARTSerial::write(uint8_t c)
+{
+   d507c:	b570      	push	{r4, r5, r6, lr}
+  // attempt a write if blocking, or for non-blocking if there is room.
+  if (_blocking || HAL_USART_Available_Data_For_Write(_serial) > 0) {
+   d507e:	7c45      	ldrb	r5, [r0, #17]
+{
+  HAL_USART_Flush_Data(_serial);
+}
+
+size_t USARTSerial::write(uint8_t c)
+{
+   d5080:	4604      	mov	r4, r0
+   d5082:	460e      	mov	r6, r1
+  // attempt a write if blocking, or for non-blocking if there is room.
+  if (_blocking || HAL_USART_Available_Data_For_Write(_serial) > 0) {
+   d5084:	b925      	cbnz	r5, d5090 <_ZN11USARTSerial5writeEh+0x14>
+   d5086:	7c00      	ldrb	r0, [r0, #16]
+   d5088:	f7ff fad2 	bl	d4630 <HAL_USART_Available_Data_For_Write>
+   d508c:	2800      	cmp	r0, #0
+   d508e:	dd05      	ble.n	d509c <_ZN11USARTSerial5writeEh+0x20>
+    // the HAL always blocks.
+	  return HAL_USART_Write_Data(_serial, c);
+   d5090:	4631      	mov	r1, r6
+   d5092:	7c20      	ldrb	r0, [r4, #16]
+  }
+  return 0;
+}
+   d5094:	e8bd 4070 	ldmia.w	sp!, {r4, r5, r6, lr}
+size_t USARTSerial::write(uint8_t c)
+{
+  // attempt a write if blocking, or for non-blocking if there is room.
+  if (_blocking || HAL_USART_Available_Data_For_Write(_serial) > 0) {
+    // the HAL always blocks.
+	  return HAL_USART_Write_Data(_serial, c);
+   d5098:	f7ff baa2 	b.w	d45e0 <HAL_USART_Write_Data>
+  }
+  return 0;
+}
+   d509c:	4628      	mov	r0, r5
+   d509e:	bd70      	pop	{r4, r5, r6, pc}
+
+000d50a0 <_ZN11USARTSerialC1E16HAL_USART_SerialP11Ring_BufferS2_>:
+#include "spark_wiring_constants.h"
+#include "module_info.h"
+
+// Constructors ////////////////////////////////////////////////////////////////
+
+USARTSerial::USARTSerial(HAL_USART_Serial serial, Ring_Buffer *rx_buffer, Ring_Buffer *tx_buffer)
+   d50a0:	b510      	push	{r4, lr}
+   d50a2:	4604      	mov	r4, r0
+   d50a4:	4608      	mov	r0, r1
+   d50a6:	4611      	mov	r1, r2
+  protected:
+    void setWriteError(int err = 1) { write_error = err; }
+    size_t printf_impl(bool newline, const char* format, ...);
+
+  public:
+    Print() : write_error(0) {}
+   d50a8:	2200      	movs	r2, #0
+   d50aa:	6062      	str	r2, [r4, #4]
+   d50ac:	f44f 727a 	mov.w	r2, #1000	; 0x3e8
+   d50b0:	60a2      	str	r2, [r4, #8]
+   d50b2:	4a05      	ldr	r2, [pc, #20]	; (d50c8 <_ZN11USARTSerialC1E16HAL_USART_SerialP11Ring_BufferS2_+0x28>)
+   d50b4:	6022      	str	r2, [r4, #0]
+{
+  _serial = serial;
+  // Default is blocking mode
+  _blocking = true;
+   d50b6:	2201      	movs	r2, #1
+
+// Constructors ////////////////////////////////////////////////////////////////
+
+USARTSerial::USARTSerial(HAL_USART_Serial serial, Ring_Buffer *rx_buffer, Ring_Buffer *tx_buffer)
+{
+  _serial = serial;
+   d50b8:	7420      	strb	r0, [r4, #16]
+  // Default is blocking mode
+  _blocking = true;
+   d50ba:	7462      	strb	r2, [r4, #17]
+  HAL_USART_Init(serial, rx_buffer, tx_buffer);
+   d50bc:	461a      	mov	r2, r3
+   d50be:	f7ff fa87 	bl	d45d0 <HAL_USART_Init>
+}
+   d50c2:	4620      	mov	r0, r4
+   d50c4:	bd10      	pop	{r4, pc}
+   d50c6:	bf00      	nop
+   d50c8:	000d5864 	.word	0x000d5864
+
+000d50cc <_Z22__fetch_global_Serial1v>:
+static Ring_Buffer* serial1_rx_buffer = NULL;
+static Ring_Buffer* serial1_tx_buffer = NULL;
+#endif
+
+USARTSerial& __fetch_global_Serial1()
+{
+   d50cc:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+#if ((MODULE_FUNCTION == MOD_FUNC_USER_PART) || (MODULE_FUNCTION == MOD_FUNC_MONO_FIRMWARE))
+	static USARTSerial serial1(HAL_USART_SERIAL1, &serial1_rx_buffer, &serial1_tx_buffer);
+#else
+  if (!serial1_rx_buffer) {
+   d50ce:	4c19      	ldr	r4, [pc, #100]	; (d5134 <_Z22__fetch_global_Serial1v+0x68>)
+   d50d0:	6825      	ldr	r5, [r4, #0]
+   d50d2:	b94d      	cbnz	r5, d50e8 <_Z22__fetch_global_Serial1v+0x1c>
+    serial1_rx_buffer = new Ring_Buffer();
+   d50d4:	2084      	movs	r0, #132	; 0x84
+   d50d6:	f7fe ffde 	bl	d4096 <_Znwj>
+   d50da:	4606      	mov	r6, r0
+   d50dc:	b118      	cbz	r0, d50e6 <_Z22__fetch_global_Serial1v+0x1a>
+   d50de:	2284      	movs	r2, #132	; 0x84
+   d50e0:	4629      	mov	r1, r5
+   d50e2:	f000 fa42 	bl	d556a <memset>
+   d50e6:	6026      	str	r6, [r4, #0]
+  }
+  if (!serial1_tx_buffer) {
+   d50e8:	4d13      	ldr	r5, [pc, #76]	; (d5138 <_Z22__fetch_global_Serial1v+0x6c>)
+   d50ea:	682e      	ldr	r6, [r5, #0]
+   d50ec:	b94e      	cbnz	r6, d5102 <_Z22__fetch_global_Serial1v+0x36>
+    serial1_tx_buffer = new Ring_Buffer();
+   d50ee:	2084      	movs	r0, #132	; 0x84
+   d50f0:	f7fe ffd1 	bl	d4096 <_Znwj>
+   d50f4:	4607      	mov	r7, r0
+   d50f6:	b118      	cbz	r0, d5100 <_Z22__fetch_global_Serial1v+0x34>
+   d50f8:	2284      	movs	r2, #132	; 0x84
+   d50fa:	4631      	mov	r1, r6
+   d50fc:	f000 fa35 	bl	d556a <memset>
+   d5100:	602f      	str	r7, [r5, #0]
+  }
+  static USARTSerial serial1(HAL_USART_SERIAL1, serial1_rx_buffer, serial1_tx_buffer);
+   d5102:	4f0e      	ldr	r7, [pc, #56]	; (d513c <_Z22__fetch_global_Serial1v+0x70>)
+   d5104:	6839      	ldr	r1, [r7, #0]
+   d5106:	f011 0601 	ands.w	r6, r1, #1
+   d510a:	d111      	bne.n	d5130 <_Z22__fetch_global_Serial1v+0x64>
+   d510c:	4638      	mov	r0, r7
+   d510e:	f7fe ffc8 	bl	d40a2 <__cxa_guard_acquire>
+   d5112:	b168      	cbz	r0, d5130 <_Z22__fetch_global_Serial1v+0x64>
+   d5114:	6822      	ldr	r2, [r4, #0]
+   d5116:	682b      	ldr	r3, [r5, #0]
+   d5118:	4809      	ldr	r0, [pc, #36]	; (d5140 <_Z22__fetch_global_Serial1v+0x74>)
+   d511a:	4631      	mov	r1, r6
+   d511c:	f7ff ffc0 	bl	d50a0 <_ZN11USARTSerialC1E16HAL_USART_SerialP11Ring_BufferS2_>
+   d5120:	4638      	mov	r0, r7
+   d5122:	f7fe ffc3 	bl	d40ac <__cxa_guard_release>
+   d5126:	4a07      	ldr	r2, [pc, #28]	; (d5144 <_Z22__fetch_global_Serial1v+0x78>)
+   d5128:	4907      	ldr	r1, [pc, #28]	; (d5148 <_Z22__fetch_global_Serial1v+0x7c>)
+   d512a:	4805      	ldr	r0, [pc, #20]	; (d5140 <_Z22__fetch_global_Serial1v+0x74>)
+   d512c:	f000 f8b6 	bl	d529c <__aeabi_atexit>
+#endif
+	return serial1;
+}
+   d5130:	4803      	ldr	r0, [pc, #12]	; (d5140 <_Z22__fetch_global_Serial1v+0x74>)
+   d5132:	bdf8      	pop	{r3, r4, r5, r6, r7, pc}
+   d5134:	2003e700 	.word	0x2003e700
+   d5138:	2003e6f8 	.word	0x2003e6f8
+   d513c:	2003e6fc 	.word	0x2003e6fc
+   d5140:	2003e6e4 	.word	0x2003e6e4
+   d5144:	2003e4bc 	.word	0x2003e4bc
+   d5148:	000d504d 	.word	0x000d504d
+
+000d514c <_GLOBAL__sub_I_System>:
+    WAKEUP_REASON_RTC = 2,
+    WAKEUP_REASON_PIN_OR_RTC = 3
+};
+
+struct SleepResult {
+    SleepResult() {}
+   d514c:	4b04      	ldr	r3, [pc, #16]	; (d5160 <_GLOBAL__sub_I_System+0x14>)
+   d514e:	2000      	movs	r0, #0
+   d5150:	f64f 72ff 	movw	r2, #65535	; 0xffff
+   d5154:	7018      	strb	r0, [r3, #0]
+   d5156:	8058      	strh	r0, [r3, #2]
+   d5158:	809a      	strh	r2, [r3, #4]
+
+class SystemClass {
+public:
+
+    SystemClass(System_Mode_TypeDef mode = DEFAULT) {
+        set_system_mode(mode);
+   d515a:	f7ff bb29 	b.w	d47b0 <set_system_mode>
+   d515e:	bf00      	nop
+   d5160:	2003e704 	.word	0x2003e704
+
+000d5164 <_ZN8SPIClassD1Ev>:
+  Mutex mutex_;
+#endif
+
+public:
+  SPIClass(HAL_SPI_Interface spi);
+  virtual ~SPIClass() {};
+   d5164:	4770      	bx	lr
+
+000d5166 <_ZN8SPIClassD0Ev>:
+   d5166:	b510      	push	{r4, lr}
+   d5168:	4604      	mov	r4, r0
+   d516a:	f7fe ff96 	bl	d409a <_ZdlPv>
+   d516e:	4620      	mov	r0, r4
+   d5170:	bd10      	pop	{r4, pc}
+	...
+
+000d5174 <_ZN8SPIClassC1E17HAL_SPI_Interface>:
+  if (!info->enabled || info->default_settings)
+    return particle::__SPISettings();
+  return particle::__SPISettings(info->clock, info->bit_order, info->data_mode);
+}
+
+SPIClass::SPIClass(HAL_SPI_Interface spi)
+   d5174:	b570      	push	{r4, r5, r6, lr}
+   d5176:	4b08      	ldr	r3, [pc, #32]	; (d5198 <_ZN8SPIClassC1E17HAL_SPI_Interface+0x24>)
+   d5178:	6003      	str	r3, [r0, #0]
+   d517a:	4604      	mov	r4, r0
+    Mutex(os_mutex_t handle) : handle_(handle) {}
+
+    /**
+     * Creates a new mutex.
+     */
+    Mutex() : handle_(nullptr)
+   d517c:	2500      	movs	r5, #0
+   d517e:	460e      	mov	r6, r1
+   d5180:	f840 5f0c 	str.w	r5, [r0, #12]!
+    {
+        os_mutex_create(&handle_);
+   d5184:	f7ff fa7c 	bl	d4680 <os_mutex_create>
+{
+  _spi = spi;
+  HAL_SPI_Init(_spi);
+   d5188:	4630      	mov	r0, r6
+  return particle::__SPISettings(info->clock, info->bit_order, info->data_mode);
+}
+
+SPIClass::SPIClass(HAL_SPI_Interface spi)
+{
+  _spi = spi;
+   d518a:	7126      	strb	r6, [r4, #4]
+  HAL_SPI_Init(_spi);
+   d518c:	f7ff fa98 	bl	d46c0 <HAL_SPI_Init>
+  dividerReference = SPI_CLK_SYSTEM;     // 0 indicates the system clock
+   d5190:	60a5      	str	r5, [r4, #8]
+}
+   d5192:	4620      	mov	r0, r4
+   d5194:	bd70      	pop	{r4, r5, r6, pc}
+   d5196:	bf00      	nop
+   d5198:	000d5894 	.word	0x000d5894
+
+000d519c <_ZN5spark13EthernetClass9listeningEv>:
+    uint16_t getListenTimeout(void) {
+        return network_get_listen_timeout(*this, 0, NULL);
+    }
+
+    bool listening(void) {
+        return network_listening(*this, 0, NULL);
+   d519c:	2200      	movs	r2, #0
+   d519e:	4611      	mov	r1, r2
+   d51a0:	6840      	ldr	r0, [r0, #4]
+   d51a2:	f7ff baed 	b.w	d4780 <network_listening>
+
+000d51a6 <_ZN5spark13EthernetClass16getListenTimeoutEv>:
+    void setListenTimeout(uint16_t timeout) {
+        network_set_listen_timeout(*this, timeout, NULL);
+    }
+
+    uint16_t getListenTimeout(void) {
+        return network_get_listen_timeout(*this, 0, NULL);
+   d51a6:	2200      	movs	r2, #0
+   d51a8:	4611      	mov	r1, r2
+   d51aa:	6840      	ldr	r0, [r0, #4]
+   d51ac:	f7ff baf8 	b.w	d47a0 <network_get_listen_timeout>
+
+000d51b0 <_ZN5spark13EthernetClass16setListenTimeoutEt>:
+    void listen(bool begin=true) {
+        network_listen(*this, begin ? 0 : 1, NULL);
+    }
+
+    void setListenTimeout(uint16_t timeout) {
+        network_set_listen_timeout(*this, timeout, NULL);
+   d51b0:	2200      	movs	r2, #0
+   d51b2:	6840      	ldr	r0, [r0, #4]
+   d51b4:	f7ff baec 	b.w	d4790 <network_set_listen_timeout>
+
+000d51b8 <_ZN5spark13EthernetClass6listenEb>:
+    void disconnect() {
+        network_disconnect(*this, NETWORK_DISCONNECT_REASON_USER, NULL);
+    }
+
+    void listen(bool begin=true) {
+        network_listen(*this, begin ? 0 : 1, NULL);
+   d51b8:	2200      	movs	r2, #0
+   d51ba:	f081 0101 	eor.w	r1, r1, #1
+   d51be:	6840      	ldr	r0, [r0, #4]
+   d51c0:	f7ff bad6 	b.w	d4770 <network_listen>
+
+000d51c4 <_ZN5spark13EthernetClass3offEv>:
+    void on() {
+        network_on(*this, 0, 0, NULL);
+    }
+
+    void off() {
+        network_off(*this, 0, 0, NULL);
+   d51c4:	2300      	movs	r3, #0
+   d51c6:	461a      	mov	r2, r3
+   d51c8:	4619      	mov	r1, r3
+   d51ca:	6840      	ldr	r0, [r0, #4]
+   d51cc:	f7ff bac8 	b.w	d4760 <network_off>
+
+000d51d0 <_ZN5spark13EthernetClass2onEv>:
+    EthernetClass() :
+            NetworkClass(NETWORK_INTERFACE_ETHERNET) {
+    }
+
+    void on() {
+        network_on(*this, 0, 0, NULL);
+   d51d0:	2300      	movs	r3, #0
+   d51d2:	461a      	mov	r2, r3
+   d51d4:	4619      	mov	r1, r3
+   d51d6:	6840      	ldr	r0, [r0, #4]
+   d51d8:	f7ff baba 	b.w	d4750 <network_on>
+
+000d51dc <_ZN5spark13EthernetClass5readyEv>:
+    bool listening(void) {
+        return network_listening(*this, 0, NULL);
+    }
+
+    bool ready() {
+        return network_ready(*this, 0,  NULL);
+   d51dc:	2200      	movs	r2, #0
+   d51de:	4611      	mov	r1, r2
+   d51e0:	6840      	ldr	r0, [r0, #4]
+   d51e2:	f7ff baad 	b.w	d4740 <network_ready>
+
+000d51e6 <_ZN5spark13EthernetClass10connectingEv>:
+    void connect(unsigned flags=0) {
+        network_connect(*this, flags, 0, NULL);
+    }
+
+    bool connecting(void) {
+        return network_connecting(*this, 0, NULL);
+   d51e6:	2200      	movs	r2, #0
+   d51e8:	4611      	mov	r1, r2
+   d51ea:	6840      	ldr	r0, [r0, #4]
+   d51ec:	f7ff ba98 	b.w	d4720 <network_connecting>
+
+000d51f0 <_ZN5spark13EthernetClass10disconnectEv>:
+    }
+
+    void disconnect() {
+        network_disconnect(*this, NETWORK_DISCONNECT_REASON_USER, NULL);
+   d51f0:	2200      	movs	r2, #0
+   d51f2:	2102      	movs	r1, #2
+   d51f4:	6840      	ldr	r0, [r0, #4]
+   d51f6:	f7ff ba9b 	b.w	d4730 <network_disconnect>
+
+000d51fa <_ZN5spark13EthernetClass7connectEj>:
+    void off() {
+        network_off(*this, 0, 0, NULL);
+    }
+
+    void connect(unsigned flags=0) {
+        network_connect(*this, flags, 0, NULL);
+   d51fa:	2300      	movs	r3, #0
+   d51fc:	461a      	mov	r2, r3
+   d51fe:	6840      	ldr	r0, [r0, #4]
+   d5200:	f7ff ba86 	b.w	d4710 <network_connect>
+
+000d5204 <_GLOBAL__sub_I__ZN5spark8EthernetE>:
+   d5204:	4b02      	ldr	r3, [pc, #8]	; (d5210 <_GLOBAL__sub_I__ZN5spark8EthernetE+0xc>)
+   d5206:	2203      	movs	r2, #3
+   d5208:	605a      	str	r2, [r3, #4]
+    }
+
+class EthernetClass : public NetworkClass {
+public:
+    EthernetClass() :
+            NetworkClass(NETWORK_INTERFACE_ETHERNET) {
+   d520a:	4a02      	ldr	r2, [pc, #8]	; (d5214 <_GLOBAL__sub_I__ZN5spark8EthernetE+0x10>)
+   d520c:	601a      	str	r2, [r3, #0]
+   d520e:	4770      	bx	lr
+   d5210:	2003e70c 	.word	0x2003e70c
+   d5214:	000d58a4 	.word	0x000d58a4
+
+000d5218 <_Z19__fetch_global_Wirev>:
+#include "i2c_hal.h"
+
+#ifndef SPARK_WIRING_NO_I2C
+
+TwoWire& __fetch_global_Wire()
+{
+   d5218:	b538      	push	{r3, r4, r5, lr}
+	static TwoWire wire(HAL_I2C_INTERFACE1);
+   d521a:	4d0b      	ldr	r5, [pc, #44]	; (d5248 <_Z19__fetch_global_Wirev+0x30>)
+   d521c:	6829      	ldr	r1, [r5, #0]
+   d521e:	f011 0401 	ands.w	r4, r1, #1
+   d5222:	d10f      	bne.n	d5244 <_Z19__fetch_global_Wirev+0x2c>
+   d5224:	4628      	mov	r0, r5
+   d5226:	f7fe ff3c 	bl	d40a2 <__cxa_guard_acquire>
+   d522a:	b158      	cbz	r0, d5244 <_Z19__fetch_global_Wirev+0x2c>
+   d522c:	4621      	mov	r1, r4
+   d522e:	4807      	ldr	r0, [pc, #28]	; (d524c <_Z19__fetch_global_Wirev+0x34>)
+   d5230:	f7ff fcac 	bl	d4b8c <_ZN7TwoWireC1E17HAL_I2C_Interface>
+   d5234:	4628      	mov	r0, r5
+   d5236:	f7fe ff39 	bl	d40ac <__cxa_guard_release>
+   d523a:	4a05      	ldr	r2, [pc, #20]	; (d5250 <_Z19__fetch_global_Wirev+0x38>)
+   d523c:	4905      	ldr	r1, [pc, #20]	; (d5254 <_Z19__fetch_global_Wirev+0x3c>)
+   d523e:	4803      	ldr	r0, [pc, #12]	; (d524c <_Z19__fetch_global_Wirev+0x34>)
+   d5240:	f000 f82c 	bl	d529c <__aeabi_atexit>
+	return wire;
+}
+   d5244:	4801      	ldr	r0, [pc, #4]	; (d524c <_Z19__fetch_global_Wirev+0x34>)
+   d5246:	bd38      	pop	{r3, r4, r5, pc}
+   d5248:	2003e714 	.word	0x2003e714
+   d524c:	2003e718 	.word	0x2003e718
+   d5250:	2003e4bc 	.word	0x2003e4bc
+   d5254:	000d4b35 	.word	0x000d4b35
+
+000d5258 <_GLOBAL__sub_I_SPI>:
+#ifndef SPARK_WIRING_NO_SPI
+
+SPIClass SPI(HAL_SPI_INTERFACE1);
+
+#if Wiring_SPI1
+SPIClass SPI1(HAL_SPI_INTERFACE2);
+   d5258:	b570      	push	{r4, r5, r6, lr}
+#include "core_hal.h"
+#include "spark_macros.h"
+
+#ifndef SPARK_WIRING_NO_SPI
+
+SPIClass SPI(HAL_SPI_INTERFACE1);
+   d525a:	4c0c      	ldr	r4, [pc, #48]	; (d528c <_GLOBAL__sub_I_SPI+0x34>)
+   d525c:	4e0c      	ldr	r6, [pc, #48]	; (d5290 <_GLOBAL__sub_I_SPI+0x38>)
+   d525e:	4d0d      	ldr	r5, [pc, #52]	; (d5294 <_GLOBAL__sub_I_SPI+0x3c>)
+   d5260:	2100      	movs	r1, #0
+   d5262:	4620      	mov	r0, r4
+   d5264:	f7ff ff86 	bl	d5174 <_ZN8SPIClassC1E17HAL_SPI_Interface>
+   d5268:	4620      	mov	r0, r4
+
+#if Wiring_SPI1
+SPIClass SPI1(HAL_SPI_INTERFACE2);
+   d526a:	4c0b      	ldr	r4, [pc, #44]	; (d5298 <_GLOBAL__sub_I_SPI+0x40>)
+#include "core_hal.h"
+#include "spark_macros.h"
+
+#ifndef SPARK_WIRING_NO_SPI
+
+SPIClass SPI(HAL_SPI_INTERFACE1);
+   d526c:	4632      	mov	r2, r6
+   d526e:	4629      	mov	r1, r5
+   d5270:	f000 f814 	bl	d529c <__aeabi_atexit>
+
+#if Wiring_SPI1
+SPIClass SPI1(HAL_SPI_INTERFACE2);
+   d5274:	2101      	movs	r1, #1
+   d5276:	4620      	mov	r0, r4
+   d5278:	f7ff ff7c 	bl	d5174 <_ZN8SPIClassC1E17HAL_SPI_Interface>
+   d527c:	4632      	mov	r2, r6
+   d527e:	4629      	mov	r1, r5
+   d5280:	4620      	mov	r0, r4
+   d5282:	e8bd 4070 	ldmia.w	sp!, {r4, r5, r6, lr}
+   d5286:	f000 b809 	b.w	d529c <__aeabi_atexit>
+   d528a:	bf00      	nop
+   d528c:	2003e730 	.word	0x2003e730
+   d5290:	2003e4bc 	.word	0x2003e4bc
+   d5294:	000d5165 	.word	0x000d5165
+   d5298:	2003e740 	.word	0x2003e740
+
+000d529c <__aeabi_atexit>:
+   d529c:	460b      	mov	r3, r1
+   d529e:	4601      	mov	r1, r0
+   d52a0:	4618      	mov	r0, r3
+   d52a2:	f000 b949 	b.w	d5538 <__cxa_atexit>
+	...
+
+000d52a8 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj>:
+   d52a8:	4b18      	ldr	r3, [pc, #96]	; (d530c <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj+0x64>)
+   d52aa:	681a      	ldr	r2, [r3, #0]
+   d52ac:	07d1      	lsls	r1, r2, #31
+   d52ae:	bf5c      	itt	pl
+   d52b0:	2201      	movpl	r2, #1
+   d52b2:	601a      	strpl	r2, [r3, #0]
+   d52b4:	4b16      	ldr	r3, [pc, #88]	; (d5310 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj+0x68>)
+   d52b6:	681a      	ldr	r2, [r3, #0]
+   d52b8:	07d2      	lsls	r2, r2, #31
+   d52ba:	bf5c      	itt	pl
+   d52bc:	2201      	movpl	r2, #1
+   d52be:	601a      	strpl	r2, [r3, #0]
+   d52c0:	4b14      	ldr	r3, [pc, #80]	; (d5314 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj+0x6c>)
+   d52c2:	681a      	ldr	r2, [r3, #0]
+   d52c4:	07d0      	lsls	r0, r2, #31
+   d52c6:	bf5c      	itt	pl
+   d52c8:	2201      	movpl	r2, #1
+   d52ca:	601a      	strpl	r2, [r3, #0]
+   d52cc:	4b12      	ldr	r3, [pc, #72]	; (d5318 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj+0x70>)
+   d52ce:	681a      	ldr	r2, [r3, #0]
+   d52d0:	07d1      	lsls	r1, r2, #31
+   d52d2:	bf5c      	itt	pl
+   d52d4:	2201      	movpl	r2, #1
+   d52d6:	601a      	strpl	r2, [r3, #0]
+   d52d8:	4b10      	ldr	r3, [pc, #64]	; (d531c <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj+0x74>)
+   d52da:	681a      	ldr	r2, [r3, #0]
+   d52dc:	07d2      	lsls	r2, r2, #31
+   d52de:	bf5c      	itt	pl
+   d52e0:	2201      	movpl	r2, #1
+   d52e2:	601a      	strpl	r2, [r3, #0]
+   d52e4:	4b0e      	ldr	r3, [pc, #56]	; (d5320 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj+0x78>)
+   d52e6:	681a      	ldr	r2, [r3, #0]
+   d52e8:	07d0      	lsls	r0, r2, #31
+   d52ea:	bf5c      	itt	pl
+   d52ec:	2201      	movpl	r2, #1
+   d52ee:	601a      	strpl	r2, [r3, #0]
+   d52f0:	4b0c      	ldr	r3, [pc, #48]	; (d5324 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj+0x7c>)
+   d52f2:	681a      	ldr	r2, [r3, #0]
+   d52f4:	07d1      	lsls	r1, r2, #31
+   d52f6:	bf5c      	itt	pl
+   d52f8:	2201      	movpl	r2, #1
+   d52fa:	601a      	strpl	r2, [r3, #0]
+   d52fc:	4b0a      	ldr	r3, [pc, #40]	; (d5328 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj+0x80>)
+   d52fe:	681a      	ldr	r2, [r3, #0]
+   d5300:	07d2      	lsls	r2, r2, #31
+   d5302:	bf5c      	itt	pl
+   d5304:	2201      	movpl	r2, #1
+   d5306:	601a      	strpl	r2, [r3, #0]
+   d5308:	4770      	bx	lr
+   d530a:	bf00      	nop
+   d530c:	2003e76c 	.word	0x2003e76c
+   d5310:	2003e768 	.word	0x2003e768
+   d5314:	2003e764 	.word	0x2003e764
+   d5318:	2003e760 	.word	0x2003e760
+   d531c:	2003e75c 	.word	0x2003e75c
+   d5320:	2003e758 	.word	0x2003e758
+   d5324:	2003e754 	.word	0x2003e754
+   d5328:	2003e750 	.word	0x2003e750
+
+000d532c <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKSsj>:
+   d532c:	4b24      	ldr	r3, [pc, #144]	; (d53c0 <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKSsj+0x94>)
+   d532e:	681a      	ldr	r2, [r3, #0]
+   d5330:	07d0      	lsls	r0, r2, #31
+   d5332:	bf5c      	itt	pl
+   d5334:	2201      	movpl	r2, #1
+   d5336:	601a      	strpl	r2, [r3, #0]
+   d5338:	4b22      	ldr	r3, [pc, #136]	; (d53c4 <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKSsj+0x98>)
+   d533a:	681a      	ldr	r2, [r3, #0]
+   d533c:	07d1      	lsls	r1, r2, #31
+   d533e:	bf5c      	itt	pl
+   d5340:	2201      	movpl	r2, #1
+   d5342:	601a      	strpl	r2, [r3, #0]
+   d5344:	4b20      	ldr	r3, [pc, #128]	; (d53c8 <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKSsj+0x9c>)
+   d5346:	681a      	ldr	r2, [r3, #0]
+   d5348:	07d2      	lsls	r2, r2, #31
+   d534a:	bf5c      	itt	pl
+   d534c:	2201      	movpl	r2, #1
+   d534e:	601a      	strpl	r2, [r3, #0]
+   d5350:	4b1e      	ldr	r3, [pc, #120]	; (d53cc <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKSsj+0xa0>)
+   d5352:	681a      	ldr	r2, [r3, #0]
+   d5354:	07d0      	lsls	r0, r2, #31
+   d5356:	bf5c      	itt	pl
+   d5358:	2201      	movpl	r2, #1
+   d535a:	601a      	strpl	r2, [r3, #0]
+   d535c:	4b1c      	ldr	r3, [pc, #112]	; (d53d0 <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKSsj+0xa4>)
+   d535e:	681a      	ldr	r2, [r3, #0]
+   d5360:	07d1      	lsls	r1, r2, #31
+   d5362:	bf5c      	itt	pl
+   d5364:	2201      	movpl	r2, #1
+   d5366:	601a      	strpl	r2, [r3, #0]
+   d5368:	4b1a      	ldr	r3, [pc, #104]	; (d53d4 <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKSsj+0xa8>)
+   d536a:	681a      	ldr	r2, [r3, #0]
+   d536c:	07d2      	lsls	r2, r2, #31
+   d536e:	bf5c      	itt	pl
+   d5370:	2201      	movpl	r2, #1
+   d5372:	601a      	strpl	r2, [r3, #0]
+   d5374:	4b18      	ldr	r3, [pc, #96]	; (d53d8 <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKSsj+0xac>)
+   d5376:	681a      	ldr	r2, [r3, #0]
+   d5378:	07d0      	lsls	r0, r2, #31
+   d537a:	bf5c      	itt	pl
+   d537c:	2201      	movpl	r2, #1
+   d537e:	601a      	strpl	r2, [r3, #0]
+   d5380:	4b16      	ldr	r3, [pc, #88]	; (d53dc <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKSsj+0xb0>)
+   d5382:	681a      	ldr	r2, [r3, #0]
+   d5384:	07d1      	lsls	r1, r2, #31
+   d5386:	bf5c      	itt	pl
+   d5388:	2201      	movpl	r2, #1
+   d538a:	601a      	strpl	r2, [r3, #0]
+   d538c:	4b14      	ldr	r3, [pc, #80]	; (d53e0 <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKSsj+0xb4>)
+   d538e:	681a      	ldr	r2, [r3, #0]
+   d5390:	07d2      	lsls	r2, r2, #31
+   d5392:	bf5c      	itt	pl
+   d5394:	2201      	movpl	r2, #1
+   d5396:	601a      	strpl	r2, [r3, #0]
+   d5398:	4b12      	ldr	r3, [pc, #72]	; (d53e4 <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKSsj+0xb8>)
+   d539a:	681a      	ldr	r2, [r3, #0]
+   d539c:	07d0      	lsls	r0, r2, #31
+   d539e:	bf5c      	itt	pl
+   d53a0:	2201      	movpl	r2, #1
+   d53a2:	601a      	strpl	r2, [r3, #0]
+   d53a4:	4b10      	ldr	r3, [pc, #64]	; (d53e8 <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKSsj+0xbc>)
+   d53a6:	681a      	ldr	r2, [r3, #0]
+   d53a8:	07d1      	lsls	r1, r2, #31
+   d53aa:	bf5c      	itt	pl
+   d53ac:	2201      	movpl	r2, #1
+   d53ae:	601a      	strpl	r2, [r3, #0]
+   d53b0:	4b0e      	ldr	r3, [pc, #56]	; (d53ec <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKSsj+0xc0>)
+   d53b2:	681a      	ldr	r2, [r3, #0]
+   d53b4:	07d2      	lsls	r2, r2, #31
+   d53b6:	bf5c      	itt	pl
+   d53b8:	2201      	movpl	r2, #1
+   d53ba:	601a      	strpl	r2, [r3, #0]
+   d53bc:	4770      	bx	lr
+   d53be:	bf00      	nop
+   d53c0:	2003e79c 	.word	0x2003e79c
+   d53c4:	2003e798 	.word	0x2003e798
+   d53c8:	2003e794 	.word	0x2003e794
+   d53cc:	2003e790 	.word	0x2003e790
+   d53d0:	2003e78c 	.word	0x2003e78c
+   d53d4:	2003e788 	.word	0x2003e788
+   d53d8:	2003e784 	.word	0x2003e784
+   d53dc:	2003e780 	.word	0x2003e780
+   d53e0:	2003e77c 	.word	0x2003e77c
+   d53e4:	2003e778 	.word	0x2003e778
+   d53e8:	2003e774 	.word	0x2003e774
+   d53ec:	2003e770 	.word	0x2003e770
+
+000d53f0 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKSsj>:
+   d53f0:	4b24      	ldr	r3, [pc, #144]	; (d5484 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKSsj+0x94>)
+   d53f2:	681a      	ldr	r2, [r3, #0]
+   d53f4:	07d0      	lsls	r0, r2, #31
+   d53f6:	bf5c      	itt	pl
+   d53f8:	2201      	movpl	r2, #1
+   d53fa:	601a      	strpl	r2, [r3, #0]
+   d53fc:	4b22      	ldr	r3, [pc, #136]	; (d5488 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKSsj+0x98>)
+   d53fe:	681a      	ldr	r2, [r3, #0]
+   d5400:	07d1      	lsls	r1, r2, #31
+   d5402:	bf5c      	itt	pl
+   d5404:	2201      	movpl	r2, #1
+   d5406:	601a      	strpl	r2, [r3, #0]
+   d5408:	4b20      	ldr	r3, [pc, #128]	; (d548c <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKSsj+0x9c>)
+   d540a:	681a      	ldr	r2, [r3, #0]
+   d540c:	07d2      	lsls	r2, r2, #31
+   d540e:	bf5c      	itt	pl
+   d5410:	2201      	movpl	r2, #1
+   d5412:	601a      	strpl	r2, [r3, #0]
+   d5414:	4b1e      	ldr	r3, [pc, #120]	; (d5490 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKSsj+0xa0>)
+   d5416:	681a      	ldr	r2, [r3, #0]
+   d5418:	07d0      	lsls	r0, r2, #31
+   d541a:	bf5c      	itt	pl
+   d541c:	2201      	movpl	r2, #1
+   d541e:	601a      	strpl	r2, [r3, #0]
+   d5420:	4b1c      	ldr	r3, [pc, #112]	; (d5494 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKSsj+0xa4>)
+   d5422:	681a      	ldr	r2, [r3, #0]
+   d5424:	07d1      	lsls	r1, r2, #31
+   d5426:	bf5c      	itt	pl
+   d5428:	2201      	movpl	r2, #1
+   d542a:	601a      	strpl	r2, [r3, #0]
+   d542c:	4b1a      	ldr	r3, [pc, #104]	; (d5498 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKSsj+0xa8>)
+   d542e:	681a      	ldr	r2, [r3, #0]
+   d5430:	07d2      	lsls	r2, r2, #31
+   d5432:	bf5c      	itt	pl
+   d5434:	2201      	movpl	r2, #1
+   d5436:	601a      	strpl	r2, [r3, #0]
+   d5438:	4b18      	ldr	r3, [pc, #96]	; (d549c <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKSsj+0xac>)
+   d543a:	681a      	ldr	r2, [r3, #0]
+   d543c:	07d0      	lsls	r0, r2, #31
+   d543e:	bf5c      	itt	pl
+   d5440:	2201      	movpl	r2, #1
+   d5442:	601a      	strpl	r2, [r3, #0]
+   d5444:	4b16      	ldr	r3, [pc, #88]	; (d54a0 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKSsj+0xb0>)
+   d5446:	681a      	ldr	r2, [r3, #0]
+   d5448:	07d1      	lsls	r1, r2, #31
+   d544a:	bf5c      	itt	pl
+   d544c:	2201      	movpl	r2, #1
+   d544e:	601a      	strpl	r2, [r3, #0]
+   d5450:	4b14      	ldr	r3, [pc, #80]	; (d54a4 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKSsj+0xb4>)
+   d5452:	681a      	ldr	r2, [r3, #0]
+   d5454:	07d2      	lsls	r2, r2, #31
+   d5456:	bf5c      	itt	pl
+   d5458:	2201      	movpl	r2, #1
+   d545a:	601a      	strpl	r2, [r3, #0]
+   d545c:	4b12      	ldr	r3, [pc, #72]	; (d54a8 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKSsj+0xb8>)
+   d545e:	681a      	ldr	r2, [r3, #0]
+   d5460:	07d0      	lsls	r0, r2, #31
+   d5462:	bf5c      	itt	pl
+   d5464:	2201      	movpl	r2, #1
+   d5466:	601a      	strpl	r2, [r3, #0]
+   d5468:	4b10      	ldr	r3, [pc, #64]	; (d54ac <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKSsj+0xbc>)
+   d546a:	681a      	ldr	r2, [r3, #0]
+   d546c:	07d1      	lsls	r1, r2, #31
+   d546e:	bf5c      	itt	pl
+   d5470:	2201      	movpl	r2, #1
+   d5472:	601a      	strpl	r2, [r3, #0]
+   d5474:	4b0e      	ldr	r3, [pc, #56]	; (d54b0 <_GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKSsj+0xc0>)
+   d5476:	681a      	ldr	r2, [r3, #0]
+   d5478:	07d2      	lsls	r2, r2, #31
+   d547a:	bf5c      	itt	pl
+   d547c:	2201      	movpl	r2, #1
+   d547e:	601a      	strpl	r2, [r3, #0]
+   d5480:	4770      	bx	lr
+   d5482:	bf00      	nop
+   d5484:	2003e7cc 	.word	0x2003e7cc
+   d5488:	2003e7c8 	.word	0x2003e7c8
+   d548c:	2003e7c4 	.word	0x2003e7c4
+   d5490:	2003e7c0 	.word	0x2003e7c0
+   d5494:	2003e7bc 	.word	0x2003e7bc
+   d5498:	2003e7b8 	.word	0x2003e7b8
+   d549c:	2003e7b4 	.word	0x2003e7b4
+   d54a0:	2003e7b0 	.word	0x2003e7b0
+   d54a4:	2003e7ac 	.word	0x2003e7ac
+   d54a8:	2003e7a8 	.word	0x2003e7a8
+   d54ac:	2003e7a4 	.word	0x2003e7a4
+   d54b0:	2003e7a0 	.word	0x2003e7a0
+
+000d54b4 <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj>:
+   d54b4:	4b18      	ldr	r3, [pc, #96]	; (d5518 <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj+0x64>)
+   d54b6:	681a      	ldr	r2, [r3, #0]
+   d54b8:	07d1      	lsls	r1, r2, #31
+   d54ba:	bf5c      	itt	pl
+   d54bc:	2201      	movpl	r2, #1
+   d54be:	601a      	strpl	r2, [r3, #0]
+   d54c0:	4b16      	ldr	r3, [pc, #88]	; (d551c <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj+0x68>)
+   d54c2:	681a      	ldr	r2, [r3, #0]
+   d54c4:	07d2      	lsls	r2, r2, #31
+   d54c6:	bf5c      	itt	pl
+   d54c8:	2201      	movpl	r2, #1
+   d54ca:	601a      	strpl	r2, [r3, #0]
+   d54cc:	4b14      	ldr	r3, [pc, #80]	; (d5520 <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj+0x6c>)
+   d54ce:	681a      	ldr	r2, [r3, #0]
+   d54d0:	07d0      	lsls	r0, r2, #31
+   d54d2:	bf5c      	itt	pl
+   d54d4:	2201      	movpl	r2, #1
+   d54d6:	601a      	strpl	r2, [r3, #0]
+   d54d8:	4b12      	ldr	r3, [pc, #72]	; (d5524 <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj+0x70>)
+   d54da:	681a      	ldr	r2, [r3, #0]
+   d54dc:	07d1      	lsls	r1, r2, #31
+   d54de:	bf5c      	itt	pl
+   d54e0:	2201      	movpl	r2, #1
+   d54e2:	601a      	strpl	r2, [r3, #0]
+   d54e4:	4b10      	ldr	r3, [pc, #64]	; (d5528 <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj+0x74>)
+   d54e6:	681a      	ldr	r2, [r3, #0]
+   d54e8:	07d2      	lsls	r2, r2, #31
+   d54ea:	bf5c      	itt	pl
+   d54ec:	2201      	movpl	r2, #1
+   d54ee:	601a      	strpl	r2, [r3, #0]
+   d54f0:	4b0e      	ldr	r3, [pc, #56]	; (d552c <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj+0x78>)
+   d54f2:	681a      	ldr	r2, [r3, #0]
+   d54f4:	07d0      	lsls	r0, r2, #31
+   d54f6:	bf5c      	itt	pl
+   d54f8:	2201      	movpl	r2, #1
+   d54fa:	601a      	strpl	r2, [r3, #0]
+   d54fc:	4b0c      	ldr	r3, [pc, #48]	; (d5530 <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj+0x7c>)
+   d54fe:	681a      	ldr	r2, [r3, #0]
+   d5500:	07d1      	lsls	r1, r2, #31
+   d5502:	bf5c      	itt	pl
+   d5504:	2201      	movpl	r2, #1
+   d5506:	601a      	strpl	r2, [r3, #0]
+   d5508:	4b0a      	ldr	r3, [pc, #40]	; (d5534 <_GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj+0x80>)
+   d550a:	681a      	ldr	r2, [r3, #0]
+   d550c:	07d2      	lsls	r2, r2, #31
+   d550e:	bf5c      	itt	pl
+   d5510:	2201      	movpl	r2, #1
+   d5512:	601a      	strpl	r2, [r3, #0]
+   d5514:	4770      	bx	lr
+   d5516:	bf00      	nop
+   d5518:	2003e7ec 	.word	0x2003e7ec
+   d551c:	2003e7e8 	.word	0x2003e7e8
+   d5520:	2003e7e4 	.word	0x2003e7e4
+   d5524:	2003e7e0 	.word	0x2003e7e0
+   d5528:	2003e7dc 	.word	0x2003e7dc
+   d552c:	2003e7d8 	.word	0x2003e7d8
+   d5530:	2003e7d4 	.word	0x2003e7d4
+   d5534:	2003e7d0 	.word	0x2003e7d0
+
+000d5538 <__cxa_atexit>:
+   d5538:	b510      	push	{r4, lr}
+   d553a:	4c05      	ldr	r4, [pc, #20]	; (d5550 <__cxa_atexit+0x18>)
+   d553c:	4613      	mov	r3, r2
+   d553e:	b12c      	cbz	r4, d554c <__cxa_atexit+0x14>
+   d5540:	460a      	mov	r2, r1
+   d5542:	4601      	mov	r1, r0
+   d5544:	2002      	movs	r0, #2
+   d5546:	f3af 8000 	nop.w
+   d554a:	bd10      	pop	{r4, pc}
+   d554c:	4620      	mov	r0, r4
+   d554e:	bd10      	pop	{r4, pc}
+   d5550:	00000000 	.word	0x00000000
+
+000d5554 <memcpy>:
+   d5554:	b510      	push	{r4, lr}
+   d5556:	1e43      	subs	r3, r0, #1
+   d5558:	440a      	add	r2, r1
+   d555a:	4291      	cmp	r1, r2
+   d555c:	d004      	beq.n	d5568 <memcpy+0x14>
+   d555e:	f811 4b01 	ldrb.w	r4, [r1], #1
+   d5562:	f803 4f01 	strb.w	r4, [r3, #1]!
+   d5566:	e7f8      	b.n	d555a <memcpy+0x6>
+   d5568:	bd10      	pop	{r4, pc}
+
+000d556a <memset>:
+   d556a:	4402      	add	r2, r0
+   d556c:	4603      	mov	r3, r0
+   d556e:	4293      	cmp	r3, r2
+   d5570:	d002      	beq.n	d5578 <memset+0xe>
+   d5572:	f803 1b01 	strb.w	r1, [r3], #1
+   d5576:	e7fa      	b.n	d556e <memset+0x4>
+   d5578:	4770      	bx	lr
+	...
+
+000d557c <srand>:
+   d557c:	b538      	push	{r3, r4, r5, lr}
+   d557e:	4b12      	ldr	r3, [pc, #72]	; (d55c8 <srand+0x4c>)
+   d5580:	681c      	ldr	r4, [r3, #0]
+   d5582:	6ba3      	ldr	r3, [r4, #56]	; 0x38
+   d5584:	4605      	mov	r5, r0
+   d5586:	b9d3      	cbnz	r3, d55be <srand+0x42>
+   d5588:	2018      	movs	r0, #24
+   d558a:	f7ff f935 	bl	d47f8 <malloc>
+   d558e:	f243 330e 	movw	r3, #13070	; 0x330e
+   d5592:	63a0      	str	r0, [r4, #56]	; 0x38
+   d5594:	8003      	strh	r3, [r0, #0]
+   d5596:	f64a 33cd 	movw	r3, #43981	; 0xabcd
+   d559a:	8043      	strh	r3, [r0, #2]
+   d559c:	f241 2334 	movw	r3, #4660	; 0x1234
+   d55a0:	8083      	strh	r3, [r0, #4]
+   d55a2:	f24e 636d 	movw	r3, #58989	; 0xe66d
+   d55a6:	80c3      	strh	r3, [r0, #6]
+   d55a8:	f64d 63ec 	movw	r3, #57068	; 0xdeec
+   d55ac:	8103      	strh	r3, [r0, #8]
+   d55ae:	2305      	movs	r3, #5
+   d55b0:	8143      	strh	r3, [r0, #10]
+   d55b2:	230b      	movs	r3, #11
+   d55b4:	8183      	strh	r3, [r0, #12]
+   d55b6:	2201      	movs	r2, #1
+   d55b8:	2300      	movs	r3, #0
+   d55ba:	e9c0 2304 	strd	r2, r3, [r0, #16]
+   d55be:	6ba3      	ldr	r3, [r4, #56]	; 0x38
+   d55c0:	2200      	movs	r2, #0
+   d55c2:	611d      	str	r5, [r3, #16]
+   d55c4:	615a      	str	r2, [r3, #20]
+   d55c6:	bd38      	pop	{r3, r4, r5, pc}
+   d55c8:	2003e4b8 	.word	0x2003e4b8
+
+000d55cc <strlen>:
+   d55cc:	4603      	mov	r3, r0
+   d55ce:	f813 2b01 	ldrb.w	r2, [r3], #1
+   d55d2:	2a00      	cmp	r2, #0
+   d55d4:	d1fb      	bne.n	d55ce <strlen+0x2>
+   d55d6:	1a18      	subs	r0, r3, r0
+   d55d8:	3801      	subs	r0, #1
+   d55da:	4770      	bx	lr
+
+000d55dc <dynalib_user>:
+   d55dc:	401d 000d 4059 000d 4085 000d 4089 000d     .@..Y@...@...@..
+   d55ec:	0000 0000 7245 6f72 2072 6573 7474 6e69     ....Error settin
+   d55fc:	2067 7075 4320 5343 3138 3b31 2d00 2d2d     g up CCS811;.---
+   d560c:	4400 7461 2061 7266 6d6f 4320 5343 3138     .Data from CCS81
+   d561c:	3a31 4900 746e 7265 7270 7465 6465 003a     1:.Interpreted:.
+   d562c:	4365 324f 5400 4f56 0043 7265 6f72 0072     eCO2.TVOC.error.
+   d563c:	7563 7272 6e65 0074 6f76 746c 6761 0065     current.voltage.
+   d564c:	e511 8a72                                   ..r.
+
+000d5650 <_ZTVN5spark12NetworkClassE>:
+	...
+   d5658:	4819 000d 4823 000d 482d 000d 4837 000d     .H..#H..-H..7H..
+   d5668:	4841 000d 484d 000d 4859 000d 4865 000d     AH..MH..YH..eH..
+   d5678:	486d 000d 4877 000d 4881 000d               mH..wH...H..
+
+000d5684 <_ZTVN5spark9MeshClassE>:
+	...
+   d568c:	49bf 000d 49b5 000d 49ab 000d 49a1 000d     .I...I...I...I..
+   d569c:	4995 000d 4989 000d 497d 000d 4975 000d     .I...I..}I..uI..
+   d56ac:	496b 000d 4961 000d 4881 000d               kI..aI...H..
+
+000d56b8 <_ZTVN5spark9WiFiClassE>:
+	...
+   d56c0:	4b17 000d 4b0d 000d 4b03 000d 4ab9 000d     .K...K...K...J..
+   d56d0:	4af7 000d 4aeb 000d 4adf 000d 4ad7 000d     .J...J...J...J..
+   d56e0:	4acd 000d 4ac3 000d 4881 000d               .J...J...H..
+
+000d56ec <_ZTV7TwoWire>:
+	...
+   d56f4:	4b35 000d 4b7f 000d 4b57 000d 4b37 000d     5K...K..WK..7K..
+   d5704:	4b5f 000d 4b67 000d 4b6f 000d 4b77 000d     _K..gK..oK..wK..
+
+000d5714 <_ZTV9USBSerial>:
+	...
+   d571c:	4bff 000d 4c43 000d 4c1d 000d 4ef9 000d     .K..CL...L...N..
+   d572c:	4c17 000d 4c01 000d 4c09 000d 4c3d 000d     .L...L...L..=L..
+   d573c:	4c11 000d 4bfb 000d                         .L...K..
+
+000d5744 <_ZTV9IPAddress>:
+	...
+   d574c:	4ceb 000d 4cdd 000d 4cdf 000d 005a 2b25     .L...L...L..Z.%+
+   d575c:	3330 3a64 3025 7532 2500 2d59 6d25 252d     03d:%02u.%Y-%m-%
+   d576c:	5464 4825 253a 3a4d 5325 7a25 6100 6373     dT%H:%M:%S%z.asc
+   d577c:	6974 656d 6600 6c00 006e 6e66 6300 646f     time.f.ln.fn.cod
+   d578c:	0065 6564 6174 6c69 0d00 000a 3025 3031     e.detail....%010
+   d579c:	2075 5d00 0020 6425 2c00 0020 2928 203a     u .] .%d., .(): 
+   d57ac:	2000 005b 6f63 6564 3d20 0020 6925 6400     . [.code = .%i.d
+   d57bc:	7465 6961 736c 3d20 0020 6162 6475 5300     etails = .baud.S
+   d57cc:	7265 6169 006c 6553 6972 6c61 0031 7974     erial.Serial1.ty
+   d57dc:	6570 7000 7261 6d61 6300 646d 6900 0064     pe.param.cmd.id.
+   d57ec:	6e68 0064 7473 6d72 6600 6c69 0074 766c     hnd.strm.filt.lv
+   d57fc:	006c 6461 4864 6e61 6c64 7265 7200 6d65     l.addHandler.rem
+   d580c:	766f 4865 6e61 6c64 7265 6500 756e 486d     oveHandler.enumH
+   d581c:	6e61 6c64 7265 0073 534a 4e4f 7453 6572     andlers.JSONStre
+   d582c:	6d61 6f4c 4867 6e61 6c64 7265 6100 7070     amLogHandler.app
+   d583c:	6e00 6e6f 0065 7274 6361 0065 6e69 6f66     .none.trace.info
+   d584c:	7700 7261 006e 6170 696e 0063 6c61 006c     .warn.panic.all.
+
+000d585c <_ZTV11USARTSerial>:
+	...
+   d5864:	504d 000d 5071 000d 507d 000d 4ef9 000d     MP..qP..}P...N..
+   d5874:	5059 000d 5065 000d 505f 000d 506b 000d     YP..eP.._P..kP..
+   d5884:	504f 000d 5053 000d                         OP..SP..
+
+000d588c <_ZTV8SPIClass>:
+	...
+   d5894:	5165 000d 5167 000d                         eQ..gQ..
+
+000d589c <_ZTVN5spark13EthernetClassE>:
+	...
+   d58a4:	51fb 000d 51f1 000d 51e7 000d 51dd 000d     .Q...Q...Q...Q..
+   d58b4:	51d1 000d 51c5 000d 51b9 000d 51b1 000d     .Q...Q...Q...Q..
+   d58c4:	51a7 000d 519d 000d 4881 000d               .Q...Q...H..
+
+000d58d0 <__sf_fake_stdin>:
+	...
+
+000d58f0 <__sf_fake_stdout>:
+	...
+
+000d5910 <__sf_fake_stderr>:
+	...
+
+000d5930 <link_const_variable_data_end>:
+   d5930:	000d4289 	.word	0x000d4289
+   d5934:	000d42a9 	.word	0x000d42a9
+   d5938:	000d44b5 	.word	0x000d44b5
+   d593c:	000d44b9 	.word	0x000d44b9
+   d5940:	000d44bd 	.word	0x000d44bd
+   d5944:	000d494d 	.word	0x000d494d
+   d5948:	000d4a6d 	.word	0x000d4a6d
+   d594c:	000d4b21 	.word	0x000d4b21
+   d5950:	000d4eb9 	.word	0x000d4eb9
+   d5954:	000d4ed5 	.word	0x000d4ed5
+   d5958:	000d4ee9 	.word	0x000d4ee9
+   d595c:	000d514d 	.word	0x000d514d
+   d5960:	000d5205 	.word	0x000d5205
+   d5964:	000d5259 	.word	0x000d5259
+   d5968:	000d52a9 	.word	0x000d52a9
+   d596c:	000d532d 	.word	0x000d532d
+   d5970:	000d53f1 	.word	0x000d53f1
+   d5974:	000d54b5 	.word	0x000d54b5
+
+000d5978 <link_constructors_end>:
+	...
