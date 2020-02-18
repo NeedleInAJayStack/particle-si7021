@@ -47,6 +47,6 @@ void loop() {
     Serial.print("Humidity: "); Serial.print(humidity, 2); Serial.println("%RH");
 
     Serial.println("---");
-    dataReadTime = millis();
+    dataReadTime = Time.now();
   }
 }
