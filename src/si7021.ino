@@ -6,7 +6,7 @@ static Adafruit_Si7021 si7021 = Adafruit_Si7021();
 
 // Record last-read and update intervals
 long dataReadTime;
-int dataInterval = 1000;
+const int dataInterval = 1; // in seconds
 
 // Data variables
 double temperature;
@@ -33,12 +33,12 @@ void setup() {
   humidity = si7021.readHumidity();
 
   // Set time intervals
-  dataReadTime = millis();
+  dataReadTime = Time.now();
 }
 
 void loop() {
   // Only read data on correct intervals
-  if(millis() - dataReadTime > dataInterval) {
+  if(Time.now() - dataReadTime > dataInterval) {
 
     // Read SI7021
     temperature = si7021.readTemperature();
