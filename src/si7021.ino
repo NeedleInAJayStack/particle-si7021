@@ -12,8 +12,6 @@ const int dataInterval = 1; // in seconds
 double temperature;
 double humidity;
 
-
-
 void setup() {
   Serial.begin(9600);
 
