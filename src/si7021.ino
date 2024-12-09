@@ -42,6 +42,10 @@ void setup() {
 }
 
 void loop() {
+  if (mqttClient.isConnected()) {
+    mqttClient.loop();
+  }
+
   // Only read data on correct intervals
   if(Time.now() - dataReadTime > dataInterval) {
 
