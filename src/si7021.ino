@@ -14,6 +14,8 @@ char mqttPass[] = MQTT_PASS;
 MQTT mqttClient(mqttDomain, mqttPort, callback);
 // Do nothing when a message is received
 void callback(char* topic, byte* payload, unsigned int length) {}
+long mqttLastReconnectionAttemptTime;
+const int mqttReconnectionInterval = 60; // in seconds
 
 // Record last-read and update intervals
 long dataReadTime;
@@ -22,6 +24,7 @@ const int dataInterval = 1; // in seconds
 // Data variables
 double temperature;
 double humidity;
+bool mqttConnected;
 
 void setup() {
   Serial.begin(9600);
@@ -29,6 +32,7 @@ void setup() {
   // Declare particle variables
   Particle.variable("temperature", temperature);
   Particle.variable("humidity", humidity);
+  Particle.variable("mqttConnected", mqttConnected);
 
   // Setup SI7021
   si7021.begin();
@@ -39,11 +43,17 @@ void setup() {
   dataReadTime = Time.now();
 
   mqttClient.connect(System.deviceID(), mqttUser, mqttPass);
+  mqttLastReconnectionAttemptTime = Time.now();
 }
 
 void loop() {
-  if (mqttClient.isConnected()) {
+  mqttConnected = mqttClient.isConnected();
+  if (mqttConnected) {
     mqttClient.loop();
+  } else if (Time.now() - mqttLastReconnectionAttemptTime > mqttReconnectionInterval) {
+    // If MQTT is not connected, the system should continue to function, retrying connection in the background
+    mqttClient.connect(System.deviceID(), mqttUser, mqttPass);
+    mqttLastReconnectionAttemptTime = Time.now();
   }
 
   // Only read data on correct intervals
