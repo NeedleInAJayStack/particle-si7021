@@ -19,7 +19,7 @@ const int mqttReconnectionInterval = 60; // in seconds
 
 // Record last-read and update intervals
 long dataReadTime;
-const int dataInterval = 15; // in seconds
+const int dataInterval = 5; // in seconds
 
 // Data variables
 double temperature;
