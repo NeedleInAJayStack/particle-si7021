@@ -19,7 +19,7 @@ const int mqttReconnectionInterval = 60; // in seconds
 
 // Record last-read and update intervals
 long dataReadTime;
-const int dataInterval = 1; // in seconds
+const int dataInterval = 15; // in seconds
 
 // Data variables
 double temperature;
@@ -62,6 +62,7 @@ void loop() {
     // Read SI7021
     temperature = si7021.readTemperature();
     humidity = si7021.readHumidity();
+    dataReadTime = Time.now();
 
     // Publish to MQTT
     if (mqttClient.isConnected()) {
@@ -69,7 +70,5 @@ void loop() {
       mqttClient.publish(mqttDevicePath + "temperature", String::format("%f", temperature));
       mqttClient.publish(mqttDevicePath + "humidity", String::format("%f", humidity));
     }
-
-    dataReadTime = Time.now();
   }
 }
